@@ -55,10 +55,13 @@ import leaf from './icons/leaf.svg'
 import cube from './icons/cube.svg'
 import layer from './icons/layer.svg'
 import faculty from './icons/faculty.svg'
+import Site from './icons/Site.svg'
+import Education from './icons/Education.svg'
+import Books from './icons/Books.svg'
 
 
 
 export const icons = {
     idea, location, work, workOutline, Plus, Span,
-    Completion, Technology,Area,layer,cube, leaf,faculty
+    Completion, Technology,Area,layer,cube, leaf,faculty, Site, Education, Books
 }

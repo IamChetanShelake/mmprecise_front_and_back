@@ -1,5 +1,5 @@
 import React from 'react'
-import { images } from '../assets';
+import { icons, images } from '../assets';
 import { FaGraduationCap } from 'react-icons/fa';
 import { FiBookOpen } from 'react-icons/fi';
 import { BsBuildingsFill } from 'react-icons/bs';
@@ -34,17 +34,17 @@ function Leadership() {
 
   const leadership = [
     {
-      icon: <FaGraduationCap />,
+      icon: `${icons.Education}`,
       title: "Mentored By",
       description: "Er. Prasanna Bhore.",
     },
     {
-      icon: <FiBookOpen />,
+      icon: `${icons.Books}`,
       title: "Expert Lectures",
       description: "Regularly delivers talks at engineering institutions",
     },
     {
-      icon: <BsBuildingsFill />,
+      icon: `${icons.Site}`,
       title: "Site Visits",
       description: "Hosts educational tours for engineering students",
     },
@@ -64,35 +64,64 @@ function Leadership() {
 
   return (
     <div className='' >
-
-      <div className="flex flex-col items-center text-center p-4 max-w-7xl mx-auto">
-        <button className="border rounded-full px-4 py-1 mb-4 hover:bg-gray-100 transition-colors">
-          Hello
-        </button>
-
-        <h1 className="text-2xl font-bold mb-2">
-          I'M <span className="text-orange-500">ER. MAYUR JAIN</span>
-        </h1>
-
-        <h2 className="text-lg font-semibold mb-6">FOUNDER & MANAGING DIRECTOR</h2>
-        <div className="flex items-center justify-center gap-10">
-
-          <blockquote className="italic w-xl text-sm mb-4">
-            "Engineering excellence is not just about building structures, it's about creating solutions that stand the test of time while respecting our environment and community."
-          </blockquote>
-          <div className="relative w-full max-w-md flex flex-col items-center">
-            <img src={images.Owner} alt="Profile" className="w-64 mb-4" />
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-orange-500">★★★★★</span>
-            <p className="font-bold">15 Years</p>
-            <p className="text-sm">Experience</p>
-          </div>
-        </div>
-      </div>
+      <section className="w-full bg-white px-6 pt-10 relative">
+      
+              {/* Hello Button */}
+              <div className="text-center">
+                <button className="px-4 py-1 bg-gray-100 border rounded-full text-sm">
+                  Hello
+                </button>
+      
+                {/* Heading */}
+                <h2 className="text-2xl font-bold mt-4">
+                  I'M <span className="text-orange-500">ER. MAYUR JAIN</span>
+                </h2>
+                <p className="text-lg font-semibold mt-1">
+                  FOUNDER & MANAGING DIRECTOR
+                </p>
+              </div>
+      
+              {/* Main Section */}
+              <div className="max-w-5xl mx-auto mt-5 flex flex-col md:flex-row justify-between items-center gap-10 relative">
+      
+                {/* Left Quote Text */}
+                <div className="max-w-sm text-left italic text-gray-700 text-sm relative -top-6 ml-[-4px]">
+                  <span className="text-orange-500 text-xl">❝</span>
+                  Improving excellence is our key effort. Building
+                  structures that ensure strong solutions that lead the
+                  next era of long-lasting engineering with a commitment
+                  to community.
+                </div>
+      
+      
+                {/* Center Image */}
+                <div className="relative z-10 w-[390px] h-[350px] mx-auto">
+                  {/* Profile Image */}
+                  <img
+                    src={images.Owner}
+                    alt="profile"
+                    className="absolute top-1 left-0 w-[200px] h-auto object-contain"
+                  />
+      
+                  {/* Background Semi-Circle */}
+                  <div className="absolute bottom-4 left-1/5 -translate-x-1/2 w-[390px] h-[230px] bg-orange-200 rounded-t-full -z-10"></div>
+                </div>
+      
+      
+                {/* Right Experience Box */}
+                <div className="text-right relative -top-2">
+                  <p className="text-orange-500 text-xl">★★★★★</p>
+                  <p className="text-4xl font-bold text-black leading-tight">
+                    15 Years
+                  </p>
+                  <p className="text-sm font-bold mt-3">Experience</p>
+                </div>
+      
+              </div>
+            </section>
 
       {/* ACHIEVEMENTS & AWARDS */}
-      <section className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 rounded-t-2xl">
         <h2 className="text-2xl font-bold text-gray-800">ACHIEVEMENTS & AWARDS</h2>
         <p className="text-[#1e1e1e] mb-8 mt-2">
           Recognized for excellence and innovation in structural engineering
@@ -130,9 +159,8 @@ function Leadership() {
               className="bg-white"
             >
               <div className="flex items-center gap-3 py-4 px-4">
-                <div className="text-primary w-10 h-10 flex items-center justify-center">
-                  {item.icon}
-                </div>
+                <img src={item.icon} className="text-primary w-10 h-10 flex items-center justify-center" />
+                  
                 <h3 className="text-sm font-semibold text-black">{item.title}</h3>
               </div>
               <div className="pl-14 text-start">
