@@ -1,0 +1,971 @@
+@extends('layouts.app')
+
+@section('content')
+<!-- Create Company Overview Section -->
+<div id="company-overview" class="section active">
+    <!-- Modern Header -->
+    <div class="form-header">
+        <div class="form-header-content">
+            <div class="form-header-left">
+                <div class="form-icon">
+                    <i class="bi bi-plus-circle"></i>
+                </div>
+                <div class="form-title-section">
+                    <h1 class="form-main-title">Create Company Overview</h1>
+                    <p class="form-subtitle">Add your company's story, achievements, and mission</p>
+                </div>
+            </div>
+            <div class="form-header-right">
+                <a href="{{ route('admin.company-overview') }}" class="btn-back">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Back to Overview</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Form Container -->
+    <div class="form-container">
+        <div class="form-main">
+            <form action="{{ route('admin.company-overview.store') }}" method="POST" enctype="multipart/form-data" class="modern-form">
+                @csrf
+
+                <!-- Basic Information Section -->
+                <div class="form-section">
+                    <div class="form-section-header">
+                        <i class="bi bi-info-circle"></i>
+                        <h3>Basic Information</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title" class="form-label">
+                            Title <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="bi bi-type input-icon"></i>
+                            <input type="text" class="form-input" id="title" name="title" value="{{ old('title') }}" placeholder="Enter section title" required>
+                        </div>
+                        @error('title')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="first_description" class="form-label">
+                                First Description <span class="required">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-textarea-resize input-icon"></i>
+                                <textarea class="form-textarea" id="first_description" name="first_description" rows="4" placeholder="Enter company description" required>{{ old('first_description') }}</textarea>
+                            </div>
+                            @error('first_description')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="second_description" class="form-label">
+                                Second Description <span class="required">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-textarea-resize input-icon"></i>
+                                <textarea class="form-textarea" id="second_description" name="second_description" rows="4" placeholder="Enter additional information" required>{{ old('second_description') }}</textarea>
+                            </div>
+                            @error('second_description')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Section -->
+                <div class="form-section">
+                    <div class="form-section-header">
+                        <i class="bi bi-bar-chart"></i>
+                        <h3>Company Statistics</h3>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="years_experience" class="form-label">
+                                Years of Experience <span class="required">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-calendar-check input-icon"></i>
+                                <input type="number" class="form-input" id="years_experience" name="years_experience" value="{{ old('years_experience', 0) }}" min="0" placeholder="e.g. 25" required>
+                            </div>
+                            @error('years_experience')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projects_completed" class="form-label">
+                                Projects Completed <span class="required">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-briefcase input-icon"></i>
+                                <input type="number" class="form-input" id="projects_completed" name="projects_completed" value="{{ old('projects_completed', 0) }}" min="0" placeholder="e.g. 150" required>
+                            </div>
+                            @error('projects_completed')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="expert_engineers" class="form-label">
+                                Expert Engineers <span class="required">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-people input-icon"></i>
+                                <input type="number" class="form-input" id="expert_engineers" name="expert_engineers" value="{{ old('expert_engineers', 0) }}" min="0" placeholder="e.g. 50" required>
+                            </div>
+                            @error('expert_engineers')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vision & Mission Section -->
+                <div class="form-section">
+                    <div class="form-section-header">
+                        <i class="bi bi-eye"></i>
+                        <h3>Vision & Mission</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vision_description" class="form-label">
+                            Vision Description <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="bi bi-eye input-icon"></i>
+                            <textarea class="form-textarea" id="vision_description" name="vision_description" rows="3" placeholder="Describe your company's vision" required>{{ old('vision_description') }}</textarea>
+                        </div>
+                        @error('vision_description')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Mission Points</label>
+                        <div class="mission-points-container">
+                            <div id="mission-points">
+                                <!-- Mission points will be added here dynamically -->
+                            </div>
+                            <button type="button" class="btn-add-mission" onclick="addMissionPoint()">
+                                <i class="bi bi-plus-circle"></i>
+                                <span>Add Mission Point</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Media Section -->
+                <div class="form-section">
+                    <div class="form-section-header">
+                        <i class="bi bi-image"></i>
+                        <h3>Media & Settings</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image" class="form-label">Company Overview Image</label>
+                        <div class="file-upload-area">
+                            <input type="file" class="file-input" id="image" name="image" accept="image/*" onchange="previewImage(this)">
+                            <div class="file-upload-content">
+                                <i class="bi bi-cloud-upload"></i>
+                                <div class="upload-text">
+                                    <strong>Click to upload</strong>
+                                    <span>or drag and drop</span>
+                                </div>
+                                <div class="upload-hint">PNG, JPG, GIF, WebP, SVG up to 5MB</div>
+                            </div>
+                            <div class="image-preview" id="imagePreview" style="display: none;">
+                                <img id="previewImg" src="" alt="Preview">
+                                <button type="button" class="remove-image" onclick="removeImage()">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </div>
+                        </div>
+                        @error('image')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <div class="toggle-wrapper">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="toggle-label">Active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="bi bi-check-circle"></i>
+                        <span>Create Company Overview</span>
+                    </button>
+                    <a href="{{ route('admin.company-overview') }}" class="btn-cancel">
+                        <i class="bi bi-x-circle"></i>
+                        <span>Cancel</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sidebar Help -->
+        <div class="form-sidebar">
+            <div class="help-card">
+                <div class="help-header">
+                    <i class="bi bi-lightbulb"></i>
+                    <h4>Tips for Great Company Overview</h4>
+                </div>
+                <div class="help-content">
+                    <div class="tip-item">
+                        <i class="bi bi-check-circle"></i>
+                        <span>Use compelling titles that reflect your brand</span>
+                    </div>
+                    <div class="tip-item">
+                        <i class="bi bi-check-circle"></i>
+                        <span>Keep statistics realistic and impressive</span>
+                    </div>
+                    <div class="tip-item">
+                        <i class="bi bi-check-circle"></i>
+                        <span>Write clear, inspiring vision statements</span>
+                    </div>
+                    <div class="tip-item">
+                        <i class="bi bi-check-circle"></i>
+                        <span>Break down mission into actionable points</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-header">
+                    <i class="bi bi-bar-chart"></i>
+                    <h4>Field Requirements</h4>
+                </div>
+                <div class="stats-content">
+                    <div class="field-requirement">
+                        <span class="field-name">Title:</span>
+                        <span class="field-status required">Required</span>
+                    </div>
+                    <div class="field-requirement">
+                        <span class="field-name">Descriptions:</span>
+                        <span class="field-status required">Required</span>
+                    </div>
+                    <div class="field-requirement">
+                        <span class="field-name">Statistics:</span>
+                        <span class="field-status required">Required</span>
+                    </div>
+                    <div class="field-requirement">
+                        <span class="field-name">Vision:</span>
+                        <span class="field-status required">Required</span>
+                    </div>
+                    <div class="field-requirement">
+                        <span class="field-name">Mission Points:</span>
+                        <span class="field-status optional">Optional</span>
+                    </div>
+                    <div class="field-requirement">
+                        <span class="field-name">Image:</span>
+                        <span class="field-status optional">Optional</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Modern Form Styles */
+.form-header {
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+}
+
+.form-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.form-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.form-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+.form-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.form-title-section h1 {
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    margin: 0.5rem 0 0 0;
+}
+
+.btn-back {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.btn-back:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateX(-2px);
+    color: white;
+}
+
+/* Form Container */
+.form-container {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2rem;
+}
+
+.form-main {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.modern-form {
+    padding: 0;
+}
+
+/* Form Sections */
+.form-section {
+    padding: 2rem;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+}
+
+.form-section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-section-header i {
+    font-size: 1.25rem;
+    color: #FF6B35;
+}
+
+.form-section-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.required {
+    color: #dc3545;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 1.125rem;
+    z-index: 1;
+}
+
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 3rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #ffffff;
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: #FF6B35;
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+    padding-left: 3rem;
+    padding-top: 1rem;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.error-message:before {
+    content: '⚠';
+}
+
+/* Mission Points */
+.mission-points-container {
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: #fafafa;
+}
+
+.mission-point-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.mission-point-item:last-child {
+    margin-bottom: 0;
+}
+
+.mission-point-number {
+    width: 32px;
+    height: 32px;
+    background: #FF6B35;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.mission-point-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.875rem;
+}
+
+.mission-point-input:focus {
+    outline: none;
+    border-color: #FF6B35;
+    box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.1);
+}
+
+.btn-remove-mission {
+    background: #fee2e2;
+    color: #dc3545;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-remove-mission:hover {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-add-mission {
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-add-mission:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+/* File Upload */
+.file-upload-area {
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    position: relative;
+    overflow: hidden;
+}
+
+.file-upload-area:hover {
+    border-color: #FF6B35;
+    background: #fef7f5;
+}
+
+.file-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-upload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.file-upload-content i {
+    font-size: 3rem;
+    color: #9ca3af;
+}
+
+.upload-text strong {
+    color: #374151;
+    font-size: 1.125rem;
+}
+
+.upload-text span {
+    color: #6b7280;
+}
+
+.upload-hint {
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.image-preview {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+#previewImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.remove-image {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-image:hover {
+    background: rgba(0,0,0,0.8);
+    transform: scale(1.1);
+}
+
+/* Toggle Switch */
+.toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+}
+
+.toggle-label {
+    font-weight: 500;
+    color: #374151;
+}
+
+/* Form Actions */
+.form-actions {
+    padding: 2rem;
+    background: #f8fafc;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.btn-submit, .btn-cancel {
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+    color: white;
+}
+
+.btn-cancel {
+    background: #f3f4f6;
+    color: #6b7280;
+    border: 2px solid #e5e7eb;
+}
+
+.btn-cancel:hover {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+/* Sidebar */
+.form-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.help-card, .stats-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.help-header, .stats-header {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.help-header i, .stats-header i {
+    color: #FF6B35;
+    font-size: 1.25rem;
+}
+
+.help-header h4, .stats-header h4 {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.help-content {
+    padding: 1.5rem;
+}
+
+.tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.tip-item:last-child {
+    margin-bottom: 0;
+}
+
+.tip-item i {
+    color: #10b981;
+    margin-top: 0.125rem;
+    flex-shrink: 0;
+}
+
+.stats-content {
+    padding: 1.5rem;
+}
+
+.field-requirement {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.field-requirement:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.field-name {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+}
+
+.field-status {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+}
+
+.field-status.required {
+    background: #fee2e2;
+    color: #dc3545;
+}
+
+.field-status.optional {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .form-container {
+        grid-template-columns: 1fr;
+    }
+
+    .form-sidebar {
+        order: -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-submit, .btn-cancel {
+        justify-content: center;
+    }
+}
+</style>
+
+<script>
+let missionPointCount = 0;
+
+// Add mission point
+function addMissionPoint() {
+    missionPointCount++;
+    const container = document.getElementById('mission-points');
+
+    const missionItem = document.createElement('div');
+    missionItem.className = 'mission-point-item';
+    missionItem.id = `mission-point-${missionPointCount}`;
+
+    missionItem.innerHTML = `
+        <span class="mission-point-number">${missionPointCount}</span>
+        <input type="text" name="mission_points[]" class="mission-point-input" placeholder="Enter mission point ${missionPointCount}" maxlength="500">
+        <button type="button" class="btn-remove-mission" onclick="removeMissionPoint(${missionPointCount})">
+            <i class="bi bi-trash"></i>
+        </button>
+    `;
+
+    container.appendChild(missionItem);
+    updateMissionNumbers();
+}
+
+// Remove mission point
+function removeMissionPoint(id) {
+    const element = document.getElementById(`mission-point-${id}`);
+    if (element) {
+        element.remove();
+        updateMissionNumbers();
+    }
+}
+
+// Update mission point numbers
+function updateMissionNumbers() {
+    const missionItems = document.querySelectorAll('.mission-point-item');
+    missionItems.forEach((item, index) => {
+        const numberElement = item.querySelector('.mission-point-number');
+        const inputElement = item.querySelector('.mission-point-input');
+        const buttonElement = item.querySelector('.btn-remove-mission');
+
+        numberElement.textContent = index + 1;
+        inputElement.placeholder = `Enter mission point ${index + 1}`;
+        buttonElement.onclick = () => removeMissionPoint(index + 1);
+        item.id = `mission-point-${index + 1}`;
+    });
+    missionPointCount = missionItems.length;
+}
+
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('previewImg').src = e.target.result;
+            document.getElementById('imagePreview').style.display = 'block';
+            document.querySelector('.file-upload-content').style.display = 'none';
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function removeImage() {
+    document.getElementById('image').value = '';
+    document.getElementById('imagePreview').style.display = 'none';
+    document.querySelector('.file-upload-content').style.display = 'flex';
+}
+
+// Auto-hide notifications after 2 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    const notifications = document.querySelectorAll('.notification');
+    notifications.forEach(function(notification) {
+        setTimeout(function() {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateY(-10px)';
+            setTimeout(function() {
+                notification.style.display = 'none';
+            }, 300);
+        }, 2000);
+    });
+});
+</script>
+@endsection
