@@ -35,3 +35,19 @@ Route::get('/testimonials', function () {
 Route::get('/partners', function () {
     return response()->json(\App\Models\Partner::where('is_active', true)->orderBy('sort_order')->get());
 });
+
+Route::get('/company-overview', function () {
+    return response()->json(\App\Models\CompanyOverview::where('is_active', true)->first());
+});
+
+Route::get('/memberships', function () {
+    return response()->json(\App\Models\Membership::where('is_active', true)->orderBy('sort_order')->get());
+});
+
+Route::get('/certifications', function () {
+    return response()->json(\App\Models\Certification::where('is_active', true)->orderBy('sort_order')->get());
+});
+
+Route::get('/team', function () {
+    return response()->json(\App\Models\Team::where('is_active', true)->orderBy('sort_order')->get());
+});
