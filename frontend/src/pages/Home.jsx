@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CgArrowTopRight } from 'react-icons/cg';
 import { images } from '../assets';
-import { FaWhatsapp } from 'react-icons/fa';
 import TestimonialCard from '../components/TestimonialCard';
 import BackGround from '../assets/images/BackGround.png';
+import { getAchievements } from '../api/achievementsApi';
+import {Achievements} from '../components';
 
 const partners = [
   { img: "/images/logo1.png", name: "Logoipsum" },
@@ -16,29 +17,6 @@ const partners = [
   { img: "/images/logo2.png", name: "Logoipsum" },
   { img: "/images/logo3.png", name: "Logoipsum" },
   { img: "/images/logo2.png", name: "Logoipsum" },
-];
-
-const achievements = [
-  {
-    img: `${images.award}`, // Replace with real image path
-    title: "PROMISING ENGINEER AWARD 2022 – IEI NASHIK",
-    description:
-      "Recognition for outstanding contribution to structural engineering innovation.",
-  },
-  {
-    img: `${images.award}`,
-    title:
-      "OUTSTANDING CONCRETE STRUCTURE AWARD 2023 – ACCE NASHIK & ULTRATECH",
-    description:
-      "Advanced engineering for large-scale structures requiring exceptional load capabilities.",
-  },
-  {
-    img: `${images.award}`,
-    title:
-      "WORLD RECORD HOLDER – WORLD RECORD OF INDIA, 2023",
-    description:
-      "Pre-engineered buildings and post-tensioned slab systems for optimal structural performance.",
-  },
 ];
 
 const stats = [
@@ -70,6 +48,28 @@ const testimonials = [
 ];
 
 function Home() {
+
+  const [achievements, setAchievements] = useState([]);
+
+  useEffect(() => {
+    const fetchAchievements = async () => {
+      try {
+        const data = await getAchievements();
+        setAchievements(data);
+      } catch (error) {
+        console.error('Error fetching achievements:', error);
+      } 
+    };
+
+    fetchAchievements();
+  }, []);
+
+  // top 3 Achievements
+  const topThreeAchievements = achievements
+  ?.sort((a, b) => a.sort_order - b.sort_order)
+  ?.slice(0, 3);
+
+
   return (
     <div className='flex flex-col items-center justify-center' >
 
@@ -96,7 +96,7 @@ function Home() {
           </button>
         </div>
 
-        
+
       </section>
 
 
@@ -159,41 +159,14 @@ function Home() {
         </div>
       </section>
 
-
-      {/* ACHIEVEMENTS & AWARDS */}
-      <section className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 className="text-2xl font-bold text-gray-800">ACHIEVEMENTS & AWARDS</h2>
-        <p className="text-[#1e1e1e] mb-8 mt-2">
-          Recognized for excellence and innovation in structural engineering
-        </p>
-
-
-        {/* Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
-          {achievements.map((award, index) => (
-            <div
-              key={index}
-              className="bg-white  "
-            >
-              <img src={award.img} alt={award.title} className="w-full h-40 object-cover overflow-hidden hover:scale-105 transition-transform" />
-
-              <div className="p-4 text-start">
-                <h3 className="text-sm font-semibold text-black">{award.title}</h3>
-                <p className="text-gray-500 text-sm mt-2">{award.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Button */}
-        <div className="text-center mt-8">
-          <button className="px-6 py-3 bg-yellow-400 rounded-full text-sm font-semibold hover:bg-yellow-500 transition flex items-center mx-auto gap-2">
-            VIEW ALL ACHIEVEMENTS
-            <span><CgArrowTopRight className='w-5 h-5' /></span>
-          </button>
-        </div>
-      </section>
-
+      <div>
+        <Achievements
+        heading={"ACHIEVEMENTS & AWARDS"}
+        subheading={"Recognized for excellence and innovation in structural engineering"}
+        achievements={topThreeAchievements}
+        showButton={true}
+         />
+      </div>
 
       {/* Testominical */}
       <section className="py-10 max-w-6xl mx-auto px-4">

@@ -1,36 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { icons, images } from '../assets';
 import { FaGraduationCap } from 'react-icons/fa';
 import { FiBookOpen } from 'react-icons/fi';
 import { BsBuildingsFill } from 'react-icons/bs';
+import { getAchievements } from '../api/achievementsApi';
+import {Achievements} from '../components';
 
 
 
 
 function Leadership() {
 
-  const achievements = [
-    {
-      img: `${images.award}`,
-      title: "PROMISING ENGINEER AWARD 2022 – IEI NASHIK",
-      description:
-        "Recognition for outstanding contribution to structural engineering innovation.",
-    },
-    {
-      img: `${images.award}`,
-      title:
-        "OUTSTANDING CONCRETE STRUCTURE AWARD 2023 – ACCE NASHIK & ULTRATECH",
-      description:
-        "Advanced engineering for large-scale structures requiring exceptional load capabilities.",
-    },
-    {
-      img: `${images.award}`,
-      title:
-        "WORLD RECORD HOLDER – WORLD RECORD OF INDIA, 2023",
-      description:
-        "Pre-engineered buildings and post-tensioned slab systems for optimal structural performance.",
-    },
-  ];
+  const [achievements, setAchievements] = useState([]);
+
+  useEffect(() => {
+    const fetchAchievements = async () => {
+      try {
+        const data = await getAchievements();
+        setAchievements(data);
+      } catch (error) {
+        console.error('Error fetching achievements:', error);
+      }
+    };
+
+    fetchAchievements();
+  }, []);
+
+  // top 3 Achievements
+  const topThreeAchievements = achievements
+    ?.sort((a, b) => a.sort_order - b.sort_order)
+    ?.slice(0, 3);
 
   const leadership = [
     {
@@ -65,86 +64,73 @@ function Leadership() {
   return (
     <div className='' >
       <section className="w-full bg-white px-6 pt-10 relative">
-      
-              {/* Hello Button */}
-              <div className="text-center">
-                <button className="px-4 py-1 bg-gray-100 border rounded-full text-sm">
-                  Hello
-                </button>
-      
-                {/* Heading */}
-                <h2 className="text-2xl font-bold mt-4">
-                  I'M <span className="text-orange-500">ER. MAYUR JAIN</span>
-                </h2>
-                <p className="text-lg font-semibold mt-1">
-                  FOUNDER & MANAGING DIRECTOR
-                </p>
-              </div>
-      
-              {/* Main Section */}
-              <div className="max-w-5xl mx-auto mt-5 flex flex-col md:flex-row justify-between items-center gap-10 relative">
-      
-                {/* Left Quote Text */}
-                <div className="max-w-sm text-left italic text-gray-700 text-sm relative -top-6 ml-[-4px]">
-                  <span className="text-orange-500 text-xl">❝</span>
-                  Improving excellence is our key effort. Building
-                  structures that ensure strong solutions that lead the
-                  next era of long-lasting engineering with a commitment
-                  to community.
-                </div>
-      
-      
-                {/* Center Image */}
-                <div className="relative z-10 w-[390px] h-[350px] mx-auto">
-                  {/* Profile Image */}
-                  <img
-                    src={images.Owner}
-                    alt="profile"
-                    className="absolute top-1 left-0 w-[200px] h-auto object-contain"
-                  />
-      
-                  {/* Background Semi-Circle */}
-                  <div className="absolute bottom-4 left-1/5 -translate-x-1/2 w-[390px] h-[230px] bg-orange-200 rounded-t-full -z-10"></div>
-                </div>
-      
-      
-                {/* Right Experience Box */}
-                <div className="text-right relative -top-2">
-                  <p className="text-orange-500 text-xl">★★★★★</p>
-                  <p className="text-4xl font-bold text-black leading-tight">
-                    15 Years
-                  </p>
-                  <p className="text-sm font-bold mt-3">Experience</p>
-                </div>
-      
-              </div>
-            </section>
 
-      {/* ACHIEVEMENTS & AWARDS */}
-      <section className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 rounded-t-2xl">
-        <h2 className="text-2xl font-bold text-gray-800">ACHIEVEMENTS & AWARDS</h2>
-        <p className="text-[#1e1e1e] mb-8 mt-2">
-          Recognized for excellence and innovation in structural engineering
-        </p>
+        {/* Hello Button */}
+        <div className="text-center">
+          <button className="px-4 py-1 bg-gray-100 border rounded-full text-sm">
+            Hello
+          </button>
+
+          {/* Heading */}
+          <h2 className="text-2xl font-bold mt-4">
+            I'M <span className="text-orange-500">ER. MAYUR JAIN</span>
+          </h2>
+          <p className="text-lg font-semibold mt-1">
+            FOUNDER & MANAGING DIRECTOR
+          </p>
+        </div>
+
+        {/* Main Section */}
+        <div className="max-w-5xl mx-auto mt-5 flex flex-col md:flex-row justify-between items-center gap-10 relative">
+
+          {/* Left Quote Text */}
+          <div className="max-w-sm text-left italic text-gray-700 text-sm relative -top-6 ml-[-4px]">
+            <span className="text-orange-500 text-xl">❝</span>
+            Improving excellence is our key effort. Building
+            structures that ensure strong solutions that lead the
+            next era of long-lasting engineering with a commitment
+            to community.
+          </div>
 
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
-          {achievements.map((item, index) => (
-            <div
-              key={index}
-              className="bg-white  "
-            >
-              <img src={item.img} alt={item.title} className="w-full h-40 object-cover overflow-hidden hover:scale-105 transition-transform" />
+          {/* Center Image */}
+          <div className="relative z-10 w-[390px] h-[350px] mx-auto">
+            {/* Profile Image */}
+            <img
+              src={images.Owner}
+              alt="profile"
+              className="absolute top-1 left-0 w-[200px] h-auto object-contain"
+            />
 
-              <div className="p-4 text-start">
-                <h3 className="text-sm font-semibold text-black">{item.title}</h3>
-                <p className="text-gray-500 text-sm mt-2">{item.description}</p>
-              </div>
-            </div>
-          ))}
+            {/* Background Semi-Circle */}
+            <div className="absolute bottom-4 left-1/5 -translate-x-1/2 w-[390px] h-[230px] bg-orange-200 rounded-t-full -z-10"></div>
+          </div>
+
+
+          {/* Right Experience Box */}
+          <div className="text-right relative -top-2">
+            <p className="text-orange-500 text-xl">★★★★★</p>
+            <p className="text-4xl font-bold text-black leading-tight">
+              15 Years
+            </p>
+            <p className="text-sm font-bold mt-3">Experience</p>
+          </div>
+
         </div>
       </section>
+
+      
+      <div>
+        <Achievements
+        heading={"ACHIEVEMENTS & AWARDS"}
+        subheading={"Recognized for excellence and innovation in structural engineering"}
+        achievements={topThreeAchievements}
+        showButton={true}
+        />
+        
+      </div>
+
+    
 
 
       {/* ACHIEVEMENTS & AWARDS */}
@@ -160,7 +146,7 @@ function Leadership() {
             >
               <div className="flex items-center gap-3 py-4 px-4">
                 <img src={item.icon} className="text-primary w-10 h-10 flex items-center justify-center" />
-                  
+
                 <h3 className="text-sm font-semibold text-black">{item.title}</h3>
               </div>
               <div className="pl-14 text-start">
