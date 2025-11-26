@@ -1,0 +1,407 @@
+{
+  "info": {
+    "_postman_id": "7dffcc88-dc10-4902-8a51-019d227cd67e",
+    "name": "mm website",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42850769",
+    "_collection_link": "https://warped-capsule-187800.postman.co/workspace/c647964c-aa4a-447a-8ed4-0e62c3444df0/collection/42850769-7dffcc88-dc10-4902-8a51-019d227cd67e?action=share&source=collection_link&creator=42850769"
+  },
+  "item": [
+    {
+      "name": "certifications api",
+      "id": "0d3c69bd-ff43-4fba-8bf2-05777f6273a2",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/certifications",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "certifications"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "hero section api",
+      "id": "b2a8170f-c3aa-4f8f-8472-825a0c70583f",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/hero",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "hero"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "about main section api",
+      "id": "1474e8ec-d562-4fe6-8bbe-018c02cf9d6b",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/about",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "about"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "company overview section api",
+      "id": "0f58e8c2-bf95-41e6-b85d-354817bd478f",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/company-overview",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "company-overview"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "leadership api",
+      "id": "6b589de6-164a-4c9e-9a6e-031021b69779",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/leadership",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "leadership"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "our team api",
+      "id": "63b01a35-90f1-48ed-bbdf-4a1d46f84155",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/team",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "team"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "mentornship and knowledge api",
+      "id": "c13720f4-d29e-422d-b50d-09d0a1eff644",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/mentorships",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "mentorships"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "our experties api",
+      "id": "1f873b3a-7cb1-4bf5-8423-4b4c8c9616e5",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/expertises",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "expertises"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "technical specializations",
+      "id": "fac0f495-c16d-4cfd-8851-269149b5b03b",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/technical-specializations",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "technical-specializations"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "achivements and awards api",
+      "id": "98cbe1ad-ec17-45a4-b4e5-2a05b3d6a4c1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/achievements",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "achievements"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "clients and feedback api",
+      "id": "2653b3ef-5034-45d0-8423-64ebbbaa08aa",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/testimonials",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "testimonials"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "csr page api",
+      "id": "35a65ed6-e8a7-47f2-8602-115d5534a61d",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "project page api",
+      "id": "ed4793fd-bdb4-47b8-95f2-7e518a0bdb48",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "our partners api",
+      "id": "21d1a378-933d-44bf-93c5-1b6f010f106d",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/partners",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "partners"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "why choose us api",
+      "id": "718e32cb-465b-4072-8023-4e1da6a2d3ca",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/why-chooses",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "why-chooses"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "media coverage /featured highlights",
+      "id": "186eb749-6e84-4a7a-8511-fe6d93cfe945",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/featured-highlights",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "featured-highlights"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "latest news and updates",
+      "id": "11052f11-560e-4bfd-afb6-e8588571b940",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/latest-news",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "latest-news"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "business hours section",
+      "id": "04480096-930a-4e60-b521-d778f053644b",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/business-hours",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "business-hours"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "careers api",
+      "id": "8aa43068-7fd9-49b5-bd38-958d9f8d051f",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/careers",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "careers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get in touch section api",
+      "id": "e49861da-7748-46d3-9cbb-78997e3a7b2b",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/get-in-touch",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "get-in-touch"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

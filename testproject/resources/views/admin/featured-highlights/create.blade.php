@@ -71,14 +71,14 @@
                         @enderror
                     </div>
 
-                    <!-- Image Upload (shown when image type is selected) -->
-                    <div class="form-group image-field" id="imageField">
+                    <!-- Image Upload -->
+                    <div class="form-group" id="imageField">
                         <label for="image" class="form-label">
                             <i class="bi bi-image"></i>
-                            Image <span class="required">*</span>
+                            <span id="imageLabel">Image</span> <span class="required">*</span>
                         </label>
                         <div class="file-upload">
-                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
                             <div class="file-upload-preview" id="imagePreview">
                                 <div class="upload-placeholder">
                                     <i class="bi bi-cloud-upload"></i>
@@ -558,12 +558,15 @@ document.addEventListener('DOMContentLoaded', function() {
             radio.checked = true;
 
             // Show/hide fields based on type
+            const imageLabel = document.getElementById('imageLabel');
             if (radio.value === 'image') {
                 imageField.style.display = 'block';
                 videoField.style.display = 'none';
+                imageLabel.textContent = 'Image';
             } else {
-                imageField.style.display = 'none';
+                imageField.style.display = 'block';
                 videoField.style.display = 'block';
+                imageLabel.textContent = 'Thumbnail';
             }
         });
     });

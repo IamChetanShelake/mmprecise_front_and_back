@@ -24,6 +24,11 @@ use App\Models\TechnicalSpecialization;
 use App\Models\Certification;
 use App\Models\Membership;
 use App\Models\GetInTouch;
+use App\Models\Project;
+use App\Models\ProjectFeature;
+use App\Models\ProjectGallery;
+use App\Models\ProjectAchievement;
+use App\Models\ProjectStrengthResult;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
@@ -283,9 +288,302 @@ class AdminController extends Controller
         return redirect()->route('admin.expertise')->with('success', 'Expertise status updated successfully.');
     }
 
+    // Projects CRUD
     public function projects()
     {
-        return view('admin.projects.projects', ['activeSection' => 'projects']);
+        $projects = Project::with(['features', 'galleries', 'achievements', 'strengthResults'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('admin.projects.index', compact('projects'), ['activeSection' => 'projects']);
+    }
+
+    public function createProject()
+    {
+        return view('admin.projects.create', ['activeSection' => 'projects']);
+    }
+
+    public function storeProject(Request $request)
+    {
+        $request->validate([
+            'type' => 'required|in:ongoing,completed',
+            'main_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'title' => 'required|string|max:255',
+            'span' => 'nullable|string|max:255',
+            'area' => 'nullable|string|max:255',
+            'technology' => 'nullable|string|max:255',
+            'completion' => 'nullable|string|max:255',
+            'features' => 'nullable|array',
+            'features.*' => 'nullable|string',
+            'gallery_images' => 'nullable|array',
+            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'achievement_titles' => 'nullable|array',
+            'achievement_titles.*' => 'nullable|string|max:255',
+            'achievement_descriptions' => 'nullable|array',
+            'achievement_descriptions.*' => 'nullable|string',
+            'achievement_photos' => 'nullable|array',
+            'achievement_photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'strength_titles' => 'nullable|array',
+            'strength_titles.*' => 'nullable|string|max:255',
+            'strength_descriptions' => 'nullable|array',
+            'strength_descriptions.*' => 'nullable|string',
+            'status' => 'boolean'
+        ]);
+
+        // Handle main image upload
+        $mainImagePath = null;
+        if ($request->hasFile('main_image')) {
+            $imageName = time() . '_main.' . $request->main_image->extension();
+            $request->main_image->move(public_path('images/projects'), $imageName);
+            $mainImagePath = 'images/projects/' . $imageName;
+        }
+
+        // Create project
+        $project = Project::create([
+            'type' => $request->type,
+            'main_image' => $mainImagePath,
+            'title' => $request->title,
+            'span' => $request->span,
+            'area' => $request->area,
+            'technology' => $request->technology,
+            'completion' => $request->completion,
+            'status' => $request->has('status') ? true : false
+        ]);
+
+        // Store features
+        if ($request->has('features')) {
+            foreach ($request->features as $index => $feature) {
+                if (!empty(trim($feature))) {
+                    ProjectFeature::create([
+                        'project_id' => $project->id,
+                        'feature' => $feature,
+                        'order' => $index
+                    ]);
+                }
+            }
+        }
+
+        // Store gallery images
+        if ($request->hasFile('gallery_images')) {
+            foreach ($request->file('gallery_images') as $index => $image) {
+                $imageName = time() . '_gallery_' . $index . '.' . $image->extension();
+                $image->move(public_path('images/projects/gallery'), $imageName);
+                
+                ProjectGallery::create([
+                    'project_id' => $project->id,
+                    'image' => 'images/projects/gallery/' . $imageName,
+                    'order' => $index
+                ]);
+            }
+        }
+
+        // Store achievements
+        if ($request->has('achievement_titles')) {
+            foreach ($request->achievement_titles as $index => $title) {
+                if (!empty(trim($title))) {
+                    $photoPath = null;
+                    if ($request->hasFile("achievement_photos.$index")) {
+                        $imageName = time() . '_achievement_' . $index . '.' . $request->file("achievement_photos.$index")->extension();
+                        $request->file("achievement_photos.$index")->move(public_path('images/projects/achievements'), $imageName);
+                        $photoPath = 'images/projects/achievements/' . $imageName;
+                    }
+
+                    ProjectAchievement::create([
+                        'project_id' => $project->id,
+                        'title' => $title,
+                        'description' => $request->achievement_descriptions[$index] ?? '',
+                        'photo' => $photoPath,
+                        'order' => $index
+                    ]);
+                }
+            }
+        }
+
+        // Store strength results
+        if ($request->has('strength_titles')) {
+            foreach ($request->strength_titles as $index => $title) {
+                if (!empty(trim($title))) {
+                    ProjectStrengthResult::create([
+                        'project_id' => $project->id,
+                        'title' => $title,
+                        'description' => $request->strength_descriptions[$index] ?? '',
+                        'order' => $index
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('admin.projects')->with('success', 'Project created successfully.');
+    }
+
+    public function editProject($id)
+    {
+        $project = Project::with(['features', 'galleries', 'achievements', 'strengthResults'])->findOrFail($id);
+        return view('admin.projects.edit', compact('project'), ['activeSection' => 'projects']);
+    }
+
+    public function updateProject(Request $request, $id)
+    {
+        $project = Project::findOrFail($id);
+
+        $request->validate([
+            'type' => 'required|in:ongoing,completed',
+            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'title' => 'required|string|max:255',
+            'span' => 'nullable|string|max:255',
+            'area' => 'nullable|string|max:255',
+            'technology' => 'nullable|string|max:255',
+            'completion' => 'nullable|string|max:255',
+            'features' => 'nullable|array',
+            'features.*' => 'nullable|string',
+            'gallery_images' => 'nullable|array',
+            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'achievement_titles' => 'nullable|array',
+            'achievement_titles.*' => 'nullable|string|max:255',
+            'achievement_descriptions' => 'nullable|array',
+            'achievement_descriptions.*' => 'nullable|string',
+            'achievement_photos' => 'nullable|array',
+            'achievement_photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'strength_titles' => 'nullable|array',
+            'strength_titles.*' => 'nullable|string|max:255',
+            'strength_descriptions' => 'nullable|array',
+            'strength_descriptions.*' => 'nullable|string',
+            'status' => 'boolean'
+        ]);
+
+        // Handle main image upload
+        if ($request->hasFile('main_image')) {
+            // Delete old image
+            if ($project->main_image && file_exists(public_path($project->main_image))) {
+                unlink(public_path($project->main_image));
+            }
+
+            $imageName = time() . '_main.' . $request->main_image->extension();
+            $request->main_image->move(public_path('images/projects'), $imageName);
+            $project->main_image = 'images/projects/' . $imageName;
+        }
+
+        // Update project
+        $project->update([
+            'type' => $request->type,
+            'main_image' => $project->main_image,
+            'title' => $request->title,
+            'span' => $request->span,
+            'area' => $request->area,
+            'technology' => $request->technology,
+            'completion' => $request->completion,
+            'status' => $request->has('status') ? true : false
+        ]);
+
+        // Update features - delete old and create new
+        $project->features()->delete();
+        if ($request->has('features')) {
+            foreach ($request->features as $index => $feature) {
+                if (!empty(trim($feature))) {
+                    ProjectFeature::create([
+                        'project_id' => $project->id,
+                        'feature' => $feature,
+                        'order' => $index
+                    ]);
+                }
+            }
+        }
+
+        // Update gallery images
+        if ($request->hasFile('gallery_images')) {
+            foreach ($request->file('gallery_images') as $index => $image) {
+                $imageName = time() . '_gallery_' . $index . '.' . $image->extension();
+                $image->move(public_path('images/projects/gallery'), $imageName);
+                
+                ProjectGallery::create([
+                    'project_id' => $project->id,
+                    'image' => 'images/projects/gallery/' . $imageName,
+                    'order' => $index
+                ]);
+            }
+        }
+
+        // Update achievements - delete old and create new
+        foreach ($project->achievements as $achievement) {
+            if ($achievement->photo && file_exists(public_path($achievement->photo))) {
+                unlink(public_path($achievement->photo));
+            }
+        }
+        $project->achievements()->delete();
+
+        if ($request->has('achievement_titles')) {
+            foreach ($request->achievement_titles as $index => $title) {
+                if (!empty(trim($title))) {
+                    $photoPath = null;
+                    if ($request->hasFile("achievement_photos.$index")) {
+                        $imageName = time() . '_achievement_' . $index . '.' . $request->file("achievement_photos.$index")->extension();
+                        $request->file("achievement_photos.$index")->move(public_path('images/projects/achievements'), $imageName);
+                        $photoPath = 'images/projects/achievements/' . $imageName;
+                    }
+
+                    ProjectAchievement::create([
+                        'project_id' => $project->id,
+                        'title' => $title,
+                        'description' => $request->achievement_descriptions[$index] ?? '',
+                        'photo' => $photoPath,
+                        'order' => $index
+                    ]);
+                }
+            }
+        }
+
+        // Update strength results - delete old and create new
+        $project->strengthResults()->delete();
+        if ($request->has('strength_titles')) {
+            foreach ($request->strength_titles as $index => $title) {
+                if (!empty(trim($title))) {
+                    ProjectStrengthResult::create([
+                        'project_id' => $project->id,
+                        'title' => $title,
+                        'description' => $request->strength_descriptions[$index] ?? '',
+                        'order' => $index
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('admin.projects')->with('success', 'Project updated successfully.');
+    }
+
+    public function destroyProject($id)
+    {
+        $project = Project::findOrFail($id);
+
+        // Delete main image
+        if ($project->main_image && file_exists(public_path($project->main_image))) {
+            unlink(public_path($project->main_image));
+        }
+
+        // Delete gallery images
+        foreach ($project->galleries as $gallery) {
+            if ($gallery->image && file_exists(public_path($gallery->image))) {
+                unlink(public_path($gallery->image));
+            }
+        }
+
+        // Delete achievement photos
+        foreach ($project->achievements as $achievement) {
+            if ($achievement->photo && file_exists(public_path($achievement->photo))) {
+                unlink(public_path($achievement->photo));
+            }
+        }
+
+        // Delete project (cascade will handle related records)
+        $project->delete();
+
+        return redirect()->route('admin.projects')->with('success', 'Project deleted successfully.');
+    }
+
+    public function toggleProjectStatus($id)
+    {
+        $project = Project::findOrFail($id);
+        $project->update(['status' => !$project->status]);
+
+        return redirect()->route('admin.projects')->with('success', 'Project status updated successfully.');
     }
 
     public function csr()

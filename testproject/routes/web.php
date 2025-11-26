@@ -163,8 +163,17 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/get-in-touch/{id}/edit', [AdminController::class, 'editGetInTouch'])->name('admin.get-in-touch.edit');
     Route::put('/get-in-touch/{id}', [AdminController::class, 'updateGetInTouch'])->name('admin.get-in-touch.update');
     Route::delete('/get-in-touch/{id}', [AdminController::class, 'destroyGetInTouch'])->name('admin.get-in-touch.destroy');
-    Route::patch('/get-in-touch/{id}/toggle', [AdminController::class, 'toggleGetInTouchStatus'])->name('admin.get-in-touch.toggle');
+    Route::get('/get-in-touch/{id}/toggle', [AdminController::class, 'toggleGetInTouchStatus'])->name('admin.get-in-touch.toggle');
+    
+    // Projects Routes
     Route::get('/projects', [AdminController::class, 'projects'])->name('admin.projects');
+    Route::get('/projects/create', [AdminController::class, 'createProject'])->name('admin.projects.create');
+    Route::post('/projects', [AdminController::class, 'storeProject'])->name('admin.projects.store');
+    Route::get('/projects/{id}/edit', [AdminController::class, 'editProject'])->name('admin.projects.edit');
+    Route::put('/projects/{id}', [AdminController::class, 'updateProject'])->name('admin.projects.update');
+    Route::delete('/projects/{id}', [AdminController::class, 'destroyProject'])->name('admin.projects.destroy');
+    Route::patch('/projects/{id}/toggle', [AdminController::class, 'toggleProjectStatus'])->name('admin.projects.toggle');
+    
     Route::get('/csr', [AdminController::class, 'csr'])->name('admin.csr');
     Route::get('/contact', [AdminController::class, 'contact'])->name('admin.contact');
 });
