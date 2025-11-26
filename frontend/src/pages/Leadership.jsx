@@ -3,15 +3,16 @@ import { icons, images } from '../assets';
 import { FaGraduationCap } from 'react-icons/fa';
 import { FiBookOpen } from 'react-icons/fi';
 import { BsBuildingsFill } from 'react-icons/bs';
-import { getAchievements } from '../api';
-import {Achievements} from '../components';
-
-
+import { getAchievements, getMentorship, getSpecializations } from '../api';
+import { Achievements } from '../components';
 
 
 function Leadership() {
 
   const [achievements, setAchievements] = useState([]);
+  const [mentorship, setMentorship] = useState([]);
+  const [specializations, setSpecializations] = useState([]);
+
 
   useEffect(() => {
     const fetchAchievements = async () => {
@@ -31,24 +32,52 @@ function Leadership() {
     ?.sort((a, b) => a.sort_order - b.sort_order)
     ?.slice(0, 3);
 
-  const leadership = [
-    {
-      icon: `${icons.Education}`,
-      title: "Mentored By",
-      description: "Er. Prasanna Bhore.",
-    },
-    {
-      icon: `${icons.Books}`,
-      title: "Expert Lectures",
-      description: "Regularly delivers talks at engineering institutions",
-    },
-    {
-      icon: `${icons.Site}`,
-      title: "Site Visits",
-      description: "Hosts educational tours for engineering students",
-    },
+  useEffect(() => {
+    const fetchMentorship = async () => {
+      try {
+        const data = await getMentorship();
+        setMentorship(data);
+      } catch (error) {
+        console.error('Error fetching Mentorship:', error);
+      }
+    };
 
-  ];
+    fetchMentorship();
+  }, []);
+
+
+useEffect(() => {
+  const fetchSpecializations = async () => {
+    try {
+      const raw = await getSpecializations();
+
+      // Normalize to array
+      const list = Array.isArray(raw) ? raw : [raw];
+
+      const parsedItems = [];
+
+      list.forEach(spec => {
+        const html = spec.descriptions?.[0] ?? '';
+        if (!html) return;
+
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+
+        tempDiv.querySelectorAll('li').forEach(li => {
+          const text = li.textContent.trim();
+          if (text) parsedItems.push(text);
+        });
+      });
+
+      setSpecializations(parsedItems);
+    } catch (error) {
+      console.error('Error fetching Specializations:', error);
+    }
+  };
+
+  fetchSpecializations();
+}, []);
+
 
   const left = [
     'Industrial & Long-Span Structures – Spans Up To 24m',
@@ -119,27 +148,27 @@ function Leadership() {
         </div>
       </section>
 
-      
+
       <div>
         <Achievements
-        heading={"ACHIEVEMENTS & AWARDS"}
-        subheading={"Recognized for excellence and innovation in structural engineering"}
-        achievements={topThreeAchievements}
-        showButton={true}
+          heading={"ACHIEVEMENTS & AWARDS"}
+          subheading={"Recognized for excellence and innovation in structural engineering"}
+          achievements={topThreeAchievements}
+          showButton={true}
         />
-        
+
       </div>
 
-    
 
 
-      {/* ACHIEVEMENTS & AWARDS */}
+
+      {/* Mentorship & Knowledge Sharing */}
       <section className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h2 className="text-2xl font-bold text-gray-800 uppercase">Mentorship & Knowledge Sharing</h2>
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
-          {leadership.map((item, index) => (
+          {mentorship.map((item, index) => (
             <div
               key={index}
               className="bg-white"
@@ -163,13 +192,15 @@ function Leadership() {
         <div className="bg-white shadow-md rounded-2xl border-0 shadow-orange-300 p-6 w-full max-w-5xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <ul className="space-y-2">
-              {left.map((item, idx) => (
-                <li key={idx} className="flex items-center">
-                  <div className="rounded-full bg-primary p-1 mr-1.5"></div>
-                  <span className='font-normal'>{item}</span>
-                </li>
-              ))}
-            </ul>
+  {specializations.map((item, idx) => (
+    <li key={idx} className="flex items-center">
+      <div className="rounded-full bg-primary p-1 mr-1.5"></div>
+      <span className="font-normal">{item}</span>
+    </li>
+  ))}
+</ul>
+
+
             <ul className="space-y-2">
               {right.map((item, idx) => (
                 <li key={idx} className="flex items-center">
