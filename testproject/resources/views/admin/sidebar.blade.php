@@ -111,6 +111,11 @@
                     <i class="bi bi-telephone"></i> <span>Get In Touch</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $activeSection == 'projects' ? 'active' : '' }}" href="{{ route('admin.projects') }}" data-section="projects">
+                    <i class="bi bi-folder"></i> <span>Projects</span>
+                </a>
+            </li>
             <li class="nav-item" style="padding-bottom: 90px;">
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
