@@ -3,7 +3,7 @@ import { icons, images } from '../assets';
 import { FaGraduationCap } from 'react-icons/fa';
 import { FiBookOpen } from 'react-icons/fi';
 import { BsBuildingsFill } from 'react-icons/bs';
-import { getAchievements } from '../api/achievementsApi';
+import { getAchievements } from '../api';
 import {Achievements} from '../components';
 
 

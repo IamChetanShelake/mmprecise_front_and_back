@@ -3,7 +3,7 @@ import { CgArrowTopRight } from 'react-icons/cg';
 import { images } from '../assets';
 import TestimonialCard from '../components/TestimonialCard';
 import BackGround from '../assets/images/BackGround.png';
-import { getAchievements } from '../api/achievementsApi';
+import { getAchievements } from '../api';
 import {Achievements} from '../components';
 
 const partners = [

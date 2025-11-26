@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
 import { images } from "../assets";
 import { Achievements } from '../components';
-import { getAchievements } from "../api/achievementsApi";
+import { getAchievements } from "../api";
 
 function NewsUpdates() {
   const [achievements, setAchievements] = useState([]);

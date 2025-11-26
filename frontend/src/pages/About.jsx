@@ -1,42 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { images } from '../assets'
-// import { CgArrowTopRight } from 'react-icons/cg'
-// import Memberships1 from "../assets/Memberships1.png";
-// import Memberships2 from "../assets/Memberships2.png";
-// import Memberships3 from "../assets/Memberships3.png";
-// import Memberships4 from "../assets/Memberships4.png";
+import { getCertifications } from '../api';
 
 
 function About() {
+
+  const [memberships, setMemberships] = useState([]);
+
+  useEffect(() => {
+    const fetchCertifications = async () => {
+      try {
+        const data = await getCertifications();
+        setMemberships(data);
+        console.log(data)
+      } catch (error) {
+        console.error('Error fetching achievements:', error);
+      }
+    };
+
+    fetchCertifications();
+  }, []);
 
   const stats = [
     { value: "10", label: "PROJECTS" },
     { value: "0", label: "YEARS" },
     { value: "100", label: "WORKFORCE" },
   ];
-
-  const memberships = [
-  {
-    img: `${images.Memberships4}`,
-    title: "Chartered Engineer",
-    description: "IEI India",
-  },
-  {
-    img: `${images.Memberships3}`,
-    title: "Association of Consulting Civil Engineers",
-    description: "IEI India",
-  },
-  {
-    img: `${images.Memberships2}`,
-    title: "Ferrocement Society",
-    description: "Pune",
-  },
-  {
-    img: `${images.Memberships1}`,
-    title: "Architect & Engineers Association",
-    description: "Nashik",
-  },
-];
 
 
   return (
@@ -151,27 +140,22 @@ function About() {
           Recognized and accredited by leading industry bodies
         </p>
 
-
-        {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
           {memberships.map((membership, index) => (
-            <div
-              key={index}
-              className="bg-white  "
-            >
-              <img src={membership.img} alt={membership.title} className=" ml-4 w-14 h-14 object-cover" />
-
+            <div key={index} className="bg-white">
+              <img
+                src={membership.img}
+                alt={membership.title}
+                className="ml-4 w-14 h-14 object-cover"
+              />
               <div className="p-4 text-start">
                 <h3 className="text-sm font-semibold text-black">{membership.title}</h3>
-                <p className="text-gray-500 text-sm mt-2">{membership.description}</p>
+                <p className="text-gray-500 text-sm mt-2">{membership.location}</p>
               </div>
             </div>
           ))}
         </div>
-
-
       </section>
-
 
       {/* Our Team */}
       <section className="text-center my-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
