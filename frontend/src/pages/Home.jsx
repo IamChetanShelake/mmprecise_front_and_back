@@ -3,7 +3,7 @@ import { CgArrowTopRight } from 'react-icons/cg';
 import { images } from '../assets';
 import TestimonialCard from '../components/TestimonialCard';
 import BackGround from '../assets/images/BackGround.png';
-import { getAchievements } from '../api';
+import { API, getAchievements, getOurPartner, getTestimonials } from '../api';
 import {Achievements} from '../components';
 
 const partners = [
@@ -50,6 +50,8 @@ const testimonials = [
 function Home() {
 
   const [achievements, setAchievements] = useState([]);
+  const [partners, setPartners] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
 
   useEffect(() => {
     const fetchAchievements = async () => {
@@ -68,6 +70,32 @@ function Home() {
   const topThreeAchievements = achievements
   ?.sort((a, b) => a.sort_order - b.sort_order)
   ?.slice(0, 3);
+
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const data = await getOurPartner();
+        setPartners(data);
+      } catch (error) {
+        console.error('Error fetching Partners:', error);
+      } 
+    };
+
+    fetchPartners();
+  }, []);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const data = await getTestimonials();
+        setTestimonials(data);
+      } catch (error) {
+        console.error('Error fetching Testimonials:', error);
+      } 
+    };
+
+    fetchTestimonials();
+  }, []);
 
 
   return (
@@ -197,7 +225,7 @@ function Home() {
               key={index}
               className="flex flex-col items-center gap-2 hover:scale-105 transition-transform"
             >
-              <img src={partner.img} alt={partner.name} className="object-cover" />
+              <img src={`${API}/${partner.image}`} alt={partner.name} className="object-cover" />
               {/* <span className="text-gray-600 text-sm">{partner.name}</span> */}
             </div>
           ))}

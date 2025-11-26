@@ -34,8 +34,28 @@ export const getCompanyOverview = async () => {
     throw error;
   }
 };
+// ================ Our Partner ================
+export const getOurPartner = async () => {
+  try {
+    const response = await axios.get(`${API}/api/partners`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching Our Partner:", error);
+    throw error;
+  }
+};
+// ================ testimonials ================
+export const getTestimonials = async () => {
+  try {
+    const response = await axios.get(`${API}/api/testimonials`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching testimonials:", error);
+    throw error;
+  }
+};
 
-// ================  & Knowledge Sharing ================
+// ================ mentorships & Knowledge Sharing ================
 export const getMentorship = async () => {
   try {
     const response = await axios.get(`${API}/api/mentorships`);
