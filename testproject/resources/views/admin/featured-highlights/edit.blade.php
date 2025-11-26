@@ -72,11 +72,11 @@
                         @enderror
                     </div>
 
-                    <!-- Image Upload (shown when image type is selected) -->
-                    <div class="form-group image-field" id="imageField">
+                    <!-- Image Upload -->
+                    <div class="form-group" id="imageField">
                         <label for="image" class="form-label">
                             <i class="bi bi-image"></i>
-                            Image @if($featuredHighlight->type === 'image')<span class="optional">(Optional - leave empty to keep current)</span>@else<span class="required">*</span>@endif
+                            <span id="imageLabel">Image</span> <span class="required">*</span>
                         </label>
                         <div class="file-upload">
                             <input type="file" class="form-control" id="image" name="image" accept="image/*">
@@ -565,12 +565,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set initial state based on current type
     const currentType = '{{ $featuredHighlight->type }}';
+    const imageLabel = document.getElementById('imageLabel');
     if (currentType === 'image') {
         imageField.style.display = 'block';
         videoField.style.display = 'none';
+        imageLabel.textContent = 'Image';
     } else {
-        imageField.style.display = 'none';
+        imageField.style.display = 'block';
         videoField.style.display = 'block';
+        imageLabel.textContent = 'Thumbnail';
     }
 
     typeOptions.forEach(option => {
@@ -586,12 +589,15 @@ document.addEventListener('DOMContentLoaded', function() {
             radio.checked = true;
 
             // Show/hide fields based on type
+            const imageLabel = document.getElementById('imageLabel');
             if (radio.value === 'image') {
                 imageField.style.display = 'block';
                 videoField.style.display = 'none';
+                imageLabel.textContent = 'Image';
             } else {
-                imageField.style.display = 'none';
+                imageField.style.display = 'block';
                 videoField.style.display = 'block';
+                imageLabel.textContent = 'Thumbnail';
             }
         });
     });

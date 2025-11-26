@@ -48,6 +48,46 @@ Route::get('/certifications', function () {
     return response()->json(\App\Models\Certification::where('is_active', true)->orderBy('sort_order')->get());
 });
 
+Route::get('/leadership', function () {
+    return response()->json(\App\Models\Leadership::where('is_active', true)->orderBy('sort_order')->get());
+});
+
+Route::get('/mentorships', function () {
+    return response()->json(\App\Models\Mentorship::where('is_active', true)->orderBy('sort_order')->get());
+});
+
+Route::get('/technical-specializations', function () {
+    return response()->json(\App\Models\TechnicalSpecialization::where('is_active', true)->first());
+});
+
+Route::get('/expertises', function () {
+    return response()->json(\App\Models\Expertise::where('is_active', true)->first());
+});
+
+Route::get('/why-chooses', function () {
+    return response()->json(\App\Models\WhyChoose::where('is_active', true)->get());
+});
+
+Route::get('/careers', function () {
+    return response()->json(\App\Models\Career::where('is_active', true)->orderBy('sort_order')->get());
+});
+
+Route::get('/latest-news', function () {
+    return response()->json(\App\Models\LatestNews::where('is_active', true)->orderBy('sort_order')->get());
+});
+
+Route::get('/business-hours', function () {
+    return response()->json(\App\Models\BusinessHours::where('is_active', true)->first());
+});
+
+Route::get('/get-in-touch', function () {
+    return response()->json(\App\Models\GetInTouch::where('is_active', true)->orderBy('sort_order')->get());
+});
+
+Route::get('/featured-highlights', function () {
+    return response()->json(\App\Models\FeaturedHighlight::where('is_active', true)->orderBy('sort_order')->get());
+});
+
 Route::get('/team', function () {
     return response()->json(\App\Models\Team::where('is_active', true)->orderBy('sort_order')->get());
 });
