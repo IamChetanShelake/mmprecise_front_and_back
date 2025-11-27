@@ -210,3 +210,15 @@ export const News = async (id) => {
     throw error;
   }
 };
+
+// ================  CSR ================
+export const getProjects = async () => {
+  try {
+    const response = await axios.get(`${API}/api/projects`);
+    return response.data;
+
+  } catch (error) {
+    console.error("Error fetching CSR:", error);
+    throw error;
+  }
+};

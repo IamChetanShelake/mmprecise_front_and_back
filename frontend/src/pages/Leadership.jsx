@@ -3,7 +3,7 @@ import { icons, images } from '../assets';
 import { FaGraduationCap } from 'react-icons/fa';
 import { FiBookOpen } from 'react-icons/fi';
 import { BsBuildingsFill } from 'react-icons/bs';
-import { getAchievements, getMentorship, getSpecializations } from '../api';
+import { API, getAchievements, getMentorship, getSpecializations } from '../api';
 import { Achievements } from '../components';
 
 function Leadership() {
@@ -58,7 +58,7 @@ function Leadership() {
       try {
         const data = await getSpecializations();
         console.log('Specializations API Response:', data); // Debug log
-        
+
         let extractedSpecializations = [];
 
         // Based on your API function, data is either an array or json.data
@@ -71,7 +71,7 @@ function Leadership() {
             // If no descriptions found, use the first item that has string data
             extractedSpecializations = data;
           }
-        } 
+        }
         // If data is an object with descriptions array (single object response)
         else if (data && data.descriptions && Array.isArray(data.descriptions)) {
           extractedSpecializations = data.descriptions;
@@ -175,7 +175,7 @@ function Leadership() {
           {mentorship.map((item, index) => (
             <div key={index} className="bg-white">
               <div className="flex items-center gap-3 py-4 px-4">
-                <img src={item.icon} className="text-primary w-10 h-10 flex items-center justify-center" />
+                <img src={`${API}/${item.image}`} className="text-primary w-10 h-10 flex items-center justify-center" />
                 <h3 className="text-sm font-semibold text-black">{item.title}</h3>
               </div>
               <div className="pl-14 text-start">
@@ -189,7 +189,7 @@ function Leadership() {
       {/* Technical Specializations */}
       <section className="w-full flex flex-col items-center justify-center py-10 px-4">
         <h2 className="text-2xl font-bold text-gray-800 py-4 uppercase">TECHNICAL SPECIALIZATIONS</h2>
-        
+
         {loading.specializations ? (
           <div className="bg-white shadow-md rounded-2xl border-0 shadow-orange-300 p-6 w-full max-w-5xl">
             <div className="flex justify-center items-center py-8">
