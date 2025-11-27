@@ -102,3 +102,15 @@ export const getAboutUs = async () => {
   }
 };
 
+// ================  Our Expertise ================
+export const getOurExpertise = async () => {
+  try {
+    const response = await axios.get(`${API}/api/expertises`);
+    return response.data;
+
+  } catch (error) {
+    console.error("Error fetching Our Expertise:", error);
+    throw error;
+  }
+};
+

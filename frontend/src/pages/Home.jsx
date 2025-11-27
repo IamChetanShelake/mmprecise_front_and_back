@@ -1,45 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { CgArrowTopRight } from 'react-icons/cg';
-import { images } from '../assets';
 import TestimonialCard from '../components/TestimonialCard';
-import BackGround from '../assets/images/BackGround.png';
 import { API, getAboutUs, getAchievements, getHeroSection, getOurPartner, getTestimonials } from '../api';
 import { Achievements } from '../components';
-
-const partners = [
-  { img: "/images/logo1.png", name: "Logoipsum" },
-  { img: "/images/logo2.png", name: "Logoipsum" },
-  { img: "/images/logo3.png", name: "Logoipsum" },
-  { img: "/images/logo1.png", name: "Logoipsum" },
-  { img: "/images/logo2.png", name: "Logoipsum" },
-  { img: "/images/logo3.png", name: "Logoipsum" },
-  { img: "/images/logo1.png", name: "Logoipsum" },
-  { img: "/images/logo2.png", name: "Logoipsum" },
-  { img: "/images/logo3.png", name: "Logoipsum" },
-  { img: "/images/logo2.png", name: "Logoipsum" },
-];
-
-
-const testimonials = [
-  {
-    quote: "MM Precise has been instrumental in delivering our most complex structural projects. Their expertise consistently exceeds expectations.",
-    name: "Rajesh Kumar",
-    designation: "Project Director, Larsen & Toubro",
-    image: "/images/rajesh.jpg",
-  },
-  {
-    quote: "The team's technical expertise and commitment to sustainable practices make them our preferred partner.",
-    name: "Priya Sharma",
-    designation: "Chief Engineer, Tata Projects",
-    image: "/images/priya.jpg",
-  },
-  {
-    quote: "Their innovation and reliability helped us complete major projects efficiently and sustainably.",
-    name: "Amit Verma",
-    designation: "Senior Manager, XYZ Corp",
-    image: "/images/amit.jpg",
-  },
-];
 
 function Home() {
 

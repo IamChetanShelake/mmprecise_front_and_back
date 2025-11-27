@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { images } from '../assets'
 import { TbPercentage } from "react-icons/tb";
 import { FaClock, FaLeaf } from "react-icons/fa";
 import { MdSecurity } from 'react-icons/md';
 import expertiseImg from '../assets/images/EXPERTISE3.png';
+import { API, getOurExpertise } from '../api';
 function Expertise() {
 
 
@@ -12,7 +13,7 @@ function Expertise() {
             icon: <TbPercentage />,
             title: "Material Savings",
             description: "Up to 30% reduction in concrete and steel consumption through optimized design",
-        }, 
+        },
         {
             icon: <FaClock />,
             title: "Faster  Construction",
@@ -30,19 +31,35 @@ function Expertise() {
         },
     ];
 
+    const [expertise, setExpertise] = useState([]);
+
+    useEffect(() => {
+        const fetchOurExpertise = async () => {
+            try {
+                const data = await getOurExpertise();
+                console.log("Our Expertise DATA", data)
+                setExpertise(data);
+            } catch (error) {
+                console.error('Error fetching Our Expertise:', error);
+            }
+        };
+
+        fetchOurExpertise();
+    }, []);
+
     return (
         <div className='' >
 
             <section
                 className="relative w-full h-[250px] bg-cover bg-center flex items-center"
-                style={{ backgroundImage: `url(${expertiseImg})` }}    >
+                style={{ backgroundImage: `url(${API}/${expertise.main_image})` }}    >
                 {/* Overlay (optional for darkening bg) */}
                 <div className="absolute inset-0 bg-black/30"></div>
 
                 {/* Content */}
                 <div className="relative container mx-auto px-6">
                     <h2 className="text-white text-4xl font-bold border-l-4 pl-4 border-blue-500">
-                        OUR EXPERTISE
+                        {expertise.main_title}
                     </h2>
                 </div>
             </section>
@@ -51,20 +68,19 @@ function Expertise() {
                 <div className="relative shadow-2xl shadow-indigo-600/40 rounded-2xl overflow-hidden shrink-0">
                     <img
                         className="max-w-md w-full object-cover rounded-2xl"
-                        src={images.EXPERTISE1}
+                        src={`${API}/${expertise.second_image}`}
                         alt=""
                     />
                 </div>
 
                 <div className="text-sm text-black max-w-lg">
                     <h1 className="text-xl uppercase font-bold ">
-                        Turnkey Construction Solutions
+                        {expertise.second_title}
                     </h1>
                     <ul className="mt-8 list-disc list-inside font-semibold space-y-4">
-                        <li>End-to-end project delivery – design to handover</li>
-                        <li>Single-point accountability</li>
-                        <li>Time & cost efficiency</li>
-                        <li>Coordination between all stakeholders</li>
+                        {expertise.second_points.map((point, idx) => (
+                            <li key={idx}>{point}</li>
+                        ))}
                     </ul>
                 </div>
             </section>
@@ -72,21 +88,19 @@ function Expertise() {
             <section className="flex my-16 flex-col md:flex-row items-center justify-center gap-10 max-md:px-4">
                 <div className="text-sm text-black max-w-lg">
                     <h1 className="text-xl uppercase font-bold ">
-                        Industrial Construction
+                        {expertise.third_title}
                     </h1>
                     <ul className="mt-8 list-disc list-inside font-semibold space-y-4">
-                        <li>Long-span structures up to 24m</li>
-                        <li>Pre-engineered buildings (PEBs)</li>
-                        <li>Heavy machine foundations</li>
-                        <li>Advanced slab technologies – PT, Void PT, Deck Slab</li>
-                        <li>Fibre-reinforced concrete, GGBS, strength monitoring</li>
+                        {expertise.third_points.map((point, idx) => (
+                            <li key={idx}>{point}</li>
+                        ))}
                     </ul>
                 </div>
 
                 <div className="relative shadow-2xl shadow-indigo-600/40 rounded-2xl overflow-hidden shrink-0">
                     <img
                         className="max-w-md w-full object-cover rounded-2xl"
-                        src={images.EXPERTISE2}
+                        src={`${API}/${expertise.third_image}`}
                         alt=""
                     />
                 </div>
