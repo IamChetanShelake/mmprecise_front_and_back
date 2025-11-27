@@ -3,8 +3,8 @@ import { CgArrowTopRight } from 'react-icons/cg';
 import { images } from '../assets';
 import TestimonialCard from '../components/TestimonialCard';
 import BackGround from '../assets/images/BackGround.png';
-import { API, getAchievements, getOurPartner, getTestimonials } from '../api';
-import {Achievements} from '../components';
+import { API, getAboutUs, getAchievements, getHeroSection, getOurPartner, getTestimonials } from '../api';
+import { Achievements } from '../components';
 
 const partners = [
   { img: "/images/logo1.png", name: "Logoipsum" },
@@ -19,12 +19,6 @@ const partners = [
   { img: "/images/logo2.png", name: "Logoipsum" },
 ];
 
-const stats = [
-  { value: "10", label: "PROJECTS" },
-  { value: "0", label: "YEARS" },
-  { value: "100", label: "WORKFORCE" },
-  { value: "5,000", label: "TONNES SAVED" },
-];
 
 const testimonials = [
   {
@@ -52,6 +46,8 @@ function Home() {
   const [achievements, setAchievements] = useState([]);
   const [partners, setPartners] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
+  const [herosection, setHerosection] = useState([]);
+  const [aboutus, setAboutUs] = useState([]);
 
   useEffect(() => {
     const fetchAchievements = async () => {
@@ -60,7 +56,7 @@ function Home() {
         setAchievements(data);
       } catch (error) {
         console.error('Error fetching achievements:', error);
-      } 
+      }
     };
 
     fetchAchievements();
@@ -68,8 +64,8 @@ function Home() {
 
   // top 3 Achievements
   const topThreeAchievements = achievements
-  ?.sort((a, b) => a.sort_order - b.sort_order)
-  ?.slice(0, 3);
+    ?.sort((a, b) => a.sort_order - b.sort_order)
+    ?.slice(0, 3);
 
   useEffect(() => {
     const fetchPartners = async () => {
@@ -78,7 +74,7 @@ function Home() {
         setPartners(data);
       } catch (error) {
         console.error('Error fetching Partners:', error);
-      } 
+      }
     };
 
     fetchPartners();
@@ -91,10 +87,38 @@ function Home() {
         setTestimonials(data);
       } catch (error) {
         console.error('Error fetching Testimonials:', error);
-      } 
+      }
     };
 
     fetchTestimonials();
+
+  }, []);
+
+  useEffect(() => {
+    const fetchHeroSection = async () => {
+      try {
+        const data = await getHeroSection();
+        setHerosection(data);
+      } catch (error) {
+        console.error('Error fetching Hero Section:', error);
+      }
+    };
+
+    fetchHeroSection();
+  }, []);
+
+  useEffect(() => {
+    const fetchAboutUs = async () => {
+      try {
+        const data = await getAboutUs();
+        setAboutUs(data);
+        console.log("getAboutUs", data)
+      } catch (error) {
+        console.error('Error fetching AboutUs:', error);
+      }
+    };
+
+    fetchAboutUs();
   }, []);
 
 
@@ -103,19 +127,19 @@ function Home() {
 
       <section
         className="relative w-full h-[90vh] flex items-center justify-center bg-cover bg-center"
-        style={{ backgroundImage: `url(${BackGround})` }}      >
+        style={{ backgroundImage: `url(${API}/${herosection.background_image})` }}      >
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/50"></div>
 
         {/* Content */}
         <div className="relative text-start px-6 md:px-10 max-w-5xl mx-auto">
           <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-            PRECISION IN EVERY SPAN.<br />
-            <span className="text-primary">EXCELLENCE IN EVERY STRUCTURE.</span>
+            {herosection.first_title}<br />
+            <span className="text-primary">{herosection.second_title}</span>
           </h1>
 
           <p className="text-gray-200 mt-4 text-sm md:text-base">
-            Delivering turnkey industrial projects with innovation & sustainability.
+            {herosection.description}
           </p>
 
           <button className="mt-6 px-6 py-3 bg-primary hover:bg-orange-600 text-white rounded-full flex gap-2 mx-auto active:scale-95 transition">
@@ -134,21 +158,16 @@ function Home() {
         <div className="md:w-1/2">
           {/* Label */}
           <p className="inline-block bg-orange-100 text-primary px-4 py-1 rounded-full text-sm font-medium mb-4">
-            ABOUT MM PRECISE
+            {aboutus.title}
           </p>
 
           {/* Description */}
           <p className="text-gray-700 leading-relaxed">
-            Founded in <span className="font-semibold text-primary">2010</span>, MM Precise began as a vision to deliver precision
-            engineering solutions that combine <span className="font-semibold text-primary">innovation, sustainability</span>, and
-            <span className="font-semibold text-primary"> excellence</span>. What started as a small team of passionate engineers has
-            evolved into a comprehensive structural engineering company.
+            {aboutus.first_description}
           </p>
 
           <p className="text-gray-700 leading-relaxed mt-4">
-            Today, we stand as a <span className="font-semibold text-primary">Pvt. Ltd. company</span> with a proven track record of
-            delivering complex structural projects across various industries. Our commitment to quality, safety, and sustainable practices
-            has made us a trusted partner for leading construction companies and developers.
+            {aboutus.second_description}
           </p>
 
           {/* Button */}
@@ -161,7 +180,7 @@ function Home() {
         {/* Right Image */}
         <div className="md:w-1/2">
           <img
-            src={images.BackGround}
+            src={`${API}/${aboutus.image}`}
             alt="MM Precise Overview"
             className="w-[500px] h-auto rounded-xl shadow-xl"
           />
@@ -170,30 +189,42 @@ function Home() {
 
       <section className="w-full py-8 flex justify-center">
         <div className="bg-orange-50 py-6 px-10 flex flex-wrap md:flex-nowrap gap-6 md:gap-12">
-          {stats.map((item, index) => (
-            <div
-              key={index}
-              className="text-center px-4 relative"
-            >
-              {/* Divider Line */}
-              {index !== stats.length - 1 && (
-                <span className="hidden md:block absolute right-0 top-1/2 transform -translate-y-1/2 w-px h-12 bg-orange-200"></span>
-              )}
 
-              <h3 className="text-primary text-2xl font-bold">{item.value}</h3>
-              <p className="text-xs text-gray-600 tracking-wide mt-1">{item.label}</p>
-            </div>
-          ))}
+          <div className="text-center px-4 relative">
+            <h3 className="text-primary text-2xl font-bold">{aboutus.projects_count}</h3>
+            <p className="text-xs text-gray-600 tracking-wide mt-1">PROJECTS</p>
+            <span className="hidden md:block absolute right-0 top-1/2 transform -translate-y-1/2 w-px h-12 bg-orange-200"></span>
+          </div>
+
+          <div className="text-center px-4 relative">
+            <h3 className="text-primary text-2xl font-bold">{aboutus.years_count}</h3>
+            <p className="text-xs text-gray-600 tracking-wide mt-1">YEARS</p>
+            <span className="hidden md:block absolute right-0 top-1/2 transform -translate-y-1/2 w-px h-12 bg-orange-200"></span>
+          </div>
+
+          <div className="text-center px-4 relative">
+            <h3 className="text-primary text-2xl font-bold">{aboutus.workforce_count}</h3>
+            <p className="text-xs text-gray-600 tracking-wide mt-1">WORKFORCE</p>
+            <span className="hidden md:block absolute right-0 top-1/2 transform -translate-y-1/2 w-px h-12 bg-orange-200"></span>
+          </div>
+
+          <div className="text-center px-4 relative">
+            <h3 className="text-primary text-2xl font-bold">{aboutus.tonnes_saved}</h3>
+            <p className="text-xs text-gray-600 tracking-wide mt-1">TONNES SAVED</p>
+            {/* No divider for the last item */}
+          </div>
+
         </div>
       </section>
 
+
       <div>
         <Achievements
-        heading={"ACHIEVEMENTS & AWARDS"}
-        subheading={"Recognized for excellence and innovation in structural engineering"}
-        achievements={topThreeAchievements}
-        showButton={true}
-         />
+          heading={"ACHIEVEMENTS & AWARDS"}
+          subheading={"Recognized for excellence and innovation in structural engineering"}
+          achievements={topThreeAchievements}
+          showButton={true}
+        />
       </div>
 
       {/* Testominical */}

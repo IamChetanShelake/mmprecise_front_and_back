@@ -68,12 +68,36 @@ export const getMentorship = async () => {
 // ================  TECHNICAL SPECIALIZATIONS ================
 export const getSpecializations = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/technical-specializations');
+    const res = await axios.get(`${API}/api/technical-specializations`);
     const json = res.data;
 
     return Array.isArray(json) ? json : json.data;
   } catch (error) {
-    console.error("Error fetching Mentorship:", error);
+    console.error("Error fetching TECHNICAL SPECIALIZATIONS:", error);
+    throw error;
+  }
+};
+
+// ================  Hero Section ================
+export const getHeroSection = async () => {
+  try {
+    const response = await axios.get(`${API}/api/hero`);
+    return response.data;
+
+  } catch (error) {
+    console.error("Error fetching Hero Section:", error);
+    throw error;
+  }
+};
+
+// ================  About Us ================
+export const getAboutUs = async () => {
+  try {
+    const response = await axios.get(`${API}/api/about`);
+    return response.data;
+
+  } catch (error) {
+    console.error("Error fetching About Us:", error);
     throw error;
   }
 };
