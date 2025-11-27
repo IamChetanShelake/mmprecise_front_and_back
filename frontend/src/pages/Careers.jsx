@@ -1,37 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { icons, images } from "../assets";
+import { getCareers } from "../api";
 
 const Careers = () => {
-    const jobs = [
-        {
-            title: "Site Engineer",
-            details1: "Site Execution, Vendor Coordination, Quality Control",
-            details2: "Oversee Daily Site Work, Ensure Safety & Quality, Assist Project Manager",
-            location: "On-Site",
-            experience: "1–3 Years",
-        },
-        {
-            title: "Project Manager",
-            details1: "Planning, Budgeting, Team Management",
-            details2: "Lead Construction Projects from Planning to Delivery with Tight Deadlines",
-            location: "Head Office / Site",
-            experience: "5+ Years",
-        },
-        {
-            title: "Civil Supervisor",
-            details1: "Team Supervision, Material Handling, Site Safety",
-            details2: "Manage Daily Site Workforce & Maintain Progress as per Plan",
-            location: "Multiple Sites",
-            experience: "2–5 Years",
-        },
-        {
-            title: "Safety Officer",
-            details1: "Safety Protocols, Site Inspections, Incident Reporting",
-            details2: "Ensure Site Safety Compliance and Employee Training",
-            location: "Site Based",
-            experience: "1–3 Years",
-        },
-    ];
+
+    const [careers, setCareers] = useState([]);
+
+    useEffect(() => {
+        const fetchCareers = async () => {
+            try {
+                const data = await getCareers();
+                console.log("Our Expertise DATA", data)
+                setCareers(data);
+            } catch (error) {
+                console.error('Error fetching Our Expertise:', error);
+            }
+        };
+
+        fetchCareers();
+    }, []);
+
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const filteredCareers = careers.filter((job) =>
+        job.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        job.responsibilities.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        job.location.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
 
     return (
         <div className="">
@@ -77,8 +73,11 @@ const Careers = () => {
                             <input
                                 type="text"
                                 placeholder="Search"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
                                 className="w-full h-full outline-none text-gray-500 bg-transparent placeholder-gray-500 text-sm"
                             />
+
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 30 30" fill="#6B7280">
                                 <path d="M13 3C7.489 3 3 7.489 3 13s4.489 10 10 10a9.95 9.95 0 0 0 6.322-2.264l5.971 5.971a1 1 0 1 0 1.414-1.414l-5.97-5.97A9.95 9.95 0 0 0 23 13c0-5.511-4.489-10-10-10m0 2c4.43 0 8 3.57 8 8s-3.57 8-8 8-8-3.57-8-8 3.57-8 8-8" />
                             </svg>
@@ -87,39 +86,37 @@ const Careers = () => {
 
 
                     <div className="mt-8 grid md:grid-cols-2 gap-10">
-                        {jobs.map((job, idx) => (
-                            <div
-                                key={idx}
-                                className="p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
-                            >
-                                <h3 className="text-xl font-semibold mb-4">{job.title}</h3>
+                        {filteredCareers.length > 0 ? (
+                            filteredCareers.map((job) => (
+                                <div key={job.id} className="p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                                    <h3 className="text-xl font-semibold mb-4">{job.role}</h3>
 
-                                {/* Detail 1 */}
-                                <div className="flex gap-2 items-center mb-2">
-                                    <img src={icons.idea} alt="idea" className="w-5 h-5" />
-                                    <p className="text-gray-600">{job.details1}</p>
-                                </div>
-
-                                {/* Detail 2 */}
-                                <div className="flex gap-2 items-center mb-4">
-                                    <img src={icons.work} alt="work" className="w-5 h-5" />
-                                    <p className="text-gray-600">{job.details2}</p>
-                                </div>
-
-                                {/* Footer (location & experience) */}
-                                <div className="flex gap-10 text-sm text-gray-500">
-                                    <div className="flex items-center gap-1">
-                                        <img src={icons.location} alt="location" className="w-4 h-4" />
-                                        <span>{job.location}</span>
+                                    <div className="flex gap-2 items-start mb-2">
+                                        <img src={icons.idea} alt="idea" className="w-5 h-5 mt-1" />
+                                        <p className="text-gray-600 text-sm">{job.skills.join(", ")}</p>
                                     </div>
 
-                                    <div className="flex items-center gap-1">
-                                        <img src={icons.workOutline} alt="experience" className="w-4 h-4" />
-                                        <span>{job.experience}</span>
+                                    <div className="flex gap-2 items-start mb-4">
+                                        <img src={icons.work} alt="work" className="w-5 h-5 mt-1" />
+                                        <p className="text-gray-600 text-sm whitespace-pre-line">{job.responsibilities}</p>
+                                    </div>
+
+                                    <div className="flex gap-10 text-sm text-gray-500">
+                                        <div className="flex items-center gap-1">
+                                            <img src={icons.location} alt="location" className="w-4 h-4" />
+                                            <span>{job.location}</span>
+                                        </div>
+
+                                        <div className="flex items-center gap-1">
+                                            <img src={icons.workOutline} alt="experience" className="w-4 h-4" />
+                                            <span>{job.years_experience}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            <p className="text-gray-500 col-span-2">No jobs found for your search.</p>
+                        )}
                     </div>
 
                 </div>

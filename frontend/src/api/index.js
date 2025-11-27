@@ -150,3 +150,17 @@ export const getOfficeTime = async () => {
   }
 };
 
+// ================  business-hours ================
+export const getCareers = async () => {
+  try {
+    const response = await axios.get(`${API}/api/careers`);
+    return response.data;
+
+  } catch (error) {
+    console.error("Error fetching Careers:", error);
+    throw error;
+  }
+};
+
+
+
