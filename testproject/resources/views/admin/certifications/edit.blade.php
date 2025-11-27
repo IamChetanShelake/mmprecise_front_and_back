@@ -89,8 +89,11 @@
                             <p>Click to upload certificate image</p>
                             <small>JPG, PNG, GIF, WebP up to 5MB</small>
                         </div>
-                        <div class="file-preview" id="imagePreview" @if(!$certification->certificate_image) style="display: none;" @endif>
-                            <img id="previewImg" src="{{ $certification->certificate_image ? asset($certification->certificate_image) : '' }}" alt="Current Certificate" class="preview-image">
+                        <div class="file-preview" id="imagePreview" @if(!$certification->certificate_image || !file_exists(base_path($certification->certificate_image))) style="display: none;" @endif>
+                            @if($certification->certificate_image && file_exists(base_path($certification->certificate_image)))
+                                @php $mime = pathinfo($certification->certificate_image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($certification->certificate_image, PATHINFO_EXTENSION); @endphp
+                                <img id="previewImg" src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($certification->certificate_image))) }}" alt="Current Certificate" class="preview-image">
+                            @endif
                             <button type="button" class="btn-remove-file" onclick="removeImage()">
                                 <i class="bi bi-x"></i>
                             </button>

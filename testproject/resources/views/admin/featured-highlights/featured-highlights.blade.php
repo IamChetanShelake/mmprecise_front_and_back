@@ -116,9 +116,13 @@
                                 <td>
                                     <div class="content-cell">
                                         @if($highlight->type === 'image')
-                                            @if($highlight->image)
+                                            @if($highlight->image && file_exists(base_path($highlight->image)))
                                                 <div class="image-preview">
-                                                    <img src="{{ asset($highlight->image) }}" alt="{{ $highlight->title }}" class="thumbnail">
+                                                    @php
+                                                        $imageData = base64_encode(file_get_contents(base_path($highlight->image)));
+                                                        $mimeType = 'image/' . pathinfo($highlight->image, PATHINFO_EXTENSION);
+                                                    @endphp
+                                                    <img src="data:{{ $mimeType }};base64,{{ $imageData }}" alt="{{ $highlight->title }}" class="thumbnail">
                                                 </div>
                                             @else
                                                 <span class="text-muted">No image</span>
@@ -205,17 +209,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete <strong id="deleteSectionName"></strong>? This action cannot be undone.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <form id="deleteForm" method="POST" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete Highlight</button>
-                </form>
-            </div>
-        </div>
+        <p>Are you sure you want to delete <strong id="deleteSectionName"></strong>? This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <form id="deleteForm" method="POST" style="display: inline;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Delete Highlight</button>
+        </form>
+    </div>
     </div>
 </div>
 

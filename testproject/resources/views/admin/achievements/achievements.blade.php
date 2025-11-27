@@ -90,8 +90,9 @@
 
                         <!-- Achievement Image -->
                         <div class="achievement-image-section">
-                            @if($achievement->image)
-                                <img src="{{ asset($achievement->image) }}" alt="{{ $achievement->title }}" class="achievement-image">
+                            @if($achievement->image && file_exists(base_path($achievement->image)))
+                                @php $mime = pathinfo($achievement->image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($achievement->image, PATHINFO_EXTENSION); @endphp
+                                <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($achievement->image))) }}" alt="{{ $achievement->title }}" class="achievement-image">
                             @else
                                 <div class="achievement-image-placeholder">
                                     <i class="bi bi-trophy"></i>

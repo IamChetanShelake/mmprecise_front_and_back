@@ -69,10 +69,7 @@
                         <label for="description" class="form-label">
                             Description <span class="required">*</span>
                         </label>
-                        <div class="input-wrapper">
-                            <i class="bi bi-textarea-resize input-icon"></i>
-                            <textarea class="form-textarea" id="description" name="description" rows="4" placeholder="Describe your hero section content" required>{{ old('description') }}</textarea>
-                        </div>
+                        <textarea class="form-control summernote" id="description" name="description" rows="6" placeholder="Describe your hero section content" required>{{ old('description') }}</textarea>
                         @error('description')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
@@ -706,18 +703,51 @@ function removeImage() {
     document.getElementById('imagePreview').style.display = 'none';
     document.querySelector('.file-upload-content').style.display = 'flex';
 }
+</script>
 
-// Auto-hide notifications after 2 seconds
-document.addEventListener('DOMContentLoaded', function() {
-    const notifications = document.querySelectorAll('.notification');
-    notifications.forEach(function(notification) {
-        setTimeout(function() {
-            notification.style.opacity = '0';
-            notification.style.transform = 'translateY(-10px)';
-            setTimeout(function() {
-                notification.style.display = 'none';
-            }, 300);
-        }, 2000);
+<!-- Summernote CSS and JS -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Initialize Summernote for description
+    $('.summernote').summernote({
+        height: 300,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['fontname', ['fontname']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        placeholder: 'Describe your hero section content...',
+        callbacks: {
+            onInit: function() {
+                // Custom styling for Summernote
+                $('.note-editor').css({
+                    'border-radius': '12px',
+                    'border': '2px solid #e5e7eb',
+                    'overflow': 'hidden'
+                });
+
+                $('.note-toolbar').css({
+                    'background': '#f8fafc',
+                    'border-bottom': '1px solid #e5e7eb',
+                    'padding': '0.5rem'
+                });
+
+                $('.note-editing-area .note-editable').css({
+                    'padding': '1rem',
+                    'min-height': '200px',
+                    'background': 'white'
+                });
+            }
+        }
     });
 });
 </script>

@@ -97,8 +97,9 @@
                                 </td>
                                 <td>
                                     <div class="image-cell">
-                                        @if($news->main_image)
-                                            <img src="{{ asset($news->main_image) }}" alt="{{ $news->main_title }}" class="table-thumbnail">
+                                        @if($news->main_image && file_exists(base_path($news->main_image)))
+                                            @php $mime = pathinfo($news->main_image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($news->main_image, PATHINFO_EXTENSION); @endphp
+                                            <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($news->main_image))) }}" alt="{{ $news->main_title }}" class="table-thumbnail">
                                         @else
                                             <div class="no-image">
                                                 <i class="bi bi-image"></i>

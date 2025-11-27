@@ -103,11 +103,12 @@
                                 </button>
                             </div>
                         </div>
-                        @if($achievement->image)
+                        @if($achievement->image && file_exists(base_path($achievement->image)))
+                            @php $mime = pathinfo($achievement->image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($achievement->image, PATHINFO_EXTENSION); @endphp
                             <div class="current-image-display">
                                 <small class="text-muted">Current image:</small>
                                 <div class="current-image-wrapper">
-                                    <img src="{{ asset($achievement->image) }}" alt="Current Achievement Image" class="current-image">
+                                    <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($achievement->image))) }}" alt="Current Achievement Image" class="current-image">
                                     <div class="current-image-overlay">
                                         <i class="bi bi-trophy"></i>
                                     </div>

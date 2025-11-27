@@ -1,11 +1,80 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Website\WebsiteController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [WebsiteController::class, 'index']);
+
+// File serving route for assets outside public folder
+Route::get('/file/{path}', function ($path) {
+    $decodedPath = urldecode($path);
+
+    // Whitelist allowed prefixes for security
+    $allowedPrefixes = [
+        'images/projects/',
+        'images/abouts/',
+        'images/heroes/',
+        'images/company-overviews/',
+        'images/leadership/',
+        'images/teams/',
+        'images/achievements/',
+        'images/partners/',
+        'images/expertises/',
+        'images/certifications/',
+        'images/memberships/',
+        'images/latest-news/',
+        'images/careers/',
+        'images/mentorship/',
+        'images/csrs/',
+        'documents/',
+    ];
+
+    $allowed = false;
+    foreach ($allowedPrefixes as $prefix) {
+        if (str_starts_with($decodedPath, $prefix)) {
+            $allowed = true;
+            break;
+        }
+    }
+
+    if (!$allowed) {
+        abort(403, 'Access denied');
+    }
+
+    $fullPath = base_path($decodedPath);
+
+    if (!file_exists($fullPath) || is_dir($fullPath)) {
+        abort(404, 'File not found');
+    }
+
+    // Determine MIME type
+    $mimeType = mime_content_type($fullPath);
+
+    return response()->file($fullPath, [
+        'Content-Type' => $mimeType,
+        'Cache-Control' => 'public, max-age=31536000'
+    ]);
+})->where('path', '.*')->name('file');
+
+// Specific route for the sidebar logo
+Route::get('/images/MM Precise.png', function () {
+    $fullPath = base_path('images/MM Precise.png');
+
+    if (!file_exists($fullPath)) {
+        abort(404, 'Logo file not found');
+    }
+
+    $mimeType = mime_content_type($fullPath);
+
+    return response()->file($fullPath, [
+        'Content-Type' => $mimeType,
+        'Cache-Control' => 'public, max-age=31536000'
+    ]);
+})->name('logo');
 
 // Contractor Login Route
 Route::get('/contractor/login', function () {
@@ -164,7 +233,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/get-in-touch/{id}', [AdminController::class, 'updateGetInTouch'])->name('admin.get-in-touch.update');
     Route::delete('/get-in-touch/{id}', [AdminController::class, 'destroyGetInTouch'])->name('admin.get-in-touch.destroy');
     Route::get('/get-in-touch/{id}/toggle', [AdminController::class, 'toggleGetInTouchStatus'])->name('admin.get-in-touch.toggle');
-    
+
     // Projects Routes
     Route::get('/projects', [AdminController::class, 'projects'])->name('admin.projects');
     Route::get('/projects/create', [AdminController::class, 'createProject'])->name('admin.projects.create');
@@ -173,8 +242,14 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/projects/{id}', [AdminController::class, 'updateProject'])->name('admin.projects.update');
     Route::delete('/projects/{id}', [AdminController::class, 'destroyProject'])->name('admin.projects.destroy');
     Route::patch('/projects/{id}/toggle', [AdminController::class, 'toggleProjectStatus'])->name('admin.projects.toggle');
-    
+
     Route::get('/csr', [AdminController::class, 'csr'])->name('admin.csr');
+    Route::get('/csr/create', [AdminController::class, 'createCsr'])->name('admin.csr.create');
+    Route::post('/csr', [AdminController::class, 'storeCsr'])->name('admin.csr.store');
+    Route::get('/csr/{id}/edit', [AdminController::class, 'editCsr'])->name('admin.csr.edit');
+    Route::put('/csr/{id}', [AdminController::class, 'updateCsr'])->name('admin.csr.update');
+    Route::delete('/csr/{id}', [AdminController::class, 'destroyCsr'])->name('admin.csr.destroy');
+    Route::patch('/csr/{id}/toggle', [AdminController::class, 'toggleCsrStatus'])->name('admin.csr.toggle');
     Route::get('/contact', [AdminController::class, 'contact'])->name('admin.contact');
 });
 

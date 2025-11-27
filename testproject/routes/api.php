@@ -88,6 +88,15 @@ Route::get('/featured-highlights', function () {
     return response()->json(\App\Models\FeaturedHighlight::where('is_active', true)->orderBy('sort_order')->get());
 });
 
+Route::get('/projects', function () {
+    return response()->json(\App\Models\Project::with(['features', 'galleries', 'achievements', 'strengthResults'])->where('status', true)->orderBy('created_at', 'desc')->get());
+});
+
+
 Route::get('/team', function () {
     return response()->json(\App\Models\Team::where('is_active', true)->orderBy('sort_order')->get());
+});
+
+Route::get('/csrs', function () {
+    return response()->json(\App\Models\Csr::where('status', true)->orderBy('created_at', 'desc')->get());
 });

@@ -201,11 +201,12 @@
                                 </button>
                             </div>
                         </div>
-                        @if($companyOverview->image)
+                        @if($companyOverview->image && file_exists(base_path($companyOverview->image)))
+                            @php $mime = pathinfo($companyOverview->image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($companyOverview->image, PATHINFO_EXTENSION); @endphp
                             <div class="current-image-display">
                                 <small class="text-muted">Current image:</small>
                                 <div class="current-image-wrapper">
-                                    <img src="{{ asset($companyOverview->image) }}" alt="Current Company Overview Image" class="current-image">
+                                    <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($companyOverview->image))) }}" alt="Current Company Overview Image" class="current-image">
                                     <div class="current-image-overlay">
                                         <i class="bi bi-image"></i>
                                     </div>

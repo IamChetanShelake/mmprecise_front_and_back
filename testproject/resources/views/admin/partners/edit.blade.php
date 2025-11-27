@@ -126,12 +126,12 @@
                     </div>
 
                     <!-- Current Image Display -->
-                    @if($partner->image)
+                    @if($partner->image && file_exists(base_path($partner->image)))
                         <div class="form-group">
                             <label class="form-label">Current Image</label>
                             <div class="file-upload-area">
                                 <div class="file-upload-content">
-                                    <img src="{{ asset($partner->image) }}" alt="Current Partner Image" style="max-height: 80px; max-width: 100%;">
+                                    <img src="data:image/{{ pathinfo($partner->image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($partner->image, PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(base_path($partner->image))) }}" alt="Current Partner Image" style="max-height: 80px; max-width: 100%;">
                                     <div class="upload-text">
                                         <strong>Current Image</strong>
                                         <span>Upload new image to replace</span>
@@ -151,7 +151,7 @@
                                     <div class="upload-text">
                                         <strong id="previewText">{{ $partner->icon }}</strong>
                                     </div>
-                                @elseif($partner->image)
+                                @elseif($partner->image && file_exists(base_path($partner->image)))
                                     <img src="{{ asset($partner->image) }}" alt="Current Partner Image" id="previewImage" style="max-height: 80px; max-width: 100%;">
                                     <div class="upload-text">
                                         <strong id="previewText">Current Custom Image</strong>

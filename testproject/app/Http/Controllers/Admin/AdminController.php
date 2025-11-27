@@ -29,6 +29,7 @@ use App\Models\ProjectFeature;
 use App\Models\ProjectGallery;
 use App\Models\ProjectAchievement;
 use App\Models\ProjectStrengthResult;
+use App\Models\Csr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
@@ -74,8 +75,8 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/abouts'), $imageName);
-            $data['image'] = 'images/abouts/' . $imageName;
+            $request->image->move(base_path('images/teams'), $imageName);
+            $data['image'] = 'images/teams/' . $imageName;
         }
 
         About::create($data);
@@ -109,12 +110,12 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($about->image && file_exists(public_path($about->image))) {
-                unlink(public_path($about->image));
+            if ($about->image && file_exists(base_path($about->image))) {
+                unlink(base_path($about->image));
             }
 
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/abouts'), $imageName);
+            $request->image->move(base_path('images/abouts'), $imageName);
             $data['image'] = 'images/abouts/' . $imageName;
         }
 
@@ -128,8 +129,8 @@ class AdminController extends Controller
         $about = About::findOrFail($id);
 
         // Delete image file
-        if ($about->image && file_exists(public_path($about->image))) {
-            unlink(public_path($about->image));
+        if ($about->image && file_exists(base_path($about->image))) {
+            unlink(base_path($about->image));
         }
 
         $about->delete();
@@ -193,7 +194,7 @@ class AdminController extends Controller
         foreach ($imageFields as $field) {
             if ($request->hasFile($field)) {
                 $imageName = time() . '_' . $field . '.' . $request->file($field)->extension();
-                $request->file($field)->move(public_path('images/expertises'), $imageName);
+                $request->file($field)->move(base_path('images/expertises'), $imageName);
                 $data[$field] = 'images/expertises/' . $imageName;
             }
         }
@@ -248,12 +249,12 @@ class AdminController extends Controller
         foreach ($imageFields as $field) {
             if ($request->hasFile($field)) {
                 // Delete old image
-                if ($expertise->$field && file_exists(public_path($expertise->$field))) {
-                    unlink(public_path($expertise->$field));
+                if ($expertise->$field && file_exists(base_path($expertise->$field))) {
+                    unlink(base_path($expertise->$field));
                 }
 
                 $imageName = time() . '_' . $field . '.' . $request->file($field)->extension();
-                $request->file($field)->move(public_path('images/expertises'), $imageName);
+                $request->file($field)->move(base_path('images/expertises'), $imageName);
                 $data[$field] = 'images/expertises/' . $imageName;
             }
         }
@@ -270,8 +271,8 @@ class AdminController extends Controller
         // Delete images
         $imageFields = ['main_image', 'second_image', 'third_image'];
         foreach ($imageFields as $field) {
-            if ($expertise->$field && file_exists(public_path($expertise->$field))) {
-                unlink(public_path($expertise->$field));
+            if ($expertise->$field && file_exists(base_path($expertise->$field))) {
+                unlink(base_path($expertise->$field));
             }
         }
 
@@ -333,7 +334,7 @@ class AdminController extends Controller
         $mainImagePath = null;
         if ($request->hasFile('main_image')) {
             $imageName = time() . '_main.' . $request->main_image->extension();
-            $request->main_image->move(public_path('images/projects'), $imageName);
+            $request->main_image->move(base_path('images/projects'), $imageName);
             $mainImagePath = 'images/projects/' . $imageName;
         }
 
@@ -366,7 +367,7 @@ class AdminController extends Controller
         if ($request->hasFile('gallery_images')) {
             foreach ($request->file('gallery_images') as $index => $image) {
                 $imageName = time() . '_gallery_' . $index . '.' . $image->extension();
-                $image->move(public_path('images/projects/gallery'), $imageName);
+                $image->move(base_path('images/projects/gallery'), $imageName);
                 
                 ProjectGallery::create([
                     'project_id' => $project->id,
@@ -383,7 +384,7 @@ class AdminController extends Controller
                     $photoPath = null;
                     if ($request->hasFile("achievement_photos.$index")) {
                         $imageName = time() . '_achievement_' . $index . '.' . $request->file("achievement_photos.$index")->extension();
-                        $request->file("achievement_photos.$index")->move(public_path('images/projects/achievements'), $imageName);
+                        $request->file("achievement_photos.$index")->move(base_path('images/projects/achievements'), $imageName);
                         $photoPath = 'images/projects/achievements/' . $imageName;
                     }
 
@@ -453,12 +454,12 @@ class AdminController extends Controller
         // Handle main image upload
         if ($request->hasFile('main_image')) {
             // Delete old image
-            if ($project->main_image && file_exists(public_path($project->main_image))) {
-                unlink(public_path($project->main_image));
+            if ($project->main_image && file_exists(base_path($project->main_image))) {
+                unlink(base_path($project->main_image));
             }
 
             $imageName = time() . '_main.' . $request->main_image->extension();
-            $request->main_image->move(public_path('images/projects'), $imageName);
+            $request->main_image->move(base_path('images/projects'), $imageName);
             $project->main_image = 'images/projects/' . $imageName;
         }
 
@@ -492,7 +493,7 @@ class AdminController extends Controller
         if ($request->hasFile('gallery_images')) {
             foreach ($request->file('gallery_images') as $index => $image) {
                 $imageName = time() . '_gallery_' . $index . '.' . $image->extension();
-                $image->move(public_path('images/projects/gallery'), $imageName);
+                $image->move(base_path('images/projects/gallery'), $imageName);
                 
                 ProjectGallery::create([
                     'project_id' => $project->id,
@@ -504,8 +505,8 @@ class AdminController extends Controller
 
         // Update achievements - delete old and create new
         foreach ($project->achievements as $achievement) {
-            if ($achievement->photo && file_exists(public_path($achievement->photo))) {
-                unlink(public_path($achievement->photo));
+            if ($achievement->photo && file_exists(base_path($achievement->photo))) {
+                unlink(base_path($achievement->photo));
             }
         }
         $project->achievements()->delete();
@@ -516,7 +517,7 @@ class AdminController extends Controller
                     $photoPath = null;
                     if ($request->hasFile("achievement_photos.$index")) {
                         $imageName = time() . '_achievement_' . $index . '.' . $request->file("achievement_photos.$index")->extension();
-                        $request->file("achievement_photos.$index")->move(public_path('images/projects/achievements'), $imageName);
+                        $request->file("achievement_photos.$index")->move(base_path('images/projects/achievements'), $imageName);
                         $photoPath = 'images/projects/achievements/' . $imageName;
                     }
 
@@ -554,21 +555,21 @@ class AdminController extends Controller
         $project = Project::findOrFail($id);
 
         // Delete main image
-        if ($project->main_image && file_exists(public_path($project->main_image))) {
-            unlink(public_path($project->main_image));
+        if ($project->main_image && file_exists(base_path($project->main_image))) {
+            unlink(base_path($project->main_image));
         }
 
         // Delete gallery images
         foreach ($project->galleries as $gallery) {
-            if ($gallery->image && file_exists(public_path($gallery->image))) {
-                unlink(public_path($gallery->image));
+            if ($gallery->image && file_exists(base_path($gallery->image))) {
+                unlink(base_path($gallery->image));
             }
         }
 
         // Delete achievement photos
         foreach ($project->achievements as $achievement) {
-            if ($achievement->photo && file_exists(public_path($achievement->photo))) {
-                unlink(public_path($achievement->photo));
+            if ($achievement->photo && file_exists(base_path($achievement->photo))) {
+                unlink(base_path($achievement->photo));
             }
         }
 
@@ -588,7 +589,277 @@ class AdminController extends Controller
 
     public function csr()
     {
-        return view('admin.csr.csr', ['activeSection' => 'csr']);
+        $csrs = Csr::active()->orderBy('created_at', 'desc')->get();
+        return view('admin.csr.csr', compact('csrs'), ['activeSection' => 'csr']);
+    }
+
+    public function createCsr()
+    {
+        return view('admin.csr.create', ['activeSection' => 'csr']);
+    }
+
+    public function storeCsr(Request $request)
+    {
+        $request->validate([
+            'main_title' => 'required|string|max:255',
+            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'main_description' => 'nullable|string',
+            'short_description' => 'nullable|string|max:1000',
+            'positive_changes.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'positive_changes.*.title' => 'nullable|string|max:255',
+            'positive_changes.*.description' => 'nullable|string',
+            'measurable_results.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'measurable_results.*.number' => 'nullable|string|max:100',
+            'measurable_results.*.title' => 'nullable|string|max:255',
+            'measurable_results.*.description' => 'nullable|string',
+            'green_construction.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'green_construction.*.title' => 'nullable|string|max:255',
+            'green_construction.*.description' => 'nullable|string'
+        ]);
+
+        $data = $request->only(['main_title', 'main_description', 'short_description']);
+        $data['status'] = $request->has('status') ? true : false;
+
+        // Handle main image upload
+        if ($request->hasFile('main_image')) {
+            $imageName = time() . '_csr_main.' . $request->main_image->extension();
+            $request->main_image->move(base_path('images/csrs'), $imageName);
+            $data['main_image'] = 'images/csrs/' . $imageName;
+        }
+
+        // Process positive changes
+        $positiveChanges = [];
+        if ($request->has('positive_changes')) {
+            foreach ($request->positive_changes as $index => $change) {
+                $changeData = [
+                    'title' => $change['title'] ?? '',
+                    'description' => $change['description'] ?? '',
+                    'image' => null
+                ];
+
+                if ($request->hasFile("positive_changes.{$index}.image")) {
+                    $imageName = time() . "_csr_positive_{$index}." . $request->file("positive_changes.{$index}.image")->extension();
+                    $request->file("positive_changes.{$index}.image")->move(base_path('images/csrs'), $imageName);
+                    $changeData['image'] = 'images/csrs/' . $imageName;
+                }
+
+                if (!empty($changeData['title'])) {
+                    $positiveChanges[] = $changeData;
+                }
+            }
+        }
+        $data['positive_changes'] = $positiveChanges;
+
+        // Process measurable results
+        $measurableResults = [];
+        if ($request->has('measurable_results')) {
+            foreach ($request->measurable_results as $index => $result) {
+                $resultData = [
+                    'number' => $result['number'] ?? '',
+                    'title' => $result['title'] ?? '',
+                    'description' => $result['description'] ?? '',
+                    'image' => null
+                ];
+
+                if ($request->hasFile("measurable_results.{$index}.image")) {
+                    $imageName = time() . "_csr_result_{$index}." . $request->file("measurable_results.{$index}.image")->extension();
+                    $request->file("measurable_results.{$index}.image")->move(base_path('images/csrs'), $imageName);
+                    $resultData['image'] = 'images/csrs/' . $imageName;
+                }
+
+                if (!empty($resultData['title'])) {
+                    $measurableResults[] = $resultData;
+                }
+            }
+        }
+        $data['measurable_results'] = $measurableResults;
+
+        // Process green construction
+        $greenConstruction = [];
+        if ($request->has('green_construction')) {
+            foreach ($request->green_construction as $index => $construction) {
+                $constructionData = [
+                    'title' => $construction['title'] ?? '',
+                    'description' => $construction['description'] ?? '',
+                    'image' => null
+                ];
+
+                if ($request->hasFile("green_construction.{$index}.image")) {
+                    $imageName = time() . "_csr_green_{$index}." . $request->file("green_construction.{$index}.image")->extension();
+                    $request->file("green_construction.{$index}.image")->move(base_path('images/csrs'), $imageName);
+                    $constructionData['image'] = 'images/csrs/' . $imageName;
+                }
+
+                if (!empty($constructionData['title'])) {
+                    $greenConstruction[] = $constructionData;
+                }
+            }
+        }
+        $data['green_construction'] = $greenConstruction;
+
+        Csr::create($data);
+
+        return redirect()->route('admin.csr')->with('success', 'CSR Initiative created successfully.');
+    }
+
+    public function editCsr($id)
+    {
+        $csr = Csr::findOrFail($id);
+        return view('admin.csr.edit', compact('csr'), ['activeSection' => 'csr']);
+    }
+
+    public function updateCsr(Request $request, $id)
+    {
+        $csr = Csr::findOrFail($id);
+
+        $request->validate([
+            'main_title' => 'required|string|max:255',
+            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'main_description' => 'nullable|string',
+            'short_description' => 'nullable|string|max:1000',
+            'positive_changes.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'positive_changes.*.title' => 'nullable|string|max:255',
+            'positive_changes.*.description' => 'nullable|string',
+            'measurable_results.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'measurable_results.*.number' => 'nullable|string|max:100',
+            'measurable_results.*.title' => 'nullable|string|max:255',
+            'measurable_results.*.description' => 'nullable|string',
+            'green_construction.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'green_construction.*.title' => 'nullable|string|max:255',
+            'green_construction.*.description' => 'nullable|string'
+        ]);
+
+        $data = $request->only(['main_title', 'main_description', 'short_description']);
+        $data['status'] = $request->has('status') ? true : false;
+
+        // Handle main image upload
+        if ($request->hasFile('main_image')) {
+            // Delete old image
+            if ($csr->main_image && file_exists(base_path($csr->main_image))) {
+                unlink(base_path($csr->main_image));
+            }
+
+            $imageName = time() . '_csr_main.' . $request->main_image->extension();
+            $request->main_image->move(base_path('images/csrs'), $imageName);
+            $data['main_image'] = 'images/csrs/' . $imageName;
+        }
+
+        // Process positive changes - get existing first to clean up images
+        $positiveChanges = $csr->positive_changes ?? [];
+        if ($request->has('positive_changes')) {
+            $newPositiveChanges = [];
+            foreach ($request->positive_changes as $index => $change) {
+                $changeData = [
+                    'title' => $change['title'] ?? '',
+                    'description' => $change['description'] ?? '',
+                    'image' => isset($positiveChanges[$index]['image']) ? $positiveChanges[$index]['image'] : null
+                ];
+
+                if ($request->hasFile("positive_changes.{$index}.image")) {
+                    // Delete old image if it exists
+                    if ($changeData['image'] && file_exists(base_path($changeData['image']))) {
+                        unlink(base_path($changeData['image']));
+                    }
+
+                    $imageName = time() . "_csr_positive_{$index}." . $request->file("positive_changes.{$index}.image")->extension();
+                    $request->file("positive_changes.{$index}.image")->move(base_path('images/csrs'), $imageName);
+                    $changeData['image'] = 'images/csrs/' . $imageName;
+                }
+
+                if (!empty($changeData['title'])) {
+                    $newPositiveChanges[] = $changeData;
+                }
+            }
+            $positiveChanges = $newPositiveChanges;
+        }
+        $data['positive_changes'] = $positiveChanges;
+
+        // Process measurable results - get existing first to clean up images
+        $measurableResults = $csr->measurable_results ?? [];
+        if ($request->has('measurable_results')) {
+            $newMeasurableResults = [];
+            foreach ($request->measurable_results as $index => $result) {
+                $resultData = [
+                    'number' => $result['number'] ?? '',
+                    'title' => $result['title'] ?? '',
+                    'description' => $result['description'] ?? '',
+                    'image' => isset($measurableResults[$index]['image']) ? $measurableResults[$index]['image'] : null
+                ];
+
+                if ($request->hasFile("measurable_results.{$index}.image")) {
+                    // Delete old image if it exists
+                    if ($resultData['image'] && file_exists(base_path($resultData['image']))) {
+                        unlink(base_path($resultData['image']));
+                    }
+
+                    $imageName = time() . "_csr_result_{$index}." . $request->file("measurable_results.{$index}.image")->extension();
+                    $request->file("measurable_results.{$index}.image")->move(base_path('images/csrs'), $imageName);
+                    $resultData['image'] = 'images/csrs/' . $imageName;
+                }
+
+                if (!empty($resultData['title'])) {
+                    $newMeasurableResults[] = $resultData;
+                }
+            }
+            $measurableResults = $newMeasurableResults;
+        }
+        $data['measurable_results'] = $measurableResults;
+
+        // Process green construction - get existing first to clean up images
+        $greenConstruction = $csr->green_construction ?? [];
+        if ($request->has('green_construction')) {
+            $newGreenConstruction = [];
+            foreach ($request->green_construction as $index => $construction) {
+                $constructionData = [
+                    'title' => $construction['title'] ?? '',
+                    'description' => $construction['description'] ?? '',
+                    'image' => isset($greenConstruction[$index]['image']) ? $greenConstruction[$index]['image'] : null
+                ];
+
+                if ($request->hasFile("green_construction.{$index}.image")) {
+                    // Delete old image if it exists
+                    if ($constructionData['image'] && file_exists(base_path($constructionData['image']))) {
+                        unlink(base_path($constructionData['image']));
+                    }
+
+                    $imageName = time() . "_csr_green_{$index}." . $request->file("green_construction.{$index}.image")->extension();
+                    $request->file("green_construction.{$index}.image")->move(base_path('images/csrs'), $imageName);
+                    $constructionData['image'] = 'images/csrs/' . $imageName;
+                }
+
+                if (!empty($constructionData['title'])) {
+                    $newGreenConstruction[] = $constructionData;
+                }
+            }
+            $greenConstruction = $newGreenConstruction;
+        }
+        $data['green_construction'] = $greenConstruction;
+
+        $csr->update($data);
+
+        return redirect()->route('admin.csr')->with('success', 'CSR Initiative updated successfully.');
+    }
+
+    public function destroyCsr($id)
+    {
+        $csr = Csr::findOrFail($id);
+
+        // Delete image file
+        if ($csr->main_image && file_exists(base_path($csr->main_image))) {
+            unlink(base_path($csr->main_image));
+        }
+
+        $csr->delete();
+
+        return redirect()->route('admin.csr')->with('success', 'CSR Initiative deleted successfully.');
+    }
+
+    public function toggleCsrStatus($id)
+    {
+        $csr = Csr::findOrFail($id);
+        $csr->update(['status' => !$csr->status]);
+
+        return redirect()->route('admin.csr')->with('success', 'CSR Initiative status updated successfully.');
     }
 
     public function careers()
@@ -701,7 +972,6 @@ class AdminController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120', // 5MB limit
             'sort_order' => 'integer',
             'is_active' => 'boolean'
         ]);
@@ -710,7 +980,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/achievements'), $imageName);
+            $request->image->move(base_path('images/achievements'), $imageName);
             $data['image'] = 'images/achievements/' . $imageName;
         }
 
@@ -741,12 +1011,12 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($achievement->image && file_exists(public_path($achievement->image))) {
-                unlink(public_path($achievement->image));
+            if ($achievement->image && file_exists(base_path($achievement->image))) {
+                unlink(base_path($achievement->image));
             }
 
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/achievements'), $imageName);
+            $request->image->move(base_path('images/achievements'), $imageName);
             $data['image'] = 'images/achievements/' . $imageName;
         }
 
@@ -760,8 +1030,8 @@ class AdminController extends Controller
         $achievement = Achievement::findOrFail($id);
 
         // Delete image file
-        if ($achievement->image && file_exists(public_path($achievement->image))) {
-            unlink(public_path($achievement->image));
+        if ($achievement->image && file_exists(base_path($achievement->image))) {
+            unlink(base_path($achievement->image));
         }
 
         $achievement->delete();
@@ -802,7 +1072,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('background_image')) {
             $imageName = time() . '.' . $request->background_image->extension();
-            $request->background_image->move(public_path('images/heroes'), $imageName);
+            $request->background_image->move(base_path('images/heroes'), $imageName);
             $data['background_image'] = 'images/heroes/' . $imageName;
         }
 
@@ -833,12 +1103,12 @@ class AdminController extends Controller
 
         if ($request->hasFile('background_image')) {
             // Delete old image
-            if ($hero->background_image && file_exists(public_path($hero->background_image))) {
-                unlink(public_path($hero->background_image));
+            if ($hero->background_image && file_exists(base_path($hero->background_image))) {
+                unlink(base_path($hero->background_image));
             }
 
             $imageName = time() . '.' . $request->background_image->extension();
-            $request->background_image->move(public_path('images/heroes'), $imageName);
+            $request->background_image->move(base_path('images/heroes'), $imageName);
             $data['background_image'] = 'images/heroes/' . $imageName;
         }
 
@@ -852,8 +1122,8 @@ class AdminController extends Controller
         $hero = Hero::findOrFail($id);
 
         // Delete image file
-        if ($hero->background_image && file_exists(public_path($hero->background_image))) {
-            unlink(public_path($hero->background_image));
+        if ($hero->background_image && file_exists(base_path($hero->background_image))) {
+            unlink(base_path($hero->background_image));
         }
 
         $hero->delete();
@@ -907,7 +1177,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/company-overviews'), $imageName);
+            $request->image->move(base_path('images/company-overviews'), $imageName);
             $data['image'] = 'images/company-overviews/' . $imageName;
         }
 
@@ -951,12 +1221,12 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($companyOverview->image && file_exists(public_path($companyOverview->image))) {
-                unlink(public_path($companyOverview->image));
+            if ($companyOverview->image && file_exists(base_path($companyOverview->image))) {
+                unlink(base_path($companyOverview->image));
             }
 
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/company-overviews'), $imageName);
+            $request->image->move(base_path('images/company-overviews'), $imageName);
             $data['image'] = 'images/company-overviews/' . $imageName;
         }
 
@@ -970,8 +1240,8 @@ class AdminController extends Controller
         $companyOverview = CompanyOverview::findOrFail($id);
 
         // Delete image file
-        if ($companyOverview->image && file_exists(public_path($companyOverview->image))) {
-            unlink(public_path($companyOverview->image));
+        if ($companyOverview->image && file_exists(base_path($companyOverview->image))) {
+            unlink(base_path($companyOverview->image));
         }
 
         $companyOverview->delete();
@@ -1015,7 +1285,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('leader_image')) {
             $imageName = time() . '.' . $request->leader_image->extension();
-            $request->leader_image->move(public_path('images/leadership'), $imageName);
+            $request->leader_image->move(base_path('images/leadership'), $imageName);
             $data['leader_image'] = 'images/leadership/' . $imageName;
         }
 
@@ -1049,12 +1319,12 @@ class AdminController extends Controller
 
         if ($request->hasFile('leader_image')) {
             // Delete old image
-            if ($leadership->leader_image && file_exists(public_path($leadership->leader_image))) {
-                unlink(public_path($leadership->leader_image));
+            if ($leadership->leader_image && file_exists(base_path($leadership->leader_image))) {
+                unlink(base_path($leadership->leader_image));
             }
 
             $imageName = time() . '.' . $request->leader_image->extension();
-            $request->leader_image->move(public_path('images/leadership'), $imageName);
+            $request->leader_image->move(base_path('images/leadership'), $imageName);
             $data['leader_image'] = 'images/leadership/' . $imageName;
         }
 
@@ -1068,8 +1338,8 @@ class AdminController extends Controller
         $leadership = Leadership::findOrFail($id);
 
         // Delete image file
-        if ($leadership->leader_image && file_exists(public_path($leadership->leader_image))) {
-            unlink(public_path($leadership->leader_image));
+        if ($leadership->leader_image && file_exists(base_path($leadership->leader_image))) {
+            unlink(base_path($leadership->leader_image));
         }
 
         $leadership->delete();
@@ -1110,7 +1380,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/teams'), $imageName);
+            $request->image->move(base_path('images/teams'), $imageName);
             $data['image'] = 'images/teams/' . $imageName;
         }
 
@@ -1141,12 +1411,12 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($team->image && file_exists(public_path($team->image))) {
-                unlink(public_path($team->image));
+            if ($team->image && file_exists(base_path($team->image))) {
+                unlink(base_path($team->image));
             }
 
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/teams'), $imageName);
+            $request->image->move(base_path('images/teams'), $imageName);
             $data['image'] = 'images/teams/' . $imageName;
         }
 
@@ -1191,14 +1461,21 @@ class AdminController extends Controller
     public function storeMentorship(Request $request)
     {
         $request->validate([
-            'icon' => 'nullable|string|max:255',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'sort_order' => 'integer',
             'is_active' => 'boolean'
         ]);
 
-        Mentorship::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(base_path('images/mentorship'), $imageName);
+            $data['image'] = 'images/mentorship/' . $imageName;
+        }
+
+        Mentorship::create($data);
 
         return redirect()->route('admin.mentorship')->with('success', 'Mentorship item created successfully.');
     }
@@ -1214,14 +1491,26 @@ class AdminController extends Controller
         $mentorship = Mentorship::findOrFail($id);
 
         $request->validate([
-            'icon' => 'nullable|string|max:255',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'sort_order' => 'integer',
             'is_active' => 'boolean'
         ]);
 
-        $mentorship->update($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($mentorship->image && file_exists(base_path($mentorship->image))) {
+                unlink(base_path($mentorship->image));
+            }
+
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(base_path('images/mentorship'), $imageName);
+            $data['image'] = 'images/mentorship/' . $imageName;
+        }
+
+        $mentorship->update($data);
 
         return redirect()->route('admin.mentorship')->with('success', 'Mentorship item updated successfully.');
     }
@@ -1229,6 +1518,12 @@ class AdminController extends Controller
     public function destroyMentorship($id)
     {
         $mentorship = Mentorship::findOrFail($id);
+
+        // Delete image file if exists
+        if ($mentorship->image && file_exists(base_path($mentorship->image))) {
+            unlink(base_path($mentorship->image));
+        }
+
         $mentorship->delete();
 
         return redirect()->route('admin.mentorship')->with('success', 'Mentorship item deleted successfully.');
@@ -1348,7 +1643,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('certificate_image')) {
             $imageName = time() . '.' . $request->certificate_image->extension();
-            $request->certificate_image->move(public_path('images/certifications'), $imageName);
+            $request->certificate_image->move(base_path('images/certifications'), $imageName);
             $data['certificate_image'] = 'images/certifications/' . $imageName;
         }
 
@@ -1379,12 +1674,12 @@ class AdminController extends Controller
 
         if ($request->hasFile('certificate_image')) {
             // Delete old image
-            if ($certification->certificate_image && file_exists(public_path($certification->certificate_image))) {
-                unlink(public_path($certification->certificate_image));
+            if ($certification->certificate_image && file_exists(base_path($certification->certificate_image))) {
+                unlink(base_path($certification->certificate_image));
             }
 
             $imageName = time() . '.' . $request->certificate_image->extension();
-            $request->certificate_image->move(public_path('images/certifications'), $imageName);
+            $request->certificate_image->move(base_path('images/certifications'), $imageName);
             $data['certificate_image'] = 'images/certifications/' . $imageName;
         }
 
@@ -1398,8 +1693,8 @@ class AdminController extends Controller
         $certification = Certification::findOrFail($id);
 
         // Delete image file
-        if ($certification->certificate_image && file_exists(public_path($certification->certificate_image))) {
-            unlink(public_path($certification->certificate_image));
+        if ($certification->certificate_image && file_exists(base_path($certification->certificate_image))) {
+            unlink(base_path($certification->certificate_image));
         }
 
         $certification->delete();
@@ -1440,7 +1735,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('membership_image')) {
             $imageName = time() . '.' . $request->membership_image->extension();
-            $request->membership_image->move(public_path('images/memberships'), $imageName);
+            $request->membership_image->move(base_path('images/memberships'), $imageName);
             $data['membership_image'] = 'images/memberships/' . $imageName;
         }
 
@@ -1471,12 +1766,12 @@ class AdminController extends Controller
 
         if ($request->hasFile('membership_image')) {
             // Delete old image
-            if ($membership->membership_image && file_exists(public_path($membership->membership_image))) {
-                unlink(public_path($membership->membership_image));
+            if ($membership->membership_image && file_exists(base_path($membership->membership_image))) {
+                unlink(base_path($membership->membership_image));
             }
 
             $imageName = time() . '.' . $request->membership_image->extension();
-            $request->membership_image->move(public_path('images/memberships'), $imageName);
+            $request->membership_image->move(base_path('images/memberships'), $imageName);
             $data['membership_image'] = 'images/memberships/' . $imageName;
         }
 
@@ -1490,8 +1785,8 @@ class AdminController extends Controller
         $membership = Membership::findOrFail($id);
 
         // Delete image file
-        if ($membership->membership_image && file_exists(public_path($membership->membership_image))) {
-            unlink(public_path($membership->membership_image));
+        if ($membership->membership_image && file_exists(base_path($membership->membership_image))) {
+            unlink(base_path($membership->membership_image));
         }
 
         $membership->delete();
@@ -1534,7 +1829,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('feedback_image')) {
             $imageName = time() . '.' . $request->feedback_image->extension();
-            $request->feedback_image->move(public_path('images/client-feedbacks'), $imageName);
+            $request->feedback_image->move(base_path('images/client-feedbacks'), $imageName);
             $data['feedback_image'] = 'images/client-feedbacks/' . $imageName;
         }
 
@@ -1567,12 +1862,12 @@ class AdminController extends Controller
 
         if ($request->hasFile('feedback_image')) {
             // Delete old image
-            if ($clientFeedback->feedback_image && file_exists(public_path($clientFeedback->feedback_image))) {
-                unlink(public_path($clientFeedback->feedback_image));
+            if ($clientFeedback->feedback_image && file_exists(base_path($clientFeedback->feedback_image))) {
+                unlink(base_path($clientFeedback->feedback_image));
             }
 
             $imageName = time() . '.' . $request->feedback_image->extension();
-            $request->feedback_image->move(public_path('images/client-feedbacks'), $imageName);
+            $request->feedback_image->move(base_path('images/client-feedbacks'), $imageName);
             $data['feedback_image'] = 'images/client-feedbacks/' . $imageName;
         }
 
@@ -1586,8 +1881,8 @@ class AdminController extends Controller
         $clientFeedback = ClientFeedback::findOrFail($id);
 
         // Delete image file
-        if ($clientFeedback->feedback_image && file_exists(public_path($clientFeedback->feedback_image))) {
-            unlink(public_path($clientFeedback->feedback_image));
+        if ($clientFeedback->feedback_image && file_exists(base_path($clientFeedback->feedback_image))) {
+            unlink(base_path($clientFeedback->feedback_image));
         }
 
         $clientFeedback->delete();
@@ -1628,7 +1923,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/partners'), $imageName);
+            $request->image->move(base_path('images/partners'), $imageName);
             $data['image'] = 'images/partners/' . $imageName;
         }
 
@@ -1659,12 +1954,12 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($partner->image && file_exists(public_path($partner->image))) {
-                unlink(public_path($partner->image));
+            if ($partner->image && file_exists(base_path($partner->image))) {
+                unlink(base_path($partner->image));
             }
 
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/partners'), $imageName);
+            $request->image->move(base_path('images/partners'), $imageName);
             $data['image'] = 'images/partners/' . $imageName;
         }
 
@@ -1678,8 +1973,8 @@ class AdminController extends Controller
         $partner = Partner::findOrFail($id);
 
         // Delete image file
-        if ($partner->image && file_exists(public_path($partner->image))) {
-            unlink(public_path($partner->image));
+        if ($partner->image && file_exists(base_path($partner->image))) {
+            unlink(base_path($partner->image));
         }
 
         $partner->delete();
@@ -1711,11 +2006,17 @@ class AdminController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'icon' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
             'is_active' => 'boolean'
         ]);
 
         $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(base_path('images/whychooses'), $imageName);
+            $data['image'] = 'images/whychooses/' . $imageName;
+        }
 
         WhyChoose::create($data);
 
@@ -1735,11 +2036,22 @@ class AdminController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'icon' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
             'is_active' => 'boolean'
         ]);
 
         $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($whyChoose->image && file_exists(base_path($whyChoose->image))) {
+                unlink(base_path($whyChoose->image));
+            }
+
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(base_path('images/whychooses'), $imageName);
+            $data['image'] = 'images/whychooses/' . $imageName;
+        }
 
         $whyChoose->update($data);
 
@@ -1800,7 +2112,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/featured-highlights'), $imageName);
+            $request->image->move(base_path('images/featured-highlights'), $imageName);
             $data['image'] = 'images/featured-highlights/' . $imageName;
         }
 
@@ -1843,12 +2155,12 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($featuredHighlight->image && file_exists(public_path($featuredHighlight->image))) {
-                unlink(public_path($featuredHighlight->image));
+            if ($featuredHighlight->image && file_exists(base_path($featuredHighlight->image))) {
+                unlink(base_path($featuredHighlight->image));
             }
 
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/featured-highlights'), $imageName);
+            $request->image->move(base_path('images/featured-highlights'), $imageName);
             $data['image'] = 'images/featured-highlights/' . $imageName;
         }
 
@@ -1862,8 +2174,8 @@ class AdminController extends Controller
         $featuredHighlight = FeaturedHighlight::findOrFail($id);
 
         // Delete image file if exists
-        if ($featuredHighlight->image && file_exists(public_path($featuredHighlight->image))) {
-            unlink(public_path($featuredHighlight->image));
+        if ($featuredHighlight->image && file_exists(base_path($featuredHighlight->image))) {
+            unlink(base_path($featuredHighlight->image));
         }
 
         $featuredHighlight->delete();
@@ -1916,13 +2228,13 @@ class AdminController extends Controller
 
         if ($request->hasFile('main_image')) {
             $imageName = time() . '.' . $request->main_image->extension();
-            $request->main_image->move(public_path('images/latest-news'), $imageName);
+            $request->main_image->move(base_path('images/latest-news'), $imageName);
             $data['main_image'] = 'images/latest-news/' . $imageName;
         }
 
         LatestNews::create($data);
 
-        return redirect()->route('admin.latest-news')->with('success', 'Latest news created successfully.');
+        return redirect()->route('admin.latest-news')->with('success', 'Latest news item created successfully.');
     }
 
     public function editLatestNews($id)
@@ -1959,32 +2271,32 @@ class AdminController extends Controller
 
         if ($request->hasFile('main_image')) {
             // Delete old image
-            if ($latestNews->main_image && file_exists(public_path($latestNews->main_image))) {
-                unlink(public_path($latestNews->main_image));
+            if ($latestNews->main_image && file_exists(base_path($latestNews->main_image))) {
+                unlink(base_path($latestNews->main_image));
             }
 
             $imageName = time() . '.' . $request->main_image->extension();
-            $request->main_image->move(public_path('images/latest-news'), $imageName);
+            $request->main_image->move(base_path('images/latest-news'), $imageName);
             $data['main_image'] = 'images/latest-news/' . $imageName;
         }
 
         $latestNews->update($data);
 
-        return redirect()->route('admin.latest-news')->with('success', 'Latest news updated successfully.');
+        return redirect()->route('admin.latest-news')->with('success', 'Latest news item updated successfully.');
     }
 
     public function destroyLatestNews($id)
     {
         $latestNews = LatestNews::findOrFail($id);
 
-        // Delete image file if exists
-        if ($latestNews->main_image && file_exists(public_path($latestNews->main_image))) {
-            unlink(public_path($latestNews->main_image));
+        // Delete image file
+        if ($latestNews->main_image && file_exists(base_path($latestNews->main_image))) {
+            unlink(base_path($latestNews->main_image));
         }
 
         $latestNews->delete();
 
-        return redirect()->route('admin.latest-news')->with('success', 'Latest news deleted successfully.');
+        return redirect()->route('admin.latest-news')->with('success', 'Latest news item deleted successfully.');
     }
 
     public function toggleLatestNewsStatus($id)
@@ -1995,6 +2307,7 @@ class AdminController extends Controller
         return redirect()->route('admin.latest-news')->with('success', 'Latest news status updated successfully.');
     }
 
+    // Business Hours CRUD
     public function businessHours()
     {
         $businessHours = BusinessHours::first(); // Get the first (and only) business hours entry
@@ -2010,22 +2323,22 @@ class AdminController extends Controller
     {
         $request->validate([
             'monday_from' => 'nullable|date_format:H:i',
-            'monday_to' => 'nullable|date_format:H:i|after:monday_from',
+            'monday_to' => 'nullable|date_format:H:i',
             'tuesday_from' => 'nullable|date_format:H:i',
-            'tuesday_to' => 'nullable|date_format:H:i|after:tuesday_from',
+            'tuesday_to' => 'nullable|date_format:H:i',
             'wednesday_from' => 'nullable|date_format:H:i',
-            'wednesday_to' => 'nullable|date_format:H:i|after:wednesday_from',
+            'wednesday_to' => 'nullable|date_format:H:i',
             'thursday_from' => 'nullable|date_format:H:i',
-            'thursday_to' => 'nullable|date_format:H:i|after:thursday_from',
+            'thursday_to' => 'nullable|date_format:H:i',
             'friday_from' => 'nullable|date_format:H:i',
-            'friday_to' => 'nullable|date_format:H:i|after:friday_from',
-            'saturday_status' => 'required|in:closed,open',
-            'saturday_from' => 'nullable|date_format:H:i|required_if:saturday_status,open',
-            'saturday_to' => 'nullable|date_format:H:i|required_if:saturday_status,open|after:saturday_from',
-            'sunday_status' => 'required|in:closed,open',
-            'sunday_from' => 'nullable|date_format:H:i|required_if:sunday_status,open',
-            'sunday_to' => 'nullable|date_format:H:i|required_if:sunday_status,open|after:sunday_from',
-            'is_active' => 'boolean'
+            'friday_to' => 'nullable|date_format:H:i',
+            'saturday_status' => 'nullable|in:open,closed',
+            'saturday_from' => 'nullable|date_format:H:i',
+            'saturday_to' => 'nullable|date_format:H:i',
+            'sunday_status' => 'nullable|in:open,closed',
+            'sunday_from' => 'nullable|date_format:H:i',
+            'sunday_to' => 'nullable|date_format:H:i',
+            'is_active' => 'boolean',
         ]);
 
         BusinessHours::create($request->all());
@@ -2041,49 +2354,120 @@ class AdminController extends Controller
 
     public function updateBusinessHours(Request $request, $id)
     {
-        $businessHours = BusinessHours::findOrFail($id);
+        $businessHour = BusinessHours::findOrFail($id);
 
         $request->validate([
             'monday_from' => 'nullable|date_format:H:i',
-            'monday_to' => 'nullable|date_format:H:i|after:monday_from',
+            'monday_to' => 'nullable|date_format:H:i',
             'tuesday_from' => 'nullable|date_format:H:i',
-            'tuesday_to' => 'nullable|date_format:H:i|after:tuesday_from',
+            'tuesday_to' => 'nullable|date_format:H:i',
             'wednesday_from' => 'nullable|date_format:H:i',
-            'wednesday_to' => 'nullable|date_format:H:i|after:wednesday_from',
+            'wednesday_to' => 'nullable|date_format:H:i',
             'thursday_from' => 'nullable|date_format:H:i',
-            'thursday_to' => 'nullable|date_format:H:i|after:thursday_from',
+            'thursday_to' => 'nullable|date_format:H:i',
             'friday_from' => 'nullable|date_format:H:i',
-            'friday_to' => 'nullable|date_format:H:i|after:friday_from',
-            'saturday_status' => 'required|in:closed,open',
-            'saturday_from' => 'nullable|date_format:H:i|required_if:saturday_status,open',
-            'saturday_to' => 'nullable|date_format:H:i|required_if:saturday_status,open|after:saturday_from',
-            'sunday_status' => 'required|in:closed,open',
-            'sunday_from' => 'nullable|date_format:H:i|required_if:sunday_status,open',
-            'sunday_to' => 'nullable|date_format:H:i|required_if:sunday_status,open|after:sunday_from',
-            'is_active' => 'boolean'
+            'friday_to' => 'nullable|date_format:H:i',
+            'saturday_status' => 'nullable|in:open,closed',
+            'saturday_from' => 'nullable|date_format:H:i',
+            'saturday_to' => 'nullable|date_format:H:i',
+            'sunday_status' => 'nullable|in:open,closed',
+            'sunday_from' => 'nullable|date_format:H:i',
+            'sunday_to' => 'nullable|date_format:H:i',
+            'is_active' => 'boolean',
         ]);
 
-        $businessHours->update($request->all());
+        $businessHour->update($request->all());
 
         return redirect()->route('admin.business-hours')->with('success', 'Business hours updated successfully.');
     }
 
     public function destroyBusinessHours($id)
     {
-        $businessHours = BusinessHours::findOrFail($id);
-        $businessHours->delete();
+        $businessHour = BusinessHours::findOrFail($id);
+        $businessHour->delete();
 
         return redirect()->route('admin.business-hours')->with('success', 'Business hours deleted successfully.');
     }
 
     public function toggleBusinessHoursStatus($id)
     {
-        $businessHours = BusinessHours::findOrFail($id);
-        $businessHours->update(['is_active' => !$businessHours->is_active]);
+        $businessHour = BusinessHours::findOrFail($id);
+        $businessHour->update(['is_closed' => !$businessHour->is_closed]);
 
         return redirect()->route('admin.business-hours')->with('success', 'Business hours status updated successfully.');
     }
 
+    // Job Applications
+    public function jobApplications()
+    {
+        $jobApplications = JobApplication::with('career')->orderBy('created_at', 'desc')->paginate(20);
+        return view('admin.job-applications.job-applications', compact('jobApplications'), ['activeSection' => 'job-applications']);
+    }
+
+    public function showJobApplication($id)
+    {
+        $jobApplication = JobApplication::with('career')->findOrFail($id);
+        return view('admin.job-applications.show', compact('jobApplication'), ['activeSection' => 'job-applications']);
+    }
+
+    public function updateJobApplicationStatus(Request $request, $id)
+    {
+        $jobApplication = JobApplication::findOrFail($id);
+
+        $request->validate([
+            'status' => 'required|in:pending,reviewed,rejected,accepted'
+        ]);
+
+        $jobApplication->update(['status' => $request->status]);
+
+        return redirect()->back()->with('success', 'Job application status updated successfully.');
+    }
+
+    public function replyToJobApplication(Request $request, $id)
+    {
+        $jobApplication = JobApplication::findOrFail($id);
+
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string'
+        ]);
+
+        // Send email reply (implement email logic here)
+        Mail::send([], [], function ($message) use ($jobApplication, $request) {
+            $message->to($jobApplication->email)
+                    ->subject($request->subject)
+                    ->setBody($request->message, 'text/html');
+        });
+
+        return redirect()->back()->with('success', 'Reply sent successfully.');
+    }
+
+    public function downloadResume($id)
+    {
+        $jobApplication = JobApplication::findOrFail($id);
+
+        if ($jobApplication->resume_path && file_exists(base_path($jobApplication->resume_path))) {
+            return response()->download(base_path($jobApplication->resume_path));
+        }
+
+        return redirect()->back()->with('error', 'Resume file not found.');
+    }
+
+    public function destroyJobApplication($id)
+    {
+        $jobApplication = JobApplication::findOrFail($id);
+
+        // Delete resume file if exists
+        if ($jobApplication->resume_path && file_exists(base_path($jobApplication->resume_path))) {
+            unlink(base_path($jobApplication->resume_path));
+        }
+
+        $jobApplication->delete();
+
+        return redirect()->route('admin.job-applications')->with('success', 'Job application deleted successfully.');
+    }
+
+    // Contact Form & Get In Touch
     public function contactForm()
     {
         return view('admin.contact-form.contact-form', ['activeSection' => 'contact-form']);
@@ -2091,7 +2475,7 @@ class AdminController extends Controller
 
     public function getInTouch()
     {
-        $getInTouches = GetInTouch::orderBy('sort_order')->orderBy('created_at', 'desc')->get();
+        $getInTouches = GetInTouch::orderBy('created_at', 'desc')->get();
         return view('admin.get-in-touch.get-in-touch', compact('getInTouches'), ['activeSection' => 'get-in-touch']);
     }
 
@@ -2103,29 +2487,16 @@ class AdminController extends Controller
     public function storeGetInTouch(Request $request)
     {
         $request->validate([
-            'contact_type' => 'required|in:call,email,visit',
-            'icon' => 'nullable|string|max:255',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'address' => 'nullable|string',
-            'sort_order' => 'integer',
-            'is_active' => 'boolean'
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string'
         ]);
-
-        // Additional validation based on contact type
-        if ($request->contact_type === 'call') {
-            $request->validate(['phone' => 'required|string|max:20']);
-        } elseif ($request->contact_type === 'email') {
-            $request->validate(['email' => 'required|email|max:255']);
-        } elseif ($request->contact_type === 'visit') {
-            $request->validate(['address' => 'required|string']);
-        }
 
         GetInTouch::create($request->all());
 
-        return redirect()->route('admin.get-in-touch')->with('success', 'Contact information created successfully.');
+        return redirect()->route('admin.get-in-touch')->with('success', 'Get in touch entry created successfully.');
     }
 
     public function editGetInTouch($id)
@@ -2139,29 +2510,16 @@ class AdminController extends Controller
         $getInTouch = GetInTouch::findOrFail($id);
 
         $request->validate([
-            'contact_type' => 'required|in:call,email,visit',
-            'icon' => 'nullable|string|max:255',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'address' => 'nullable|string',
-            'sort_order' => 'integer',
-            'is_active' => 'boolean'
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string'
         ]);
-
-        // Additional validation based on contact type
-        if ($request->contact_type === 'call') {
-            $request->validate(['phone' => 'required|string|max:20']);
-        } elseif ($request->contact_type === 'email') {
-            $request->validate(['email' => 'required|email|max:255']);
-        } elseif ($request->contact_type === 'visit') {
-            $request->validate(['address' => 'required|string']);
-        }
 
         $getInTouch->update($request->all());
 
-        return redirect()->route('admin.get-in-touch')->with('success', 'Contact information updated successfully.');
+        return redirect()->route('admin.get-in-touch')->with('success', 'Get in touch entry updated successfully.');
     }
 
     public function destroyGetInTouch($id)
@@ -2169,106 +2527,14 @@ class AdminController extends Controller
         $getInTouch = GetInTouch::findOrFail($id);
         $getInTouch->delete();
 
-        return redirect()->route('admin.get-in-touch')->with('success', 'Contact information deleted successfully.');
+        return redirect()->route('admin.get-in-touch')->with('success', 'Get in touch entry deleted successfully.');
     }
 
     public function toggleGetInTouchStatus($id)
     {
         $getInTouch = GetInTouch::findOrFail($id);
-        $getInTouch->update(['is_active' => !$getInTouch->is_active]);
+        $getInTouch->update(['is_read' => !$getInTouch->is_read]);
 
-        return redirect()->route('admin.get-in-touch')->with('success', 'Contact information status updated successfully.');
-    }
-
-    public function jobApplications()
-    {
-        $jobApplications = JobApplication::orderBy('created_at', 'desc')->paginate(15);
-        return view('admin.job-applications.job-applications', compact('jobApplications'), ['activeSection' => 'job-applications']);
-    }
-
-    public function showJobApplication($id)
-    {
-        $jobApplication = JobApplication::findOrFail($id);
-        return view('admin.job-applications.show', compact('jobApplication'), ['activeSection' => 'job-applications']);
-    }
-
-    public function updateJobApplicationStatus(Request $request, $id)
-    {
-        $jobApplication = JobApplication::findOrFail($id);
-
-        $request->validate([
-            'status' => 'required|in:pending,reviewed,shortlisted,rejected,hired',
-            'admin_notes' => 'nullable|string'
-        ]);
-
-        $data = $request->only(['status', 'admin_notes']);
-
-        if ($request->status !== 'pending' && !$jobApplication->reviewed_at) {
-            $data['reviewed_at'] = now();
-        }
-
-        $jobApplication->update($data);
-
-        return redirect()->back()->with('success', 'Job application status updated successfully.');
-    }
-
-    public function replyToJobApplication(Request $request, $id)
-    {
-        $jobApplication = JobApplication::findOrFail($id);
-
-        $request->validate([
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string',
-            'cc_admin' => 'boolean'
-        ]);
-
-        try {
-            // Here you would integrate with your email service (Gmail SMTP)
-            // For now, we'll just log the email details
-            Log::info('Job Application Reply', [
-                'application_id' => $id,
-                'to' => $jobApplication->email,
-                'subject' => $request->subject,
-                'message' => $request->message,
-                'cc_admin' => $request->cc_admin
-            ]);
-
-            // You can integrate with Laravel Mail here
-            // Mail::to($jobApplication->email)->send(new JobApplicationReply($jobApplication, $request->subject, $request->message));
-
-            return redirect()->back()->with('success', 'Reply sent successfully to ' . $jobApplication->email);
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to send reply: ' . $e->getMessage());
-        }
-    }
-
-    public function downloadResume($id)
-    {
-        $jobApplication = JobApplication::findOrFail($id);
-
-        if (!$jobApplication->resume_path || !file_exists(public_path($jobApplication->resume_path))) {
-            return redirect()->back()->with('error', 'Resume file not found.');
-        }
-
-        return response()->download(public_path($jobApplication->resume_path));
-    }
-
-    public function destroyJobApplication($id)
-    {
-        $jobApplication = JobApplication::findOrFail($id);
-
-        // Delete resume file if exists
-        if ($jobApplication->resume_path && file_exists(public_path($jobApplication->resume_path))) {
-            unlink(public_path($jobApplication->resume_path));
-        }
-
-        $jobApplication->delete();
-
-        return redirect()->route('admin.job-applications')->with('success', 'Job application deleted successfully.');
-    }
-
-    public function logout()
-    {
-        return view('admin.logout.logout', ['activeSection' => 'logout']);
+        return redirect()->route('admin.get-in-touch')->with('success', 'Status updated successfully.');
     }
 }

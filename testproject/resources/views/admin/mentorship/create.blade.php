@@ -31,19 +31,18 @@
                 @csrf
 
                 <div class="form-grid">
-                    <!-- Icon Field -->
+                    <!-- Image Field -->
                     <div class="form-group">
-                        <label for="icon" class="form-label">
+                        <label for="image" class="form-label">
                             <i class="bi bi-image"></i>
-                            Icon Class (Optional)
+                            Image (Optional)
                         </label>
-                        <input type="text" name="icon" id="icon" class="form-control"
-                               placeholder="e.g., bi bi-lightbulb, bi bi-people, bi bi-book"
-                               value="{{ old('icon') }}">
+                        <input type="file" name="image" id="image" class="form-control"
+                               accept="image/*">
                         <div class="form-help">
-                            Enter Bootstrap Icons class name (e.g., bi bi-lightbulb). Leave empty for default icon.
+                            Upload an image for the mentorship item. Recommended size: 200x200px. Max 5MB.
                         </div>
-                        @error('icon')
+                        @error('image')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>

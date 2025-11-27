@@ -48,9 +48,10 @@
                         </span>
                     </div>
                     <div class="card-content">
-                        @if($expertise->main_image)
+                        @if($expertise->main_image && file_exists(base_path($expertise->main_image)))
                             <div class="image-preview">
-                                <img src="{{ asset($expertise->main_image) }}" alt="Main Image" class="preview-image">
+                                @php $mime = pathinfo($expertise->main_image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($expertise->main_image, PATHINFO_EXTENSION); @endphp
+                                <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($expertise->main_image))) }}" alt="Main Image" class="preview-image">
                             </div>
                         @endif
                         <h4 class="item-title">{{ $expertise->main_title ?: 'No title set' }}</h4>
@@ -67,9 +68,10 @@
                         </h3>
                     </div>
                     <div class="card-content">
-                        @if($expertise->second_image)
+                        @if($expertise->second_image && file_exists(base_path($expertise->second_image)))
                             <div class="image-preview">
-                                <img src="{{ asset($expertise->second_image) }}" alt="Second Image" class="preview-image">
+                                @php $mime = pathinfo($expertise->second_image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($expertise->second_image, PATHINFO_EXTENSION); @endphp
+                                <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($expertise->second_image))) }}" alt="Second Image" class="preview-image">
                             </div>
                         @endif
                         <h4 class="item-title">{{ $expertise->second_title ?: 'No title set' }}</h4>
@@ -94,9 +96,10 @@
                         </h3>
                     </div>
                     <div class="card-content">
-                        @if($expertise->third_image)
+                        @if($expertise->third_image && file_exists(base_path($expertise->third_image)))
                             <div class="image-preview">
-                                <img src="{{ asset($expertise->third_image) }}" alt="Third Image" class="preview-image">
+                                @php $mime = pathinfo($expertise->third_image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($expertise->third_image, PATHINFO_EXTENSION); @endphp
+                                <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($expertise->third_image))) }}" alt="Third Image" class="preview-image">
                             </div>
                         @endif
                         <h4 class="item-title">{{ $expertise->third_title ?: 'No title set' }}</h4>

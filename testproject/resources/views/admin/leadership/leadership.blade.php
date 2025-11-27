@@ -72,8 +72,9 @@
                     <div class="profile-header-content">
                         <!-- Leader Image -->
                         <div class="profile-image-section">
-                            @if($leadership->leader_image)
-                                <img src="{{ asset($leadership->leader_image) }}" alt="{{ $leadership->leader_name }}" class="profile-image">
+                            @if($leadership->leader_image && file_exists(base_path($leadership->leader_image)))
+                                @php $mime = pathinfo($leadership->leader_image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($leadership->leader_image, PATHINFO_EXTENSION); @endphp
+                                <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($leadership->leader_image))) }}" alt="{{ $leadership->leader_name }}" class="profile-image">
                             @else
                                 <div class="profile-image-placeholder">
                                     <i class="bi bi-person-circle"></i>

@@ -30,7 +30,7 @@
             <form action="{{ route('admin.technical-specializations.store') }}" method="POST" class="modern-form">
                 @csrf
 
-                <!-- Multiple Description Fields with Summernote -->
+                <!-- Multiple Description Fields -->
                 <div class="form-group">
                     <label class="form-label">
                         <i class="bi bi-textarea-t"></i>
@@ -48,13 +48,14 @@
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
-                            <textarea
+                            <input
+                                type="text"
                                 name="descriptions[]"
-                                class="form-control summernote description-editor"
-                                rows="6"
+                                class="form-control"
                                 placeholder="Enter the technical specialization description..."
+                                value="{{ old('descriptions.0') }}"
                                 required
-                            >{{ old('descriptions.0') }}</textarea>
+                            >
                         </div>
                     </div>
                     @error('descriptions')
@@ -200,10 +201,7 @@
     box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
-#create-technical-specialization .form-control.summernote {
-    background: white;
-    min-height: 200px;
-}
+
 
 /* Status Toggle */
 #create-technical-specialization .status-toggle {
@@ -495,51 +493,12 @@
 }
 </style>
 
-<!-- Summernote CSS and JS -->
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
 <script>
 $(document).ready(function() {
-    // Initialize Summernote for existing editors
-    $('.summernote').summernote({
-        height: 300,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'underline', 'clear']],
-            ['fontname', ['fontname']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['table', ['table']],
-            ['insert', ['link', 'picture']],
-            ['view', ['fullscreen', 'codeview', 'help']]
-        ],
-        placeholder: 'Enter the technical specialization description...',
-        callbacks: {
-            onInit: function() {
-                // Custom styling for Summernote
-                $('.note-editor').css({
-                    'border-radius': '12px',
-                    'border': '2px solid #e5e7eb',
-                    'overflow': 'hidden'
-                });
-
-                $('.note-toolbar').css({
-                    'background': '#f8fafc',
-                    'border-bottom': '1px solid #e5e7eb',
-                    'padding': '0.5rem'
-                });
-
-                $('.note-editing-area .note-editable').css({
-                    'padding': '1rem',
-                    'min-height': '200px',
-                    'background': 'white'
-                });
-            }
-        }
-    });
-
     // Dynamic description fields functionality
     let descriptionCount = 1;
 
@@ -553,54 +512,17 @@ $(document).ready(function() {
                         <i class="bi bi-trash"></i>
                     </button>
                 </div>
-                <textarea
+                <input
+                    type="text"
                     name="descriptions[]"
-                    class="form-control summernote description-editor"
-                    rows="6"
+                    class="form-control"
                     placeholder="Enter the technical specialization description..."
                     required
-                ></textarea>
+                >
             </div>
         `;
 
         $('#descriptionsContainer').append(descriptionHtml);
-
-        // Initialize Summernote for the new textarea
-        $('#descriptionsContainer .description-item:last-child .summernote').summernote({
-            height: 300,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['fontname', ['fontname']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture']],
-                ['view', ['fullscreen', 'codeview', 'help']]
-            ],
-            placeholder: 'Enter the technical specialization description...',
-            callbacks: {
-                onInit: function() {
-                    $('.note-editor').css({
-                        'border-radius': '12px',
-                        'border': '2px solid #e5e7eb',
-                        'overflow': 'hidden'
-                    });
-
-                    $('.note-toolbar').css({
-                        'background': '#f8fafc',
-                        'border-bottom': '1px solid #e5e7eb',
-                        'padding': '0.5rem'
-                    });
-
-                    $('.note-editing-area .note-editable').css({
-                        'padding': '1rem',
-                        'min-height': '200px',
-                        'background': 'white'
-                    });
-                }
-            }
-        });
 
         // Update numbering for all descriptions
         updateDescriptionNumbers();
@@ -629,7 +551,7 @@ $(document).ready(function() {
 
     // Form validation before submit
     $('form').on('submit', function(e) {
-        const descriptions = $('textarea[name="descriptions[]"]');
+        const descriptions = $('input[name="descriptions[]"]');
         let isValid = true;
 
         descriptions.each(function() {

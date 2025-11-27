@@ -46,7 +46,7 @@
                         <small class="text-muted">Max size: 5MB. Leave empty to keep current image.</small>
                         @if($project->main_image)
                             <div class="mt-2">
-                                <img src="{{ asset($project->main_image) }}" alt="Current Image" style="max-width: 200px; border-radius: 5px;">
+                                <img src="{{ route('file', ['path' => $project->main_image]) }}" alt="Current Image" style="max-width: 200px; border-radius: 5px;">
                             </div>
                         @endif
                     </div>
@@ -134,7 +134,7 @@
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach($project->galleries as $gallery)
                                     <div class="position-relative">
-                                        <img src="{{ asset($gallery->image) }}" alt="Gallery" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+                                        <img src="{{ route('file', ['path' => $gallery->image]) }}" alt="Gallery" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
                                     </div>
                                 @endforeach
                             </div>
@@ -181,7 +181,7 @@
                                     <input type="file" class="form-control" name="achievement_photos[]" accept="image/*">
                                     @if($achievement->photo)
                                         <div class="mt-2">
-                                            <img src="{{ asset($achievement->photo) }}" alt="Achievement" style="max-width: 150px; border-radius: 5px;">
+                                            <img src="{{ route('file', ['path' => $achievement->photo]) }}" alt="Achievement" style="max-width: 150px; border-radius: 5px;">
                                         </div>
                                     @endif
                                 </div>

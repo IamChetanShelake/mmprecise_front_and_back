@@ -44,7 +44,9 @@
                         @foreach($mentorships as $mentorship)
                             <tr class="mentorship-row">
                                 <td class="icon-cell">
-                                    @if($mentorship->icon)
+                                    @if($mentorship->image && file_exists(base_path($mentorship->image)))
+                                        <img src="data:image/{{ pathinfo($mentorship->image, PATHINFO_EXTENSION) === 'jpg' ? 'jpeg' : pathinfo($mentorship->image, PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(base_path($mentorship->image))) }}" alt="Mentorship Image" class="table-image">
+                                    @elseif($mentorship->icon)
                                         <i class="{{ $mentorship->icon }}"></i>
                                     @else
                                         <i class="bi bi-circle"></i>
@@ -174,6 +176,16 @@
     font-size: 1.5rem;
     color: #FF6B35;
 }
+
+#mentorship .icon-cell .table-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 
 /* Title Cell */
 #mentorship .title-cell {

@@ -32,19 +32,25 @@
                 @method('PUT')
 
                 <div class="form-grid">
-                    <!-- Icon Field -->
+                    <!-- Image Field -->
                     <div class="form-group">
-                        <label for="icon" class="form-label">
+                        <label for="image" class="form-label">
                             <i class="bi bi-image"></i>
-                            Icon Class (Optional)
+                            Image (Optional)
                         </label>
-                        <input type="text" name="icon" id="icon" class="form-control"
-                               placeholder="e.g., bi bi-lightbulb, bi bi-people, bi bi-book"
-                               value="{{ old('icon', $mentorship->icon) }}">
+                        <input type="file" name="image" id="image" class="form-control"
+                               accept="image/*">
                         <div class="form-help">
-                            Enter Bootstrap Icons class name (e.g., bi bi-lightbulb). Leave empty for default icon.
+                            Upload an image for the mentorship item. Recommended size: 200x200px. Max 5MB.
                         </div>
-                        @error('icon')
+                        @if($mentorship->image && file_exists(base_path($mentorship->image)))
+                            <div class="current-image-preview">
+                                <p class="current-image-label">Current Image:</p>
+                                @php $mime = pathinfo($mentorship->image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($mentorship->image, PATHINFO_EXTENSION); @endphp
+                                <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($mentorship->image))) }}" alt="Current Image" class="current-image">
+                            </div>
+                        @endif
+                        @error('image')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
@@ -247,6 +253,35 @@
 #edit-mentorship .error-message::before {
     content: '⚠';
     font-size: 0.875rem;
+}
+
+/* Current Image Preview */
+#edit-mentorship .current-image-preview {
+    margin-top: 0.75rem;
+    padding: 1rem;
+    border: 2px dashed #e5e7eb;
+    border-radius: 8px;
+    background: #f9fafb;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#edit-mentorship .current-image-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+#edit-mentorship .current-image {
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 /* Status Toggle */

@@ -39,7 +39,7 @@
                                 <tr>
                                     <td>
                                         @if($project->main_image)
-                                            <img src="{{ asset($project->main_image) }}" alt="{{ $project->title }}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 5px;">
+                                            <img src="{{ route('file', ['path' => $project->main_image]) }}" alt="{{ $project->title }}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 5px;">
                                         @else
                                             <span class="text-muted">No image</span>
                                         @endif

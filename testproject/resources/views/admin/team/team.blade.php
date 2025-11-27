@@ -90,9 +90,10 @@
 
                         <!-- Team Member Image -->
                         <div class="team-image-section">
-                            @if($team->image)
-                                <img src="{{ asset($team->image) }}" alt="{{ $team->name }}" class="team-image">
-                            @else
+                        @if($team->image && file_exists(base_path($team->image)))
+                            @php $mime = pathinfo($team->image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($team->image, PATHINFO_EXTENSION); @endphp
+                            <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($team->image))) }}" alt="{{ $team->name }}" class="team-image">
+                        @else
                                 <div class="team-image-placeholder">
                                     <i class="bi bi-person-circle"></i>
                                     <span>No Image</span>
