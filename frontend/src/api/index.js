@@ -188,3 +188,25 @@ export const getMedia = async () => {
 
 
 
+export const latestNews = async () => {
+  try {
+    const response = await axios.get(`${API}/api/latest-news`);
+    return response.data;
+
+  } catch (error) {
+    console.error("Error fetching Latest News:", error);
+    throw error;
+  }
+};
+
+
+export const News = async (id) => {
+  try {
+    const response = await axios.get(`${API}/api/latest-news/${id}`);
+    return response.data;
+
+  } catch (error) {
+    console.error("Error fetching Latest News:", error);
+    throw error;
+  }
+};

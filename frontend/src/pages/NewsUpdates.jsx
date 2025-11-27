@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
-import { images } from "../assets";
 import { Achievements } from '../components';
-import { getAchievements } from "../api";
-
+import { getAchievements, latestNews } from "../api";
+import { useNavigate } from "react-router-dom";
 function NewsUpdates() {
   const [achievements, setAchievements] = useState([]);
+  const [latestNewsData, setLatestNewsData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAchievements = async () => {
@@ -17,12 +18,39 @@ function NewsUpdates() {
       } 
     };
 
+    const fetchLatestNews = async () => {
+      try {
+        const data = await latestNews();
+        setLatestNewsData(data);
+      } catch (error) {
+        console.error('Error fetching Latest News:', error);
+      } 
+    };
+
     fetchAchievements();
+    fetchLatestNews(); 
   }, []);
 
-  // View All Achievements
+  // Sort achievements
   const allAchievements = achievements?.sort((a, b) => a.sort_order - b.sort_order);
 
+  const ImageSrc = "https://webadmin.mmprecise.com/";
+
+  // Function to get plain text from HTML description
+  const getPlainText = (htmlString) => {
+    if (!htmlString) return '';
+    // Remove HTML tags and convert HTML entities
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlString;
+    return tempDiv.textContent || tempDiv.innerText || '';
+  };
+
+  // Function to truncate text for card display
+  const truncateText = (text, maxLength) => {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.substr(0, maxLength) + '...';
+  };
 
   return (
     <div>
@@ -45,58 +73,51 @@ function NewsUpdates() {
 
         {/* CARDS GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto mt-10">
-          {/* LEFT BIG CARD */}
-          <div className="rounded-xl overflow-hidden shadow-md flex flex-col">
-            <img
-              src="/images/img (3).png"
-              alt="Project Milestone"
-              className="w-full h-[460px] object-cover"
-            />
-            <div className="p-6 bg-white">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Project Milestone Achieved
-              </h3>
-              <p className="text-sm text-gray-600 mt-2">
-                We successfully completed structural work for the Riverfront
-                Residency Project Phase II. The team delivered exceptional quality
-                and safety standards—right on schedule.
-              </p>
-
+          {/* LEFT BIG CARD - First news item */}
+          {latestNewsData[0] && (
+            <div className="rounded-xl overflow-hidden shadow-md flex flex-col">
+              <img
+                src={`${ImageSrc}${latestNewsData[0].main_image}`}
+                alt={latestNewsData[0].main_title}
+                className="w-full h-[460px] object-cover"
+              />
+              <div className="p-6 bg-white">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {latestNewsData[0].main_title}
+                </h3>
+                <p className="text-sm text-gray-600 mt-2">
+                  {truncateText(getPlainText(latestNewsData[0].description), 150)}
+                </p>
+              </div>
+              <div className="flex items-center justify-end m-4">
+                <button 
+                onClick={() => navigate(`/news-updates-details`, { state: { id: latestNewsData[0].id } })}
+                className="mt-4 w-9 h-9 flex items-center justify-center rounded-full border border-gray-300 hover:bg-black hover:text-white transition">
+                  <FiArrowRight />
+                </button>
+              </div>
             </div>
-            <div className="flex items-center justify-end m-4">
-              <button className="mt-4 w-9 h-9 flex items-center justify-center rounded-full border border-gray-300 hover:bg-black hover:text-white transition">
-                <FiArrowRight />
-              </button>
-            </div>
-          </div>
+          )}
 
-          {/* RIGHT TWO CARDS */}
+          {/* RIGHT TWO CARDS - Next two news items */}
           <div className="grid grid-rows-2 gap-6">
-            {[
-              {
-                img: "/images/img (2).png",
-                title: "On-Site Safety Drive",
-                desc: "Safety first! Our safety team conducted a week-long awareness and training program across all sites, reinforcing strong safety culture.",
-              },
-              {
-                img: "/images/img (1).png",
-                title: "Sustainability Initiative",
-                desc: "We launched our Green Site Mission—implementing eco-friendly waste handling and optimized water usage systems across all construction zones.",
-              },
-            ].map((item, i) => (
-              <div key={i} className="rounded-xl overflow-hidden shadow-md">
+            {latestNewsData.slice(1, 3).map((news) => (
+              <div key={news.id} className="rounded-xl overflow-hidden shadow-md">
                 <img
-                  src={item.img}
-                  alt={item.title}
+                  src={`${ImageSrc}${news.main_image}`}
+                  alt={news.main_title}
                   className="w-full h-[170px] object-cover"
                 />
-                <div className="px-6 px-2 bg-white">
-                  <h3 className="text-lg font-semibold text-gray-900">{item.title}</h3>
-                  <p className="text-sm text-gray-600 mt-2">{item.desc}</p>
-
+                <div className="p-6 bg-white">
+                  <h3 className="text-lg font-semibold text-gray-900">{news.main_title}</h3>
+                  <p className="text-sm text-gray-600 mt-2">
+                    {truncateText(getPlainText(news.description), 120)}
+                  </p>
                 </div>
                 <div className="flex items-center justify-end m-4">
-                  <button className="mt-4 w-9 h-9 flex items-center justify-center rounded-full border border-gray-300 hover:bg-black hover:text-white transition">
+                  <button
+                   onClick={() => navigate(`/news-updates-details`, { state: { id: news.id } })}
+                  className="mt-4 w-9 h-9 flex items-center justify-center rounded-full border border-gray-300 hover:bg-black hover:text-white transition">
                     <FiArrowRight />
                   </button>
                 </div>
@@ -112,7 +133,6 @@ function NewsUpdates() {
           achievements={allAchievements}
           showButton={false}
         />
-
       </div>
     </div>
   );
