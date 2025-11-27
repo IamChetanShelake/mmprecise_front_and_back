@@ -428,7 +428,7 @@ class AdminController extends Controller
 
         $request->validate([
             'type' => 'required|in:ongoing,completed',
-            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg',
             'title' => 'required|string|max:255',
             'span' => 'nullable|string|max:255',
             'area' => 'nullable|string|max:255',
@@ -437,18 +437,17 @@ class AdminController extends Controller
             'features' => 'nullable|array',
             'features.*' => 'nullable|string',
             'gallery_images' => 'nullable|array',
-            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg',
             'achievement_titles' => 'nullable|array',
             'achievement_titles.*' => 'nullable|string|max:255',
             'achievement_descriptions' => 'nullable|array',
             'achievement_descriptions.*' => 'nullable|string',
             'achievement_photos' => 'nullable|array',
-            'achievement_photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+            'achievement_photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg',
             'strength_titles' => 'nullable|array',
             'strength_titles.*' => 'nullable|string|max:255',
             'strength_descriptions' => 'nullable|array',
-            'strength_descriptions.*' => 'nullable|string',
-            'status' => 'boolean'
+            'strength_descriptions.*' => 'nullable|string'
         ]);
 
         // Handle main image upload
