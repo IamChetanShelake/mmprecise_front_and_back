@@ -138,3 +138,15 @@ export const getInTouchAPI = async () => {
   }
 };
 
+// ================  business-hours ================
+export const getOfficeTime = async () => {
+  try {
+    const response = await axios.get(`${API}/api/business-hours`);
+    return response.data;
+
+  } catch (error) {
+    console.error("Error fetching business-hours:", error);
+    throw error;
+  }
+};
+

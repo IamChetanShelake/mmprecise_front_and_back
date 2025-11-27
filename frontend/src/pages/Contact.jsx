@@ -5,7 +5,7 @@ import { IoIosMailOpen, IoMdMail, IoMdPricetag } from 'react-icons/io';
 import { IoChatbubbleSharp } from 'react-icons/io5';
 import { LiaCertificateSolid } from 'react-icons/lia';
 import { MdSecurity } from 'react-icons/md';
-import { getInTouchAPI } from '../api';
+import { getInTouchAPI, getOfficeTime } from '../api';
 
 export default function Contact() {
 
@@ -16,6 +16,8 @@ export default function Contact() {
     };
 
     const [getInTouch, setGetInTouch] = useState([]);
+    const [officeTime, setOfficeTime] = useState({});
+
 
     useEffect(() => {
         const fetchgetInTouch = async () => {
@@ -30,6 +32,52 @@ export default function Contact() {
 
         fetchgetInTouch();
     }, []);
+
+    useEffect(() => {
+    const fetchOfficeTime = async () => {
+        try {
+            const data = await getOfficeTime();
+            console.log("Office Time DATA", data);
+            setOfficeTime(data);
+        } catch (error) {
+            console.error("Error fetching Office Time:", error);
+        }
+    };
+
+    fetchOfficeTime();
+}, []);
+
+
+    const formatTime = (time) => {
+        if (!time) return "—";
+        const [hour, minute] = time.split(":");
+        const date = new Date();
+        date.setHours(hour, minute);
+        return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    };
+
+
+   const businessHours = [
+    {
+        label: "Monday - Friday",
+        from: officeTime.monday_from,
+        to: officeTime.friday_to,
+    },
+    {
+        label: "Saturday",
+        from: officeTime.saturday_status === "open" ? officeTime.saturday_from : null,
+        to: officeTime.saturday_status === "open" ? officeTime.saturday_to : null,
+        status: officeTime.saturday_status,
+    },
+    {
+        label: "Sunday",
+        from: officeTime.sunday_from,
+        to: officeTime.sunday_to,
+        status: officeTime.sunday_status,
+    },
+];
+
+
 
     return (
         <div className="">
@@ -293,26 +341,34 @@ export default function Contact() {
                         <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
                             <h4 className="text-orange-500 font-bold text-2xl mb-6">BUSINESS HOURS</h4>
                             <div className="space-y-4 text-gray-700 mb-6">
-                                <div className="flex justify-between items-center pb-3 border-b border-gray-100">
-                                    <strong className="text-gray-900 font-semibold">Monday - Friday:</strong>
-                                    <span className='text-primary font-semibold'>9:00 AM - 6:00 PM</span>
-                                </div>
-                                <div className="flex justify-between items-center pb-3 border-b border-gray-100">
-                                    <strong className="text-gray-900 font-semibold">Saturday:</strong>
-                                    <span className='text-primary font-semibold'>9:00 AM - 2:00 PM</span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <strong className="text-gray-900 font-semibold">Sunday:</strong>
-                                    <span className="text-red-500 font-semibold">Closed</span>
-                                </div>
+                                {businessHours.map((day, index) => (
+                                    <div
+                                        key={index}
+                                        className={`flex justify-between items-center ${index !== businessHours.length - 1 ? "pb-3 border-b border-gray-100" : ""
+                                            }`}
+                                    >
+                                        <strong className="text-gray-900 font-semibold">{day.label}:</strong>
+
+                                        {day.status === "closed" ? (
+                                            <span className="text-red-500 font-semibold">Closed</span>
+                                        ) : (
+                                            <span className="text-primary font-semibold">
+                                                {formatTime(day.from)} - {formatTime(day.to)}
+                                            </span>
+                                        )}
+                                    </div>
+                                ))}
                             </div>
+
                             <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg text-sm flex items-start gap-3">
                                 <div className="bg-yellow-100 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                                     <span className="text-yellow-600"><FaExclamation /></span>
                                 </div>
                                 <div>
-                                    <h1 className='text-sm font-semibold text-gray-900'>Emergency Support</h1>
-                                    <p className='text-sm font-semibold text-gray-600'>For urgent construction project requirements or technical emergencies, call us 24/7 at our emergency hotline.</p>
+                                    <h1 className="text-sm font-semibold text-gray-900">Emergency Support</h1>
+                                    <p className="text-sm font-semibold text-gray-600">
+                                        For urgent construction project requirements or technical emergencies, call us 24/7 at our emergency hotline.
+                                    </p>
                                 </div>
                             </div>
                         </div>
