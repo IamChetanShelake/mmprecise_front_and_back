@@ -1,37 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { images } from '../assets'
 import { TbPercentage } from "react-icons/tb";
 import { FaClock, FaLeaf } from "react-icons/fa";
 import { MdSecurity } from 'react-icons/md';
-import expertiseImg from '../assets/images/EXPERTISE3.png';
-import { API, getOurExpertise } from '../api';
+import { API, getOurExpertise, getWhyChoose } from '../api';
 function Expertise() {
 
 
-    const data = [
-        {
-            icon: <TbPercentage />,
-            title: "Material Savings",
-            description: "Up to 30% reduction in concrete and steel consumption through optimized design",
-        },
-        {
-            icon: <FaClock />,
-            title: "Faster  Construction",
-            description: "Reduced construction time through efficient design and execution methodologies",
-        },
-        {
-            icon: <MdSecurity />,
-            title: "Enhanced Durability",
-            description: "Superior structural integrity and longevity through advanced engineering solutions",
-        },
-        {
-            icon: <FaLeaf />,
-            title: "Sustainable Design",
-            description: "Environmentally conscious engineering with focus on green building practices",
-        },
-    ];
+    const iconMap = {
+        "Material Savings": <TbPercentage />,
+        "Faster Construction": <FaClock />,
+        "Enhanced Durability": <MdSecurity />,
+        "Sustainable Design": <FaLeaf />,
+    };
 
-    const [expertise, setExpertise] = useState([]);
+    const [expertise, setExpertise] = useState({});
+    const [benefits, setBenefits] = useState([]);
 
     useEffect(() => {
         const fetchOurExpertise = async () => {
@@ -46,6 +29,22 @@ function Expertise() {
 
         fetchOurExpertise();
     }, []);
+
+
+    useEffect(() => {
+        const fetchWhyChoose = async () => {
+            try {
+                const data = await getWhyChoose();
+                console.log("Our Expertise DATA", data)
+                setBenefits(data);
+            } catch (error) {
+                console.error('Error fetching Our Expertise:', error);
+            }
+        };
+
+        fetchWhyChoose();
+    }, []);
+
 
     return (
         <div className='' >
@@ -78,9 +77,10 @@ function Expertise() {
                         {expertise.second_title}
                     </h1>
                     <ul className="mt-8 list-disc list-inside font-semibold space-y-4">
-                        {expertise.second_points.map((point, idx) => (
+                        {expertise.second_points?.map((point, idx) => (
                             <li key={idx}>{point}</li>
                         ))}
+
                     </ul>
                 </div>
             </section>
@@ -91,9 +91,10 @@ function Expertise() {
                         {expertise.third_title}
                     </h1>
                     <ul className="mt-8 list-disc list-inside font-semibold space-y-4">
-                        {expertise.third_points.map((point, idx) => (
+                        {expertise.third_points?.map((point, idx) => (
                             <li key={idx}>{point}</li>
                         ))}
+
                     </ul>
                 </div>
 
@@ -106,7 +107,6 @@ function Expertise() {
                 </div>
             </section>
 
-
             <section className="flex flex-col my-16 items-center justify-center mx-auto max-md:mx-2 max-md:px-2 max-w-5xl w-full text-center py-16 bg-slate-100/70">
                 <h1 className="text-2xl md:text-3xl font-bold text-primary max-w-2xl mt-5">
                     Why Choose MM Precise?
@@ -117,21 +117,22 @@ function Expertise() {
                 </p>
 
                 <div className="flex gap-4 flex-wrap justify-center">
-                    {data.map((item, index) => (
+                    {benefits.map((item) => (
                         <div
-                            key={index}
+                            key={item.id}
                             className="flex flex-col justify-center items-center px-8 py-4 mt-4 w-56 bg-white text-black hover:scale-105 transition duration-300 rounded-lg shadow-md"
                         >
                             <div className="rounded-full text-white bg-primary p-2 w-8 h-8 flex items-center justify-center">
-                                {item.icon}
+                                {iconMap[item.title] || <TbPercentage />}
+                                {/* Fallback icon */}
                             </div>
                             <h1 className="text-lg font-semibold mt-2 text-center">{item.title}</h1>
                             <p className="text-sm text-center mt-1">{item.description}</p>
                         </div>
                     ))}
                 </div>
-
             </section>
+
 
         </div>
     )

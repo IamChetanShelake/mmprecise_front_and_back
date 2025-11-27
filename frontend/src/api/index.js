@@ -114,3 +114,27 @@ export const getOurExpertise = async () => {
   }
 };
 
+// ================  Why Choose ================
+export const getWhyChoose = async () => {
+  try {
+    const response = await axios.get(`${API}/api/why-chooses`);
+    return response.data;
+
+  } catch (error) {
+    console.error("Error fetching Why Choose:", error);
+    throw error;
+  }
+};
+
+// ================  GET IN TOUCH ================
+export const getInTouchAPI = async () => {
+  try {
+    const response = await axios.get(`${API}/api/get-in-touch`);
+    return response.data;
+
+  } catch (error) {
+    console.error("Error fetching GET IN TOUCH:", error);
+    throw error;
+  }
+};
+

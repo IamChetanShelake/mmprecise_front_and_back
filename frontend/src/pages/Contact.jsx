@@ -1,12 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaClock, FaExclamation, FaPhone, FaPhoneVolume, FaUser } from "react-icons/fa";
 import { FaLocationDot } from 'react-icons/fa6';
 import { IoIosMailOpen, IoMdMail, IoMdPricetag } from 'react-icons/io';
 import { IoChatbubbleSharp } from 'react-icons/io5';
 import { LiaCertificateSolid } from 'react-icons/lia';
 import { MdSecurity } from 'react-icons/md';
+import { getInTouchAPI } from '../api';
 
 export default function Contact() {
+
+    const iconMap = {
+        "CALL US DIRECTLY": <FaPhoneVolume />,
+        "EMAIL US": <IoIosMailOpen />,
+        "VISIT OUR OFFICE": <FaLocationDot />,
+    };
+
+    const [getInTouch, setGetInTouch] = useState([]);
+
+    useEffect(() => {
+        const fetchgetInTouch = async () => {
+            try {
+                const data = await getInTouchAPI();
+                console.log("Our Expertise DATA", data)
+                setGetInTouch(data);
+            } catch (error) {
+                console.error('Error fetching Our Expertise:', error);
+            }
+        };
+
+        fetchgetInTouch();
+    }, []);
+
     return (
         <div className="">
             {/* Hero Section */}
@@ -146,47 +170,62 @@ export default function Contact() {
 
                     {/* Contact Cards Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                        {/* Phone Card */}
-                        <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                            <div className="bg-gradient-to-br from-[#F97316] to-[#EA580C] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <span className="text-2xl text-white"><FaPhoneVolume /></span>
-                            </div>
-                            <h4 className="font-bold  text-center text-xl text-gray-900 mb-3">CALL US DIRECTLY</h4>
-                            <p className="text-gray-600 text-center  leading-relaxed mb-6">
-                                Speak with our construction experts immediately for urgent inquiries and project consultations.
-                            </p>
-                            <button className="bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white px-6 py-3 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 w-full">
-                                +91 9096879903
-                            </button>
-                        </div>
+                        {getInTouch.map((item) => (
+                            <div
+                                key={item.id}
+                                className="bg-white border border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                            >
+                                {/* Icon */}
+                                <div className="bg-gradient-to-br from-[#F97316] to-[#EA580C] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <span className="text-2xl text-white">
+                                        {iconMap[item.title]}
+                                    </span>
+                                </div>
 
-                        {/* Email Card */}
-                        <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                            <div className="bg-gradient-to-br from-[#EA580C] to-[#DC2626] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <span className="text-2xl text-white"><IoIosMailOpen /></span>
-                            </div>
-                            <h4 className="font-bold text-xl text-center  text-gray-900 mb-3">EMAIL US</h4>
-                            <p className="text-gray-600 text-center  leading-relaxed mb-6">
-                                Send us detailed construction project requirements and we'll respond within 24 hours.
-                            </p>
-                            <button className="bg-gradient-to-br from-[#EA580C] to-[#DC2626] text-white px-6 py-3 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 w-full">
-                                info@mmptce.com
-                            </button>
-                        </div>
+                                {/* Title */}
+                                <h4 className="font-bold text-center text-xl text-gray-900 mb-3">
+                                    {item.title}
+                                </h4>
 
-                        {/* Office Card */}
-                        <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                            <div className="bg-gradient-to-br from-[#DC2626] to-[#B91C1C] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <span className="text-2xl text-white"><FaLocationDot /></span>
+                                {/* Description */}
+                                <p className="text-gray-600 text-center leading-relaxed mb-6">
+                                    {item.description}
+                                </p>
+
+                                {/* Button Logic */}
+                                {item.contact_type === "call" && (
+                                    <a
+                                        href={`tel:${item.phone}`}
+                                        className="bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white px-6 py-3 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 w-full block text-center"
+                                    >
+                                        {item.phone}
+                                    </a>
+                                )}
+
+                                {item.contact_type === "email" && (
+                                    <a
+                                        href={`mailto:${item.email}`}
+                                        className="bg-gradient-to-br from-[#EA580C] to-[#DC2626] text-white px-6 py-3 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 w-full block text-center"
+                                    >
+                                        {item.email}
+                                    </a>
+                                )}
+
+                                {item.contact_type === "visit" && (
+                                    <button
+                                        className="bg-gradient-to-br from-[#DC2626] to-[#B91C1C] text-white px-6 py-3 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 w-full"
+                                        onClick={() =>
+                                            window.open(
+                                                `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address)}`,
+                                                "_blank"
+                                            )
+                                        }
+                                    >
+                                        Get Directions
+                                    </button>
+                                )}
                             </div>
-                            <h4 className="font-bold text-center text-xl text-gray-900 mb-3">VISIT OUR OFFICE</h4>
-                            <p className="text-gray-600 text-center leading-relaxed mb-6">
-                                Meet us in person to discuss your construction project requirements and explore our facilities.
-                            </p>
-                            <button className="bg-gradient-to-br from-[#DC2626] to-[#B91C1C] text-white px-6 py-3 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 w-full">
-                                Get Directions
-                            </button>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
