@@ -42,8 +42,9 @@
                         <div class="file-upload">
                             <input type="file" class="form-control" id="main_image" name="main_image" accept="image/*">
                             <div class="file-upload-preview" id="imagePreview">
-                                @if($latestNews->main_image)
-                                    <img src="{{ asset($latestNews->main_image) }}" alt="Current Image" class="current-image">
+                                @if($latestNews->main_image && file_exists(base_path($latestNews->main_image)))
+                                    @php $mime = pathinfo($latestNews->main_image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($latestNews->main_image, PATHINFO_EXTENSION); @endphp
+                                    <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($latestNews->main_image))) }}" alt="Current Image" class="current-image">
                                 @else
                                     <div class="upload-placeholder">
                                         <i class="bi bi-cloud-upload"></i>
@@ -683,7 +684,7 @@ function removeHighlight(button) {
 document.getElementById('main_image').addEventListener('change', function(e) {
     const file = e.target.files[0];
     const preview = document.getElementById('imagePreview');
-    const currentImageUrl = '{{ $latestNews->main_image ? asset($latestNews->main_image) : "" }}';
+    const currentImageData = '{{ $latestNews->main_image ? "data:" . (pathinfo($latestNews->main_image, PATHINFO_EXTENSION) == "jpg" ? "image/jpeg" : "image/" . pathinfo($latestNews->main_image, PATHINFO_EXTENSION)) . ";base64," . base64_encode(file_get_contents(base_path($latestNews->main_image))) : "" }}';
 
     if (file) {
         const reader = new FileReader();
@@ -695,9 +696,9 @@ document.getElementById('main_image').addEventListener('change', function(e) {
         reader.readAsDataURL(file);
     } else {
         // Reset to current image
-        if (currentImageUrl) {
+        if (currentImageData) {
             preview.innerHTML = `
-                <img src="${currentImageUrl}" alt="Current Image" style="max-width: 100%; max-height: 200px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <img src="${currentImageData}" alt="Current Image" style="max-width: 100%; max-height: 200px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
             `;
         } else {
             preview.innerHTML = `

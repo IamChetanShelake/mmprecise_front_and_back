@@ -78,7 +78,7 @@
                         <thead>
                             <tr>
                                 <th><i class="bi bi-hash"></i> ID</th>
-                                <th><i class="bi bi-star"></i> Icon</th>
+                                <th><i class="bi bi-image"></i> Image</th>
                                 <th><i class="bi bi-type"></i> Title</th>
                                 <th><i class="bi bi-file-text"></i> Description</th>
                                 <th><i class="bi bi-toggle-on"></i> Status</th>
@@ -94,10 +94,12 @@
                                 </td>
                                 <td>
                                     <div class="icon-cell">
-                                        @if($whyChoose->icon)
-                                            <i class="bi {{ $whyChoose->icon }} icon-display"></i>
+                                        @if(isset($whyChoose->image) && $whyChoose->image && file_exists(base_path($whyChoose->image)))
+                                            <img src="data:image/{{ pathinfo($whyChoose->image, PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(base_path($whyChoose->image))) }}" alt="Why Choose Image" class="icon-display" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px; border: 2px solid #e5e7eb;">
+                                        @elseif(isset($whyChoose->icon) && $whyChoose->icon && str_contains($whyChoose->icon, 'bi-'))
+                                            <i class="bi {{ $whyChoose->icon }} icon-display" style="font-size: 1.5rem; color: #FF6B35;"></i>
                                         @else
-                                            <i class="bi bi-star icon-display muted"></i>
+                                            <i class="bi bi-image icon-display muted"></i>
                                         @endif
                                     </div>
                                 </td>

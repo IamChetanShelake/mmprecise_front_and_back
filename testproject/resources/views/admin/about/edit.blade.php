@@ -56,10 +56,7 @@
                             <label for="first_description" class="form-label">
                                 First Description <span class="required">*</span>
                             </label>
-                            <div class="input-wrapper">
-                                <i class="bi bi-textarea-resize input-icon"></i>
-                                <textarea class="form-textarea" id="first_description" name="first_description" rows="4" placeholder="Enter first description" required>{{ old('first_description', $about->first_description) }}</textarea>
-                            </div>
+                            <textarea class="form-control summernote" id="first_description" name="first_description" rows="6" placeholder="Enter first description" required>{{ old('first_description', $about->first_description) }}</textarea>
                             @error('first_description')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
@@ -69,10 +66,7 @@
                             <label for="second_description" class="form-label">
                                 Second Description <span class="required">*</span>
                             </label>
-                            <div class="input-wrapper">
-                                <i class="bi bi-textarea-resize input-icon"></i>
-                                <textarea class="form-textarea" id="second_description" name="second_description" rows="4" placeholder="Enter second description" required>{{ old('second_description', $about->second_description) }}</textarea>
-                            </div>
+                            <textarea class="form-control summernote" id="second_description" name="second_description" rows="6" placeholder="Enter second description" required>{{ old('second_description', $about->second_description) }}</textarea>
                             @error('second_description')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
@@ -168,11 +162,11 @@
                                 </button>
                             </div>
                         </div>
-                        @if($about->image)
+                        @if($about->image && file_exists(base_path($about->image)))
                             <div class="current-image-display">
                                 <small class="text-muted">Current image:</small>
                                 <div class="current-image-wrapper">
-                                    <img src="{{ asset($about->image) }}" alt="Current About Image" class="current-image">
+                                    <img src="data:image/{{ pathinfo($about->image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($about->image, PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(base_path($about->image))) }}" alt="Current About Image" class="current-image">
                                     <div class="current-image-overlay">
                                         <i class="bi bi-image"></i>
                                     </div>
@@ -849,6 +843,53 @@ document.addEventListener('DOMContentLoaded', function() {
                 notification.style.display = 'none';
             }, 300);
         }, 2000);
+    });
+});
+</script>
+
+<!-- Summernote CSS and JS -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Initialize Summernote for description fields
+    $('.summernote').summernote({
+        height: 300,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['fontname', ['fontname']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        placeholder: 'Describe your about section content...',
+        callbacks: {
+            onInit: function() {
+                // Custom styling for Summernote
+                $('.note-editor').css({
+                    'border-radius': '12px',
+                    'border': '2px solid #e5e7eb',
+                    'overflow': 'hidden'
+                });
+
+                $('.note-toolbar').css({
+                    'background': '#f8fafc',
+                    'border-bottom': '1px solid #e5e7eb',
+                    'padding': '0.5rem'
+                });
+
+                $('.note-editing-area .note-editable').css({
+                    'padding': '1rem',
+                    'min-height': '200px',
+                    'background': 'white'
+                });
+            }
+        }
     });
 });
 </script>

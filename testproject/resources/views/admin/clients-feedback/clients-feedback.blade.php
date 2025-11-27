@@ -90,8 +90,8 @@
 
                         <!-- Client Image -->
                         <div class="client-image-section">
-                            @if($feedback->feedback_image)
-                                <img src="{{ asset($feedback->feedback_image) }}" alt="{{ $feedback->feedbacker_name }}" class="client-image">
+                            @if($feedback->feedback_image && file_exists(base_path($feedback->feedback_image)))
+                                <img src="data:image/{{ pathinfo($feedback->feedback_image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($feedback->feedback_image, PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(base_path($feedback->feedback_image))) }}" alt="{{ $feedback->feedbacker_name }}" class="client-image">
                             @else
                                 <div class="client-image-placeholder">
                                     <i class="bi bi-person-circle"></i>

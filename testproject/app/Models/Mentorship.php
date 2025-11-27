@@ -9,6 +9,7 @@ class Mentorship extends Model
     protected $fillable = [
         'icon',
         'title',
+        'image',
         'description',
         'sort_order',
         'is_active'

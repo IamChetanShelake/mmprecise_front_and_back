@@ -61,9 +61,10 @@
                             </label>
                             <input type="file" name="main_image" id="main_image" class="form-control" accept="image/*">
                             <div class="form-help">Upload a high-quality image (JPG, PNG, WebP, SVG). Max 5MB.</div>
-                            @if($expertise->main_image)
+                            @if($expertise->main_image && file_exists(base_path($expertise->main_image)))
                                 <div class="current-image">
-                                    <img src="{{ asset($expertise->main_image) }}" alt="Current Main Image" class="image-preview">
+                                    @php $mime = pathinfo($expertise->main_image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($expertise->main_image, PATHINFO_EXTENSION); @endphp
+                                    <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($expertise->main_image))) }}" alt="Current Main Image" class="image-preview">
                                     <p class="image-caption">Current image</p>
                                 </div>
                             @endif
@@ -116,9 +117,10 @@
                             </label>
                             <input type="file" name="second_image" id="second_image" class="form-control" accept="image/*">
                             <div class="form-help">Upload an image for the second item.</div>
-                            @if($expertise->second_image)
+                            @if($expertise->second_image && file_exists(base_path($expertise->second_image)))
                                 <div class="current-image">
-                                    <img src="{{ asset($expertise->second_image) }}" alt="Current Second Image" class="image-preview">
+                                    @php $mime = pathinfo($expertise->second_image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($expertise->second_image, PATHINFO_EXTENSION); @endphp
+                                    <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($expertise->second_image))) }}" alt="Current Second Image" class="image-preview">
                                     <p class="image-caption">Current image</p>
                                 </div>
                             @endif
@@ -189,9 +191,10 @@
                             </label>
                             <input type="file" name="third_image" id="third_image" class="form-control" accept="image/*">
                             <div class="form-help">Upload an image for the third item.</div>
-                            @if($expertise->third_image)
+                            @if($expertise->third_image && file_exists(base_path($expertise->third_image)))
                                 <div class="current-image">
-                                    <img src="{{ asset($expertise->third_image) }}" alt="Current Third Image" class="image-preview">
+                                    @php $mime = pathinfo($expertise->third_image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($expertise->third_image, PATHINFO_EXTENSION); @endphp
+                                    <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($expertise->third_image))) }}" alt="Current Third Image" class="image-preview">
                                     <p class="image-caption">Current image</p>
                                 </div>
                             @endif

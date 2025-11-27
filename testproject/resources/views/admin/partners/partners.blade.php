@@ -129,8 +129,8 @@
                                         <div class="partner-media-cell">
                                             @if($partner->icon)
                                                 <i class="bi {{ $partner->icon }} partner-icon-table"></i>
-                                            @elseif($partner->image)
-                                                <img src="{{ asset($partner->image) }}" alt="{{ $partner->title }}" class="partner-image-table">
+                                            @elseif($partner->image && file_exists(base_path($partner->image)))
+                                                <img src="data:image/{{ pathinfo($partner->image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($partner->image, PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(base_path($partner->image))) }}" alt="{{ $partner->title }}" class="partner-image-table">
                                             @else
                                                 <div class="partner-icon-placeholder-table">
                                                     <i class="bi bi-handshake"></i>

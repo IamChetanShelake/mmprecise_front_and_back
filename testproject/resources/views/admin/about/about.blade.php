@@ -88,8 +88,8 @@
                 <div class="about-content-grid">
                     <!-- Image Section -->
                     <div class="about-image-section">
-                        @if($about->image)
-                            <img src="{{ asset($about->image) }}" alt="About Image" class="about-image">
+                        @if($about->image && file_exists(base_path($about->image)))
+                            <img src="data:image/{{ pathinfo($about->image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($about->image, PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(base_path($about->image))) }}" alt="About Image" class="about-image">
                             <div class="about-image-overlay">
                                 <i class="bi bi-image"></i>
                             </div>

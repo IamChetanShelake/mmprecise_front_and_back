@@ -57,31 +57,22 @@
                         @enderror
                     </div>
 
-                    <!-- Icon Selection -->
+                    <!-- Image Upload -->
                     <div class="form-group">
-                        <label for="icon" class="form-label">
-                            <i class="bi bi-star"></i>
-                            Icon
+                        <label for="image" class="form-label">
+                            <i class="bi bi-image"></i>
+                            Image
                         </label>
-                        <div class="icon-selector">
-                            <div class="icon-preview" id="iconPreview">
-                                <i class="bi bi-star" id="previewIcon"></i>
+                        <div class="image-upload-container">
+                            <input type="file" class="form-control-file" id="image" name="image"
+                                   accept="image/*" onchange="previewImage(event)">
+                            <div class="image-preview" id="imagePreview">
+                                <i class="bi bi-image"></i>
+                                <span>Upload an image</span>
                             </div>
-                            <select class="form-control" id="icon" name="icon">
-                                <option value="">Select an icon</option>
-                                <option value="bi-star" {{ old('icon') == 'bi-star' ? 'selected' : '' }}>Star</option>
-                                <option value="bi-trophy" {{ old('icon') == 'bi-trophy' ? 'selected' : '' }}>Trophy</option>
-                                <option value="bi-award" {{ old('icon') == 'bi-award' ? 'selected' : '' }}>Award</option>
-                                <option value="bi-shield-check" {{ old('icon') == 'bi-shield-check' ? 'selected' : '' }}>Shield Check</option>
-                                <option value="bi-lightning" {{ old('icon') == 'bi-lightning' ? 'selected' : '' }}>Lightning</option>
-                                <option value="bi-gear" {{ old('icon') == 'bi-gear' ? 'selected' : '' }}>Gear</option>
-                                <option value="bi-tools" {{ old('icon') == 'bi-tools' ? 'selected' : '' }}>Tools</option>
-                                <option value="bi-check-circle" {{ old('icon') == 'bi-check-circle' ? 'selected' : '' }}>Check Circle</option>
-                                <option value="bi-hand-thumbs-up" {{ old('icon') == 'bi-hand-thumbs-up' ? 'selected' : '' }}>Thumbs Up</option>
-                                <option value="bi-heart" {{ old('icon') == 'bi-heart' ? 'selected' : '' }}>Heart</option>
-                            </select>
                         </div>
-                        @error('icon')
+                        <small class="form-hint">Recommended size: 100x100px. Maximum size: 5MB. Formats: JPEG, PNG, JPG, GIF, WebP, SVG</small>
+                        @error('image')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
@@ -200,32 +191,75 @@ textarea.form-control {
     content: "⚠";
 }
 
-/* Icon Selector */
-.icon-selector {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+/* Image Upload */
+.image-upload-container {
+    position: relative;
 }
 
-.icon-preview {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #FFF3CD 0%, #FFEAA7 100%);
+.form-control-file {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.image-preview {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e5e7eb 100%);
+    border: 2px dashed #d1d5db;
     border-radius: 12px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 2px solid #f8fafc;
+    gap: 0.5rem;
     transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
-.icon-preview i {
-    font-size: 1.5rem;
+.image-preview:hover {
+    border-color: #FF6B35;
+    background: linear-gradient(135deg, #fff3e0 0%, #ffeaa7 100%);
+}
+
+.image-preview i {
+    font-size: 2rem;
+    color: #9ca3af;
+    transition: color 0.3s ease;
+}
+
+.image-preview:hover i {
     color: #FF6B35;
 }
 
-.icon-selector select {
-    flex: 1;
+.image-preview span {
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.form-hint {
+    color: #6b7280;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+    display: block;
 }
 
 /* Status Toggle */
@@ -417,22 +451,32 @@ input:checked + .toggle-slider:before {
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Icon preview functionality
-    const iconSelect = document.getElementById('icon');
-    const previewIcon = document.getElementById('previewIcon');
+function previewImage(event) {
+    const imagePreview = document.getElementById('imagePreview');
+    const file = event.target.files[0];
 
-    function updateIconPreview() {
-        const selectedIcon = iconSelect.value;
-        if (selectedIcon) {
-            previewIcon.className = 'bi ' + selectedIcon;
-        } else {
-            previewIcon.className = 'bi bi-star';
-        }
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imagePreview.innerHTML = `<img src="${e.target.result}" alt="Image preview">`;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        imagePreview.innerHTML = `
+            <i class="bi bi-image"></i>
+            <span>Upload an image</span>
+        `;
     }
+}
 
-    iconSelect.addEventListener('change', updateIconPreview);
-    updateIconPreview(); // Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Make the entire preview area clickable
+    const imagePreview = document.getElementById('imagePreview');
+    const imageInput = document.getElementById('image');
+
+    imagePreview.addEventListener('click', function() {
+        imageInput.click();
+    });
 });
 </script>
 @endsection

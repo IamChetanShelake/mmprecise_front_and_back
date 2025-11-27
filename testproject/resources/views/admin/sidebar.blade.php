@@ -2,7 +2,7 @@
 <nav class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
     <div>
         <div class="logo-container p-3 mb-0">
-            <img src="{{ asset('images/MM Precise.png') }}" alt="MM Precise Logo" class="logo-img">
+            <img src="/images/MM Precise.png" alt="MM Precise Logo" class="logo-img" style="max-width: 200px; height: auto;">
         </div>
         <div class="sidebar-nav-container">
             <ul class="nav flex-column">
@@ -116,7 +116,12 @@
                     <i class="bi bi-folder"></i> <span>Projects</span>
                 </a>
             </li>
-            <li class="nav-item" style="padding-bottom: 90px;">
+            <li class="nav-item">
+                <a class="nav-link {{ $activeSection == 'csr' ? 'active' : '' }}" href="{{ route('admin.csr') }}" data-section="csr">
+                    <i class="bi bi-heart"></i> <span>CSR</span>
+                </a>
+            </li>
+             <li class="nav-item" style="padding-bottom: 90px;">
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="nav-link logout {{ $activeSection == 'logout' ? 'active' : '' }}" data-section="logout" >

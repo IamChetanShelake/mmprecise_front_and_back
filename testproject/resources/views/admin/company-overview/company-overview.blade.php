@@ -200,10 +200,11 @@
             </div>
 
             <!-- Image Section -->
-            @if($companyOverview->image)
+            @if($companyOverview->image && file_exists(base_path($companyOverview->image)))
+                @php $mime = pathinfo($companyOverview->image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($companyOverview->image, PATHINFO_EXTENSION); @endphp
                 <div class="image-showcase">
                     <div class="image-container">
-                        <img src="{{ asset($companyOverview->image) }}" alt="Company Overview Image" class="showcase-image">
+                        <img src="data:image/{{ $mime }};base64,{{ base64_encode(file_get_contents(base_path($companyOverview->image))) }}" alt="Company Overview Image" class="showcase-image">
                         <div class="image-overlay">
                             <div class="image-info">
                                 <i class="bi bi-image"></i>

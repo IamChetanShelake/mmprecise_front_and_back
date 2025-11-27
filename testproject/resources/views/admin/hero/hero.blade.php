@@ -86,8 +86,8 @@
                 </div>
 
                 <div class="hero-card-image">
-                    @if($hero->background_image)
-                        <img src="{{ asset($hero->background_image) }}" alt="Hero Background" class="hero-image">
+                    @if($hero->background_image && file_exists(base_path($hero->background_image)))
+                        <img src="data:image/{{ pathinfo($hero->background_image, PATHINFO_EXTENSION) == 'jpg' ? 'jpeg' : pathinfo($hero->background_image, PATHINFO_EXTENSION) }};base64,{{ base64_encode(file_get_contents(base_path($hero->background_image))) }}" alt="Hero Background" class="hero-image">
                         <div class="hero-image-overlay">
                             <i class="bi bi-image"></i>
                         </div>
