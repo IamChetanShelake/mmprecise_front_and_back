@@ -127,13 +127,13 @@ function NewsUpdates() {
         </div>
       </section>
 
-      <div>
+      <section id="achievements">
         <Achievements
           heading={"ACHIEVEMENTS"}
           achievements={allAchievements}
           showButton={false}
         />
-      </div>
+      </section>
     </div>
   );
 }

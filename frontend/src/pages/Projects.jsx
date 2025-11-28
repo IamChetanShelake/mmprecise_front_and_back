@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { icons, images } from "../assets";
 import { Link } from "react-router-dom";
-import axios from "axios"; // or fetch
 import { API, getProjects } from "../api";
 
 function Projects() {

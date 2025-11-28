@@ -34,18 +34,18 @@ export default function Contact() {
     }, []);
 
     useEffect(() => {
-    const fetchOfficeTime = async () => {
-        try {
-            const data = await getOfficeTime();
-            console.log("Office Time DATA", data);
-            setOfficeTime(data);
-        } catch (error) {
-            console.error("Error fetching Office Time:", error);
-        }
-    };
+        const fetchOfficeTime = async () => {
+            try {
+                const data = await getOfficeTime();
+                console.log("Office Time DATA", data);
+                setOfficeTime(data);
+            } catch (error) {
+                console.error("Error fetching Office Time:", error);
+            }
+        };
 
-    fetchOfficeTime();
-}, []);
+        fetchOfficeTime();
+    }, []);
 
 
     const formatTime = (time) => {
@@ -57,25 +57,25 @@ export default function Contact() {
     };
 
 
-   const businessHours = [
-    {
-        label: "Monday - Friday",
-        from: officeTime.monday_from,
-        to: officeTime.friday_to,
-    },
-    {
-        label: "Saturday",
-        from: officeTime.saturday_status === "open" ? officeTime.saturday_from : null,
-        to: officeTime.saturday_status === "open" ? officeTime.saturday_to : null,
-        status: officeTime.saturday_status,
-    },
-    {
-        label: "Sunday",
-        from: officeTime.sunday_from,
-        to: officeTime.sunday_to,
-        status: officeTime.sunday_status,
-    },
-];
+    const businessHours = [
+        {
+            label: "Monday - Friday",
+            from: officeTime.monday_from,
+            to: officeTime.friday_to,
+        },
+        {
+            label: "Saturday",
+            from: officeTime.saturday_status === "open" ? officeTime.saturday_from : null,
+            to: officeTime.saturday_status === "open" ? officeTime.saturday_to : null,
+            status: officeTime.saturday_status,
+        },
+        {
+            label: "Sunday",
+            from: officeTime.sunday_from,
+            to: officeTime.sunday_to,
+            status: officeTime.sunday_status,
+        },
+    ];
 
 
 
@@ -279,6 +279,20 @@ export default function Contact() {
             </section>
 
             {/* Map */}
+            <section className="w-full flex justify-center mt-12">
+                <div className="w-full max-w-[1200px] h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
+                    <iframe
+                        title="Office Location"
+                        src="https://www.google.com/maps?q=19.990838079214253, 73.77991507201662&hl=es;z=14&output=embed"
+                        className="w-full h-full"
+                        style={{ border: 0 }}
+                        allowFullScreen={true}
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                </div>
+            </section>
+
 
 
             {/* Why Choose & Business Hours */}

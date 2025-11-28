@@ -17,6 +17,19 @@ import {
 import { FaWhatsapp } from "react-icons/fa"; 
 
 function AppContent() {
+  // Replace with your actual WhatsApp number 
+  const whatsappNumber = "9096879903"; 
+  
+  // WhatsApp message (optional)
+  const defaultMessage = "Hello! I would like to get more information.";
+  
+  // Create WhatsApp URL
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(defaultMessage)}`;
+
+  const handleWhatsAppClick = () => {
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="relative min-h-screen">
       <Router>
@@ -38,10 +51,15 @@ function AppContent() {
         <Footer />
       </Router>
 
-      {/* Fixed Action Button */}
+      {/* Fixed WhatsApp Button */}
       <div className="fixed bottom-6 right-6 z-50">
-        <button className="bg-orange-500 text-white p-3 rounded-full shadow-lg hover:bg-orange-600 transition">
-          <FaWhatsapp size={24} />
+        <button 
+          onClick={handleWhatsAppClick}
+          className="bg-primary text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
+          aria-label="Contact us on WhatsApp"
+          title="Chat with us on WhatsApp"
+        >
+          <FaWhatsapp size={28} />
         </button>
       </div>
     </div>

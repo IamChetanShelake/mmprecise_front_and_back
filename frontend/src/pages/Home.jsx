@@ -88,31 +88,33 @@ function Home() {
   return (
     <div className='flex flex-col items-center justify-center' >
 
-      <section
-        className="relative w-full h-[90vh] flex items-center justify-center bg-cover bg-center"
-        style={{ backgroundImage: `url(${API}/${herosection.background_image})` }}      >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/50"></div>
+          <section
+      className="relative w-full h-[90vh] flex items-center justify-start bg-cover bg-center"
+      style={{ backgroundImage: `url(${API}/${herosection.background_image})` }}
+    >
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/50"></div>
 
-        {/* Content */}
-        <div className="relative text-start px-6 md:px-10 max-w-5xl mx-auto">
-          <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-            {herosection.first_title}<br />
-            <span className="text-primary">{herosection.second_title}</span>
-          </h1>
+      {/* Content */}
+      <div className="relative text-start px-6 md:px-10 max-w-5xl mx-auto">
+        <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight">
+          {herosection.first_title}<br />
+          <span className="text-primary">{herosection.second_title}</span>
+        </h1>
 
-          <p className="text-gray-200 mt-4 text-sm md:text-base">
-            {herosection.description}
-          </p>
+        <p className="text-gray-200 mt-4 text-sm md:text-base max-w-2xl">
+          {herosection.description}
+        </p>
 
-          <button className="mt-6 px-6 py-3 bg-primary hover:bg-orange-600 text-white rounded-full flex gap-2 mx-auto active:scale-95 transition">
+        <div className="flex items-center justify-start">
+          <button className="mt-6 px-6 py-3 bg-primary hover:bg-orange-600 text-white rounded-full flex gap-2 justify-start items-center active:scale-95 transition duration-200">
             EXPLORE PROJECTS
             <CgArrowTopRight className="w-5 h-5" />
           </button>
         </div>
+      </div>
+    </section>
 
-
-      </section>
 
 
       <section className=" flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-10 md:py-16 gap-10">
@@ -219,7 +221,7 @@ function Home() {
               key={index}
               className="flex flex-col items-center gap-2 hover:scale-105 transition-transform"
             >
-              <img src={`${API}/${partner.image}`} alt={partner.name} className="object-cover" />
+              <img src={`${API}/${partner.image}`} alt={partner.name} className=" w-full h-8 object-cover" />
               {/* <span className="text-gray-600 text-sm">{partner.name}</span> */}
             </div>
           ))}

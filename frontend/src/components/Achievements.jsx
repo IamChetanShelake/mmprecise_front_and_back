@@ -1,7 +1,11 @@
 
 import { CgArrowTopRight } from 'react-icons/cg';
+import { useNavigate } from 'react-router-dom';
 
 const Achievements = ({ heading, subheading, achievements, showButton }) => {
+
+  const navigate = useNavigate(); // Initialize navigate
+
   return (
     <section className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <h2 className="text-2xl font-bold text-gray-800 uppercase">{heading}</h2>
@@ -22,10 +26,16 @@ const Achievements = ({ heading, subheading, achievements, showButton }) => {
       {/* Button Only If showButton is true */}
       {showButton && (
         <div className="text-center mt-8">
-          <button className="px-6 py-3 bg-yellow-400 rounded-full text-sm font-semibold hover:bg-yellow-500 transition flex items-center mx-auto gap-2">
+          <button
+            onClick={() => {
+              navigate("/news-updates#achievements");
+            }}
+            className="px-6 py-3 bg-yellow-400 rounded-full text-sm font-semibold hover:bg-yellow-500 transition flex items-center mx-auto gap-2"
+          >
             VIEW ALL ACHIEVEMENTS
             <CgArrowTopRight className="w-5 h-5" />
           </button>
+
         </div>
       )}
     </section>
