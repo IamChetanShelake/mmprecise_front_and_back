@@ -171,7 +171,7 @@ const ProjectDetails = () => {
                     ) : (
                         <div className="overflow-hidden rounded-xl shadow-lg">
                             <img
-                                src={`http://webadmin.mmprecise.com/${project.main_image}`}
+                                src={`${API}/${project.main_image}`}
                                 alt={project.title}
                                 className="h-56 w-full object-cover transition duration-300 group-hover:scale-105"
                             />

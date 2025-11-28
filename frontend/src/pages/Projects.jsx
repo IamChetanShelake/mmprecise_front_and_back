@@ -3,18 +3,25 @@ import { BsGraphUpArrow } from "react-icons/bs";
 import { icons, images } from "../assets";
 import { Link } from "react-router-dom";
 import axios from "axios"; // or fetch
-import { API } from "../api";
+import { API, getProjects } from "../api";
 
 function Projects() {
     const [activeTab, setActiveTab] = useState("ongoing");
     const [projects, setProjects] = useState([]);
 
     useEffect(() => {
-        // Fetch from backend (replace with your actual endpoint)
-        axios.get("http://webadmin.mmprecise.com/api/projects")
-            .then((res) => setProjects(res.data))
-            .catch((err) => console.error("Error fetching projects:", err));
-    }, []);
+        const fetchProjects = async () => {
+          try {
+            const data = await getProjects();
+            setProjects(data);
+            console.log("getProjects", data)
+          } catch (error) {
+            console.error('Error fetching Projects:', error);
+          }
+        };
+    
+        fetchProjects();
+      }, []);
 
     const filteredProjects = projects.filter((project) =>
         project.type === activeTab
@@ -76,7 +83,7 @@ function Projects() {
                                 <div className="relative group">
                                     <img
                                         // 
-                                        src={`http://webadmin.mmprecise.com/${project.main_image}`}
+                                        src={`${API}/${project.main_image}`}
                                         alt={project.title}
                                         className="h-56 w-full object-cover transition duration-300 group-hover:scale-105"
                                     />

@@ -211,7 +211,7 @@ export const News = async (id) => {
   }
 };
 
-// ================  CSR ================
+// ================  getProjects ================
 export const getProjects = async () => {
   try {
     const response = await axios.get(`${API}/api/projects`);
