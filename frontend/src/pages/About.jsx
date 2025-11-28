@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { images } from '../assets'
 import { API, getCertifications, getCompanyOverview } from '../api';
+import { useNavigate } from 'react-router-dom';
 
 
 function About() {
+
+  const navigate = useNavigate(); // Initialize navigate
+
 
   const [memberships, setMemberships] = useState([]);
   const [overview, setOverview] = useState(null);
@@ -35,12 +39,6 @@ function About() {
 
     fetchCertifications();
   }, []);
-
-  const stats = [
-    { value: "10", label: "PROJECTS" },
-    { value: "0", label: "YEARS" },
-    { value: "100", label: "WORKFORCE" },
-  ];
 
   if (!overview) return <p>Loading...</p>;
 
@@ -78,13 +76,13 @@ function About() {
             </div>
 
             {/* Button */}
-            <a
-              href="#"
+            <button
+              onClick={() => navigate("/projects")}
               className="inline-flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full shadow hover:bg-orange-600 transition"
             >
               View Our Projects
               <span>↗</span>
-            </a>
+            </button>
           </div>
 
           {/* Image Section */}
@@ -99,45 +97,45 @@ function About() {
       </section>
 
       <section className="py-16 px-6 md:px-12 lg:px-24 bg-gray-50">
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-    {/* Vision */}
-    <div className="text-center md:text-left max-w-lg mx-auto md:mx-0 border border-gray-200 rounded-lg p-6 md:p-8 bg-white shadow-sm hover:scale-105 transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
-      <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
-        <img
-          src={images.Vision}
-          alt="Vision Icon"
-          className="w-16 h-16 md:w-18 md:h-18"
-        />
-        <h3 className="text-2xl font-bold text-gray-800">VISION</h3>
-      </div>
-      <p className="text-gray-600 leading-relaxed text-lg">
-        {overview.vision_description}
-      </p>
-      <div className="mt-8 border-b border-gray-100"></div>
-    </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          {/* Vision */}
+          <div className="text-center md:text-left max-w-lg mx-auto md:mx-0 border border-gray-200 rounded-lg p-6 md:p-8 bg-white shadow-sm hover:scale-105 transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
+            <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
+              <img
+                src={images.Vision}
+                alt="Vision Icon"
+                className="w-16 h-16 md:w-18 md:h-18"
+              />
+              <h3 className="text-2xl font-bold text-gray-800">VISION</h3>
+            </div>
+            <p className="text-gray-600 leading-relaxed text-lg">
+              {overview.vision_description}
+            </p>
+            <div className="mt-8 border-b border-gray-100"></div>
+          </div>
 
-    {/* Mission */}
-    <div className="text-center md:text-left max-w-lg mx-auto md:mx-0 border border-gray-200 rounded-lg p-6 md:p-8 bg-white shadow-sm hover:scale-105 transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
-      <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
-        <img
-          src={images.Mission}
-          alt="Mission Icon"
-          className="w-16 h-16 md:w-18 md:h-18"
-        />
-        <h3 className="text-2xl font-bold text-gray-800">MISSION</h3>
-      </div>
-      <ul className="space-y-3 text-gray-600">
-        {overview.mission_points.map((point, i) => (
-          <li key={i} className="flex items-start">
-            <span className="text-blue-500 mr-3 mt-1">•</span>
-            <span className="text-lg text-left">{point}</span>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-8 border-b border-gray-100"></div>
-    </div>
-  </div>
-</section>
+          {/* Mission */}
+          <div className="text-center md:text-left max-w-lg mx-auto md:mx-0 border border-gray-200 rounded-lg p-6 md:p-8 bg-white shadow-sm hover:scale-105 transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
+            <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
+              <img
+                src={images.Mission}
+                alt="Mission Icon"
+                className="w-16 h-16 md:w-18 md:h-18"
+              />
+              <h3 className="text-2xl font-bold text-gray-800">MISSION</h3>
+            </div>
+            <ul className="space-y-3 text-gray-600">
+              {overview.mission_points.map((point, i) => (
+                <li key={i} className="flex items-start">
+                  <span className="text-blue-500 mr-3 mt-1">•</span>
+                  <span className="text-lg text-left">{point}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8 border-b border-gray-100"></div>
+          </div>
+        </div>
+      </section>
 
       {/* Certifications & Memberships */}
       <section className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

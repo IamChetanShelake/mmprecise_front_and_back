@@ -5,8 +5,12 @@ import { API, getAboutUs, getAchievements, getHeroSection, getOurPartner, getTes
 import { Achievements } from '../components';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import Slider from "react-slick";
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
+
+    const navigate = useNavigate(); // Initialize navigate
+
 
   const [achievements, setAchievements] = useState([]);
   const [partners, setPartners] = useState([]);
@@ -63,24 +67,37 @@ function Home() {
 
   const settings = {
     dots: false,
-    infinite: true,
+    infinite: testimonials.length > 1,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
-    arrows: false, // We use custom arrows
+    arrows: false,
+    autoplay: false,
     responsive: [
       {
-        breakpoint: 1024, // Tablets
+        breakpoint: 1024,
         settings: {
           slidesToShow: 2,
-        },
+          slidesToScroll: 1,
+          infinite: testimonials.length > 2,
+        }
       },
       {
-        breakpoint: 768, // Mobile
+        breakpoint: 768,
         settings: {
           slidesToShow: 1,
-        },
+          slidesToScroll: 1,
+          infinite: testimonials.length > 1,
+        }
       },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: testimonials.length > 1,
+        }
+      }
     ],
   };
 
@@ -134,7 +151,9 @@ function Home() {
           </p>
 
           <div className="flex items-center justify-start">
-            <button className="mt-6 px-6 py-3 bg-primary hover:bg-orange-600 text-white rounded-full flex gap-2 justify-start items-center active:scale-95 transition duration-200">
+            <button
+            onClick={()=> navigate("/projects")}
+            className="mt-6 px-6 py-3 bg-primary hover:bg-orange-600 text-white rounded-full flex gap-2 justify-start items-center active:scale-95 transition duration-200">
               EXPLORE PROJECTS
               <CgArrowTopRight className="w-5 h-5" />
             </button>
@@ -220,7 +239,7 @@ function Home() {
       </div>
 
       {/* Testominical */}
-      <section className="py-10 max-w-6xl mx-auto px-4 sm:px-6">
+      {/* <section className="py-10 max-w-6xl mx-auto px-4 sm:px-6">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between relative gap-4 md:gap-0">
             <div className="text-center md:flex-1">
@@ -232,7 +251,6 @@ function Home() {
               </p>
             </div>
 
-            {/* Navigation */}
             <div className="flex items-center gap-3">
               <FaArrowLeft
                 size={24}
@@ -248,7 +266,6 @@ function Home() {
           </div>
         </div>
 
-        {/* Slider */}
          <div className="mt-4">
     <Slider ref={sliderRef} {...settings}>
       {testimonials.map((item, index) => (
@@ -258,8 +275,54 @@ function Home() {
       ))}
     </Slider>
   </div>
-      </section>
+  
+      </section> */}
 
+
+
+      <section className="w-full py-8 sm:py-10 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0 mb-6 sm:mb-8">
+            <div className="text-center md:text-left md:flex-1">
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">
+                What Our Clients Say
+              </h2>
+              <p className="text-gray-700 text-xs sm:text-sm md:text-base mt-1 sm:mt-2 max-w-md mx-auto md:mx-0">
+                Trusted by industry leaders for excellence and innovation
+              </p>
+            </div>
+
+            {/* Navigation */}
+            <div className="flex items-center gap-3 mt-2 md:mt-0">
+              <button
+                className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+                onClick={() => sliderRef.current.slickPrev()}
+              >
+                <FaArrowLeft size={18} className="text-gray-700" />
+              </button>
+              <button
+                className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+                onClick={() => sliderRef.current.slickNext()}
+              >
+                <FaArrowRight size={18} className="text-gray-700" />
+              </button>
+            </div>
+          </div>
+
+          {/* Slider Container */}
+          <div className="relative">
+            <Slider ref={sliderRef} {...settings}>
+              {testimonials.map((item, index) => (
+                <div key={index} className="px-2 sm:px-3 focus:outline-none">
+                  <div className="h-full">
+                    <TestimonialCard testimonial={item} />
+                  </div>
+                </div>
+              ))}
+            </Slider>
+          </div>
+        </div>
+      </section>
 
       {/* Our Partner */}
       <div className="text-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -285,3 +348,4 @@ function Home() {
 }
 
 export default Home
+

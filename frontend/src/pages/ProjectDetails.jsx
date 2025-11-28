@@ -102,13 +102,13 @@ const ProjectDetails = () => {
             <h1 className="text-3xl font-bold mb-6">{project.title}</h1>
 
             {/* Tabs */}
-            <div className="flex gap-2 mb-8">
+            <div className="flex flex-wrap gap-2 mb-8 justify-start">
                 {tabs.map((tab) => (
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
-                        className={`px-4 py-2 text-sm rounded-full transition border
-                            ${activeTab === tab
+                        className={`px-4 py-2 text-[8px] sm:text-sm md:text-base rounded-full transition border w-auto
+        ${activeTab === tab
                                 ? "bg-orange-600 text-white"
                                 : "bg-white text-gray-600 hover:bg-gray-50 border-orange-600"
                             }`}
@@ -117,6 +117,7 @@ const ProjectDetails = () => {
                     </button>
                 ))}
             </div>
+
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Left Section */}

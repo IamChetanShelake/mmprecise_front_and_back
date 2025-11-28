@@ -10,17 +10,17 @@ function Projects() {
 
     useEffect(() => {
         const fetchProjects = async () => {
-          try {
-            const data = await getProjects();
-            setProjects(data);
-            console.log("getProjects", data)
-          } catch (error) {
-            console.error('Error fetching Projects:', error);
-          }
+            try {
+                const data = await getProjects();
+                setProjects(data);
+                console.log("getProjects", data)
+            } catch (error) {
+                console.error('Error fetching Projects:', error);
+            }
         };
-    
+
         fetchProjects();
-      }, []);
+    }, []);
 
     const filteredProjects = projects.filter((project) =>
         project.type === activeTab
@@ -45,12 +45,15 @@ function Projects() {
             </section>
 
             {/* ---------------- PROJECT FILTER TABS ---------------- */}
-            <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20">
-                <div className="flex justify-center mt-10 mb-12">
-                    <div className="bg-white rounded-full shadow-lg px-5 py-2 flex gap-4">
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20">
+                <div className="flex justify-center mt-6 md:mt-10 mb-8 md:mb-12">
+                    <div className="bg-white rounded-full shadow-lg px-3 py-2 flex flex-wrap gap-2 sm:gap-4 justify-center">
                         <button
                             onClick={() => setActiveTab("ongoing")}
-                            className={`px-5 py-2 rounded-full font-medium transition ${activeTab === "ongoing" ? "bg-orange-600 text-white" : "text-gray-700"
+                            className={`px-2 sm:px-5 py-2 text-[12px] md:text-base rounded-full font-medium transition 
+          ${activeTab === "ongoing"
+                                    ? "bg-orange-600 text-white"
+                                    : "text-gray-700 hover:bg-orange-100"
                                 }`}
                         >
                             Ongoing Projects
@@ -58,7 +61,10 @@ function Projects() {
 
                         <button
                             onClick={() => setActiveTab("completed")}
-                            className={`px-5 py-2 rounded-full font-medium transition ${activeTab === "completed" ? "bg-orange-600 text-white" : "text-gray-700"
+                            className={`px-2 sm:px-5 py-2 text-[12px] md:text-base rounded-full font-medium transition 
+          ${activeTab === "completed"
+                                    ? "bg-orange-600 text-white"
+                                    : "text-gray-700 hover:bg-orange-100"
                                 }`}
                         >
                             Completed Projects
@@ -66,6 +72,7 @@ function Projects() {
                     </div>
                 </div>
             </div>
+
 
             {/* ---------------- DYNAMIC PROJECT CARDS ---------------- */}
             <div className="max-w-[1400px] mx-auto flex flex-col gap-8 px-6 md:px-12 lg:px-20 mb-10">
