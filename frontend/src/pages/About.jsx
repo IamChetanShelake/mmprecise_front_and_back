@@ -60,18 +60,20 @@ function About() {
             </p>
 
             {/* Stats */}
-            <div className="flex flex-wrap gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
               <div className="bg-white shadow-md rounded-xl px-6 py-4 text-center">
-                <h3 className="text-2xl font-bold text-orange-500">{overview.years_experience}+</h3>
-                <p className="text-sm text-gray-500">Years Experience</p>
+                <h3 className="text-xl sm:text-2xl font-bold text-orange-500">{overview.years_experience}+</h3>
+                <p className="text-xs sm:text-sm text-gray-500">Years Experience</p>
               </div>
+
               <div className="bg-white shadow-md rounded-xl px-6 py-4 text-center">
-                <h3 className="text-2xl font-bold text-orange-500">{overview.projects_completed}+</h3>
-                <p className="text-sm text-gray-500">Projects Completed</p>
+                <h3 className="text-xl sm:text-2xl font-bold text-orange-500">{overview.projects_completed}+</h3>
+                <p className="text-xs sm:text-sm text-gray-500">Projects Completed</p>
               </div>
+
               <div className="bg-white shadow-md rounded-xl px-6 py-4 text-center">
-                <h3 className="text-2xl font-bold text-orange-500">{overview.expert_engineers}+</h3>
-                <p className="text-sm text-gray-500">Expert Engineers</p>
+                <h3 className="text-xl sm:text-2xl font-bold text-orange-500">{overview.expert_engineers}+</h3>
+                <p className="text-xs sm:text-sm text-gray-500">Expert Engineers</p>
               </div>
             </div>
 
@@ -139,27 +141,37 @@ function About() {
 
       {/* Certifications & Memberships */}
       <section className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 className="text-2xl font-bold text-gray-800 uppercase">Certifications & Memberships</h2>
-        <p className="text-[#1e1e1e] mb-8 mt-2">
-          Recognized and accredited by leading industry bodies
-        </p>
+  <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 uppercase">
+    Certifications & Memberships
+  </h2>
+  <p className="text-gray-700 mb-8 mt-2 text-sm sm:text-base">
+    Recognized and accredited by leading industry bodies
+  </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
-          {memberships.map((membership, index) => (
-            <div key={index} className="bg-white">
-              <img
-                src={membership.img}
-                alt={membership.title}
-                className="ml-4 w-14 h-14 object-cover"
-              />
-              <div className="p-4 text-start">
-                <h3 className="text-sm font-semibold text-black">{membership.title}</h3>
-                <p className="text-gray-500 text-sm mt-2">{membership.location}</p>
-              </div>
-            </div>
-          ))}
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-6xl mx-auto">
+    {memberships.map((membership, index) => (
+      <div
+        key={index}
+        className="bg-white shadow-md hover:shadow-lg transition rounded-lg p-4 flex flex-col items-center sm:items-start"
+      >
+        <img
+          src={membership.img}
+          alt={membership.title}
+          className="w-14 h-14 object-contain mb-4"
+        />
+        <div className="text-center sm:text-left">
+          <h3 className="text-sm sm:text-base font-semibold text-gray-800">
+            {membership.title}
+          </h3>
+          <p className="text-gray-500 text-xs sm:text-sm mt-1">
+            {membership.location}
+          </p>
         </div>
-      </section>
+      </div>
+    ))}
+  </div>
+</section>
+
 
       {/* Our Team */}
       <section className="text-center my-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

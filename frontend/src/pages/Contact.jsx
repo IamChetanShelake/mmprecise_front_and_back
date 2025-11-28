@@ -280,7 +280,7 @@ export default function Contact() {
 
             {/* Map */}
             <section className="w-full flex justify-center mt-12">
-                <div className="w-full max-w-[1200px] h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
+                <div className="w-full max-w-[1200px] h-64 md:h-96 ">
                     <iframe
                         title="Office Location"
                         src="https://www.google.com/maps?q=19.990838079214253, 73.77991507201662&hl=es;z=14&output=embed"

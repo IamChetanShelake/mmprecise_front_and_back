@@ -153,7 +153,7 @@ export default function CSR() {
 
 
   return (
-    <div className="w-full font-sans">
+    <div className="w-full ">
       <section className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* Text Content */}
         <div className="space-y-4 lg:space-y-6">

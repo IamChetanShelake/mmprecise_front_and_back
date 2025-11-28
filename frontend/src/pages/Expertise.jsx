@@ -107,31 +107,35 @@ function Expertise() {
                 </div>
             </section>
 
-            <section className="flex flex-col my-16 items-center justify-center mx-auto max-md:mx-2 max-md:px-2 max-w-5xl w-full text-center py-16 bg-slate-100/70">
-                <h1 className="text-2xl md:text-3xl font-bold text-primary max-w-2xl mt-5">
-                    Why Choose MM Precise?
-                </h1>
+           <section className="flex flex-col items-center justify-center w-full max-w-5xl mx-auto my-12 sm:my-16 px-4 sm:px-6 py-10 sm:py-16 bg-slate-100/70 text-center">
+  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary max-w-2xl mt-5">
+    Why Choose MM Precise?
+  </h1>
 
-                <p className="text-sm text-gray-500 max-w-lg mt-2">
-                    Delivering excellence through innovation, precision, and unmatched quality.
-                </p>
+  <p className="text-xs sm:text-sm md:text-base text-gray-500 max-w-lg mt-2">
+    Delivering excellence through innovation, precision, and unmatched quality.
+  </p>
 
-                <div className="flex gap-4 flex-wrap justify-center">
-                    {benefits.map((item) => (
-                        <div
-                            key={item.id}
-                            className="flex flex-col justify-center items-center px-8 py-4 mt-4 w-56 bg-white text-black hover:scale-105 transition duration-300 rounded-lg shadow-md"
-                        >
-                            <div className="rounded-full text-white bg-primary p-2 w-8 h-8 flex items-center justify-center">
-                                {iconMap[item.title] || <TbPercentage />}
-                                {/* Fallback icon */}
-                            </div>
-                            <h1 className="text-lg font-semibold mt-2 text-center">{item.title}</h1>
-                            <p className="text-sm text-center mt-1">{item.description}</p>
-                        </div>
-                    ))}
-                </div>
-            </section>
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-6 w-full max-w-4xl">
+    {benefits.map((item) => (
+      <div
+        key={item.id}
+        className="flex flex-col justify-center items-center px-4 sm:px-6 md:px-8 py-4 bg-white text-black rounded-lg shadow-md transition duration-300 hover:scale-105"
+      >
+        <div className="rounded-full text-white bg-primary p-2 sm:p-3 w-8 sm:w-10 h-8 sm:h-10 flex items-center justify-center text-sm sm:text-lg">
+          {iconMap[item.title] || <TbPercentage />}
+        </div>
+        <h1 className="text-sm sm:text-lg font-semibold mt-2 text-center">
+          {item.title}
+        </h1>
+        <p className="text-xs sm:text-sm text-center mt-1">
+          {item.description}
+        </p>
+      </div>
+    ))}
+  </div>
+</section>
+
 
 
         </div>

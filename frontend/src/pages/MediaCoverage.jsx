@@ -68,43 +68,47 @@ function MediaCoverage() {
 
 
       {/* VIDEOS SECTION */}
-      <section className="container mx-auto max-w-7xl px-6 pb-12">
-        <h1 className="text-3xl font-semibold text-center md:text-start">Videos</h1>
+      <section className="container mx-auto max-w-7xl px-4 sm:px-6 pb-12">
+  <h1 className="text-2xl sm:text-3xl font-semibold text-center md:text-left">
+    Videos
+  </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pt-8">
-          {videoMedia.map((item) => (
-           <div
-  key={item.id}
-  className="relative hover:-translate-y-1 transition duration-300 group"
->
-  {/* Video Thumbnail */}
-  <img
-    className="rounded-xl w-full h-48 object-cover"
-    src={`${API}/${item.image}`}
-    alt={item.title}
-  />
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 pt-8">
+    {videoMedia.map((item) => (
+      <div
+        key={item.id}
+        className="group relative transition duration-300"
+      >
+        {/* Video Thumbnail */}
+        <div className="relative overflow-hidden rounded-xl">
+          <img
+            className="w-full h-44 sm:h-48 md:h-56 object-cover rounded-xl group-hover:scale-105 transition duration-300"
+            src={`${API}/${item.image}`}
+            alt={item.title}
+          />
 
-  {/* Overlay + Play Button (only visible on hover) */}
-  <a
-    href={item.video_url}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center opacity-100 transition-all duration-300"
-  >
-    <div className="bg-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
-      <span className="text-black text-xl font-bold">▶</span>
-    </div>
-  </a>
-
-  {/* Title */}
-  <h3 className="text-base text-slate-900 font-semibold mt-3">
-    {item.title || "Video Highlight"}
-  </h3>
-</div>
-
-          ))}
+          {/* Overlay ONLY on image hover */}
+          <a
+            href={item.video_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-xl  opacity-80 transition duration-300"
+          >
+            <div className="bg-white w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg">
+              <span className="text-black text-lg sm:text-xl font-bold">▶</span>
+            </div>
+          </a>
         </div>
-      </section>
+
+        {/* Title (no overlay effect here) */}
+        <h3 className="text-sm sm:text-base md:text-lg text-slate-900 font-semibold mt-3">
+          {item.title || "Video Highlight"}
+        </h3>
+      </div>
+    ))}
+  </div>
+</section>
+
 
     </div>
   );

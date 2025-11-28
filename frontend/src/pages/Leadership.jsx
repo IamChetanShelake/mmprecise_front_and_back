@@ -187,41 +187,44 @@ function Leadership() {
       </section>
 
       {/* Technical Specializations */}
-      <section className="w-full flex flex-col items-center justify-center py-10 px-4">
-        <h2 className="text-2xl font-bold text-gray-800 py-4 uppercase">TECHNICAL SPECIALIZATIONS</h2>
+      <section className="w-full flex flex-col items-center justify-center py-10 px-4 sm:px-6 lg:px-12">
+  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 py-4 uppercase text-center">
+    TECHNICAL SPECIALIZATIONS
+  </h2>
 
-        {loading.specializations ? (
-          <div className="bg-white shadow-md rounded-2xl border-0 shadow-orange-300 p-6 w-full max-w-5xl">
-            <div className="flex justify-center items-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
-            </div>
-          </div>
-        ) : (
-          <div className="bg-white shadow-md rounded-2xl border-0 shadow-orange-300 p-6 w-full max-w-5xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* First column - first 3 items */}
-              <ul className="space-y-2">
-                {displaySpecializations.slice(0, 3).map((item, idx) => (
-                  <li key={idx} className="flex items-center">
-                    <div className="rounded-full bg-primary p-1 mr-1.5"></div>
-                    <span className="font-normal">{item}</span>
-                  </li>
-                ))}
-              </ul>
+  {loading.specializations ? (
+    <div className="bg-white shadow-md rounded-2xl shadow-orange-300 p-6 w-full max-w-5xl">
+      <div className="flex justify-center items-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+      </div>
+    </div>
+  ) : (
+    <div className="bg-white shadow-md rounded-2xl shadow-orange-300 p-6 w-full max-w-5xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {/* First column - items */}
+        <ul className="space-y-2">
+          {displaySpecializations.slice(0, Math.ceil(displaySpecializations.length / 2)).map((item, idx) => (
+            <li key={idx} className="flex items-center">
+              <div className="rounded-full bg-primary p-1 mr-2"></div>
+              <span className="text-sm sm:text-base">{item}</span>
+            </li>
+          ))}
+        </ul>
 
-              {/* Second column - last 3 items */}
-              <ul className="space-y-2">
-                {displaySpecializations.slice(3, 6).map((item, idx) => (
-                  <li key={idx} className="flex items-center">
-                    <span className="rounded-full bg-primary p-1 mr-1.5"></span>
-                    <span className='font-normal'>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-      </section>
+        {/* Second column - items */}
+        <ul className="space-y-2">
+          {displaySpecializations.slice(Math.ceil(displaySpecializations.length / 2)).map((item, idx) => (
+            <li key={idx} className="flex items-center">
+              <span className="rounded-full bg-primary p-1 mr-2"></span>
+              <span className="text-sm sm:text-base">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )}
+</section>
+
     </div>
   )
 }

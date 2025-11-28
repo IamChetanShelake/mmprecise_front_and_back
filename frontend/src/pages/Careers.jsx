@@ -63,64 +63,75 @@ const Careers = () => {
 
             {/* Open Positions Section */}
             <section className="py-10">
-                <div className="container mx-auto px-6">
-                    <div className="flex items-center relative">
-                        <h2 className="text-2xl font-semibold absolute left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-                            Currently Open Positions
-                        </h2>
+  <div className="container mx-auto px-4 sm:px-6">
+    {/* Header and Search */}
+    <div className="flex flex-col md:flex-row items-center justify-between gap-4 relative">
+      <h2 className="text-xl sm:text-2xl font-semibold text-center md:text-left">
+        Currently Open Positions
+      </h2>
 
-                        <div className="ml-auto flex items-center border p-4 gap-2 border-gray-500/30 h-[46px] rounded-full overflow-hidden max-w-72 w-full">
-                            <input
-                                type="text"
-                                placeholder="Search"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full h-full outline-none text-gray-500 bg-transparent placeholder-gray-500 text-sm"
-                            />
+      <div className="flex items-center border border-gray-500/30 rounded-full h-[42px] sm:h-[46px] w-full max-w-xs sm:max-w-sm md:max-w-xs px-4">
+        <input
+          type="text"
+          placeholder="Search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full text-sm bg-transparent outline-none text-gray-600 placeholder-gray-500"
+        />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 30 30"
+          fill="#6B7280"
+        >
+          <path d="M13 3C7.489 3 3 7.489 3 13s4.489 10 10 10a9.95 9.95 0 0 0 6.322-2.264l5.971 5.971a1 1 0 1 0 1.414-1.414l-5.97-5.97A9.95 9.95 0 0 0 23 13c0-5.511-4.489-10-10-10m0 2c4.43 0 8 3.57 8 8s-3.57 8-8 8-8-3.57-8-8 3.57-8 8-8" />
+        </svg>
+      </div>
+    </div>
 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 30 30" fill="#6B7280">
-                                <path d="M13 3C7.489 3 3 7.489 3 13s4.489 10 10 10a9.95 9.95 0 0 0 6.322-2.264l5.971 5.971a1 1 0 1 0 1.414-1.414l-5.97-5.97A9.95 9.95 0 0 0 23 13c0-5.511-4.489-10-10-10m0 2c4.43 0 8 3.57 8 8s-3.57 8-8 8-8-3.57-8-8 3.57-8 8-8" />
-                            </svg>
-                        </div>
-                    </div>
+    {/* Jobs Grid */}
+    <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-10">
+      {filteredCareers.length > 0 ? (
+        filteredCareers.map((job) => (
+          <div
+            key={job.id}
+            className="p-5 sm:p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+          >
+            <h3 className="text-lg sm:text-xl font-semibold mb-3">{job.role}</h3>
 
+            <div className="flex gap-2 items-start mb-2">
+              <img src={icons.idea} alt="skills" className="w-4 h-4 sm:w-5 sm:h-5 mt-1" />
+              <p className="text-gray-600 text-sm">{job.skills.join(", ")}</p>
+            </div>
 
-                    <div className="mt-8 grid md:grid-cols-2 gap-10">
-                        {filteredCareers.length > 0 ? (
-                            filteredCareers.map((job) => (
-                                <div key={job.id} className="p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-                                    <h3 className="text-xl font-semibold mb-4">{job.role}</h3>
+            <div className="flex gap-2 items-start mb-4">
+              <img src={icons.work} alt="responsibilities" className="w-4 h-4 sm:w-5 sm:h-5 mt-1" />
+              <p className="text-gray-600 text-sm whitespace-pre-line">{job.responsibilities}</p>
+            </div>
 
-                                    <div className="flex gap-2 items-start mb-2">
-                                        <img src={icons.idea} alt="idea" className="w-5 h-5 mt-1" />
-                                        <p className="text-gray-600 text-sm">{job.skills.join(", ")}</p>
-                                    </div>
+            <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+              <div className="flex items-center gap-1">
+                <img src={icons.location} alt="location" className="w-4 h-4" />
+                <span>{job.location}</span>
+              </div>
 
-                                    <div className="flex gap-2 items-start mb-4">
-                                        <img src={icons.work} alt="work" className="w-5 h-5 mt-1" />
-                                        <p className="text-gray-600 text-sm whitespace-pre-line">{job.responsibilities}</p>
-                                    </div>
+              <div className="flex items-center gap-1">
+                <img src={icons.workOutline} alt="experience" className="w-4 h-4" />
+                <span>{job.years_experience}</span>
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className="text-gray-500 text-center sm:text-left col-span-full">
+          No jobs found for your search.
+        </p>
+      )}
+    </div>
+  </div>
+</section>
 
-                                    <div className="flex gap-10 text-sm text-gray-500">
-                                        <div className="flex items-center gap-1">
-                                            <img src={icons.location} alt="location" className="w-4 h-4" />
-                                            <span>{job.location}</span>
-                                        </div>
-
-                                        <div className="flex items-center gap-1">
-                                            <img src={icons.workOutline} alt="experience" className="w-4 h-4" />
-                                            <span>{job.years_experience}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <p className="text-gray-500 col-span-2">No jobs found for your search.</p>
-                        )}
-                    </div>
-
-                </div>
-            </section>
 
             {/* Join Form Section */}
             <section className="container mx-auto px-6 py-12">

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Home() {
 
-    const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate(); // Initialize navigate
 
 
   const [achievements, setAchievements] = useState([]);
@@ -152,8 +152,8 @@ function Home() {
 
           <div className="flex items-center justify-start">
             <button
-            onClick={()=> navigate("/projects")}
-            className="mt-6 px-6 py-3 bg-primary hover:bg-orange-600 text-white rounded-full flex gap-2 justify-start items-center active:scale-95 transition duration-200">
+              onClick={() => navigate("/projects")}
+              className="mt-6 px-6 py-3 bg-primary hover:bg-orange-600 text-white rounded-full flex gap-2 justify-start items-center active:scale-95 transition duration-200">
               EXPLORE PROJECTS
               <CgArrowTopRight className="w-5 h-5" />
             </button>
@@ -182,7 +182,11 @@ function Home() {
           </p>
 
           {/* Button */}
-          <button className="mt-6 flex items-center gap-2 border border-prtext-primary text-primary px-6 py-2 rounded-full hover:bg-orange-50 transition active:scale-95">
+          <button onClick={() => {
+            navigate("/about-us");
+            window.scrollTo(0, 0);
+          }}
+            className="mt-6 flex items-center gap-2 border border-prtext-primary text-primary px-6 py-2 rounded-full hover:bg-orange-50 transition active:scale-95">
             About Us
             <CgArrowTopRight className="w-5 h-5" />
           </button>
@@ -198,35 +202,43 @@ function Home() {
         </div>
       </section>
 
+
       <section className="w-full py-8 flex justify-center">
-        <div className="bg-orange-50 py-6 px-10 flex flex-wrap md:flex-nowrap gap-6 md:gap-12">
-
-          <div className="text-center px-4 relative">
-            <h3 className="text-primary text-2xl font-bold">{aboutus.projects_count}</h3>
-            <p className="text-xs text-gray-600 tracking-wide mt-1">PROJECTS</p>
+        <div className="
+      bg-orange-50 py-6 px-6 sm:px-8 md:px-10 
+      grid grid-cols-2 md:flex md:flex-nowrap 
+      gap-4 sm:gap-6 md:gap-12
+    "
+        >
+          {/* First Item */}
+          <div className="text-center px-2 sm:px-4 relative">
+            <h3 className="text-primary text-xl sm:text-2xl font-bold">{aboutus.projects_count}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 tracking-wide mt-1">PROJECTS</p>
             <span className="hidden md:block absolute right-0 top-1/2 transform -translate-y-1/2 w-px h-12 bg-orange-200"></span>
           </div>
 
-          <div className="text-center px-4 relative">
-            <h3 className="text-primary text-2xl font-bold">{aboutus.years_count}</h3>
-            <p className="text-xs text-gray-600 tracking-wide mt-1">YEARS</p>
+          {/* Second Item */}
+          <div className="text-center px-2 sm:px-4 relative">
+            <h3 className="text-primary text-xl sm:text-2xl font-bold">{aboutus.years_count}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 tracking-wide mt-1">YEARS</p>
             <span className="hidden md:block absolute right-0 top-1/2 transform -translate-y-1/2 w-px h-12 bg-orange-200"></span>
           </div>
 
-          <div className="text-center px-4 relative">
-            <h3 className="text-primary text-2xl font-bold">{aboutus.workforce_count}</h3>
-            <p className="text-xs text-gray-600 tracking-wide mt-1">WORKFORCE</p>
+          {/* Third Item */}
+          <div className="text-center px-2 sm:px-4 relative">
+            <h3 className="text-primary text-xl sm:text-2xl font-bold">{aboutus.workforce_count}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 tracking-wide mt-1">WORKFORCE</p>
             <span className="hidden md:block absolute right-0 top-1/2 transform -translate-y-1/2 w-px h-12 bg-orange-200"></span>
           </div>
 
-          <div className="text-center px-4 relative">
-            <h3 className="text-primary text-2xl font-bold">{aboutus.tonnes_saved}</h3>
-            <p className="text-xs text-gray-600 tracking-wide mt-1">TONNES SAVED</p>
-            {/* No divider for the last item */}
+          {/* Fourth Item */}
+          <div className="text-center px-2 sm:px-4 relative">
+            <h3 className="text-primary text-xl sm:text-2xl font-bold">{aboutus.tonnes_saved}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 tracking-wide mt-1">TONNES SAVED</p>
           </div>
-
         </div>
       </section>
+
 
 
       <div>
@@ -239,47 +251,6 @@ function Home() {
       </div>
 
       {/* Testominical */}
-      {/* <section className="py-10 max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between relative gap-4 md:gap-0">
-            <div className="text-center md:flex-1">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-                What Our Clients Say
-              </h2>
-              <p className="text-gray-700 text-sm sm:text-base mb-4 mt-2">
-                Trusted by industry leaders for excellence and innovation
-              </p>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <FaArrowLeft
-                size={24}
-                className="cursor-pointer hover:opacity-70"
-                onClick={() => sliderRef.current.slickPrev()}
-              />
-              <FaArrowRight
-                size={24}
-                className="cursor-pointer hover:opacity-70"
-                onClick={() => sliderRef.current.slickNext()}
-              />
-            </div>
-          </div>
-        </div>
-
-         <div className="mt-4">
-    <Slider ref={sliderRef} {...settings}>
-      {testimonials.map((item, index) => (
-        <div key={index} className="px-1 sm:px-2">
-          <TestimonialCard testimonial={item} />
-        </div>
-      ))}
-    </Slider>
-  </div>
-  
-      </section> */}
-
-
-
       <section className="w-full py-8 sm:py-10 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0 mb-6 sm:mb-8">
