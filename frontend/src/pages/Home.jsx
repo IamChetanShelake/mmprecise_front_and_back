@@ -3,6 +3,8 @@ import { CgArrowTopRight } from 'react-icons/cg';
 import TestimonialCard from '../components/TestimonialCard';
 import { API, getAboutUs, getAchievements, getHeroSection, getOurPartner, getTestimonials } from '../api';
 import { Achievements } from '../components';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import Slider from "react-slick";
 
 function Home() {
 
@@ -57,6 +59,31 @@ function Home() {
 
   }, []);
 
+  const sliderRef = React.useRef(null);
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    arrows: false, // We use custom arrows
+    responsive: [
+      {
+        breakpoint: 1024, // Tablets
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 768, // Mobile
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
   useEffect(() => {
     const fetchHeroSection = async () => {
       try {
@@ -88,32 +115,32 @@ function Home() {
   return (
     <div className='flex flex-col items-center justify-center' >
 
-          <section
-      className="relative w-full h-[90vh] flex items-center justify-start bg-cover bg-center"
-      style={{ backgroundImage: `url(${API}/${herosection.background_image})` }}
-    >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50"></div>
+      <section
+        className="relative w-full h-[90vh] flex items-center justify-start bg-cover bg-center"
+        style={{ backgroundImage: `url(${API}/${herosection.background_image})` }}
+      >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/50"></div>
 
-      {/* Content */}
-      <div className="relative text-start px-6 md:px-10 max-w-5xl mx-auto">
-        <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-          {herosection.first_title}<br />
-          <span className="text-primary">{herosection.second_title}</span>
-        </h1>
+        {/* Content */}
+        <div className="relative text-start px-6 md:px-10 max-w-5xl mx-auto">
+          <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight">
+            {herosection.first_title}<br />
+            <span className="text-primary">{herosection.second_title}</span>
+          </h1>
 
-        <p className="text-gray-200 mt-4 text-sm md:text-base max-w-2xl">
-          {herosection.description}
-        </p>
+          <p className="text-gray-200 mt-4 text-sm md:text-base max-w-2xl">
+            {herosection.description}
+          </p>
 
-        <div className="flex items-center justify-start">
-          <button className="mt-6 px-6 py-3 bg-primary hover:bg-orange-600 text-white rounded-full flex gap-2 justify-start items-center active:scale-95 transition duration-200">
-            EXPLORE PROJECTS
-            <CgArrowTopRight className="w-5 h-5" />
-          </button>
+          <div className="flex items-center justify-start">
+            <button className="mt-6 px-6 py-3 bg-primary hover:bg-orange-600 text-white rounded-full flex gap-2 justify-start items-center active:scale-95 transition duration-200">
+              EXPLORE PROJECTS
+              <CgArrowTopRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
 
 
@@ -193,20 +220,46 @@ function Home() {
       </div>
 
       {/* Testominical */}
-      <section className="py-10 max-w-6xl mx-auto px-4">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-800">What Our Clients Say</h2>
-          <p className="text-[#1e1e1e] mb-8 mt-2">
-            Trusted by industry leaders for excellence and innovation
-          </p>
+      <section className="py-10 max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between relative gap-4 md:gap-0">
+            <div className="text-center md:flex-1">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+                What Our Clients Say
+              </h2>
+              <p className="text-gray-700 text-sm sm:text-base mb-4 mt-2">
+                Trusted by industry leaders for excellence and innovation
+              </p>
+            </div>
+
+            {/* Navigation */}
+            <div className="flex items-center gap-3">
+              <FaArrowLeft
+                size={24}
+                className="cursor-pointer hover:opacity-70"
+                onClick={() => sliderRef.current.slickPrev()}
+              />
+              <FaArrowRight
+                size={24}
+                className="cursor-pointer hover:opacity-70"
+                onClick={() => sliderRef.current.slickNext()}
+              />
+            </div>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((item, index) => (
-            <TestimonialCard key={index} testimonial={item} />
-          ))}
+        {/* Slider */}
+         <div className="mt-4">
+    <Slider ref={sliderRef} {...settings}>
+      {testimonials.map((item, index) => (
+        <div key={index} className="px-1 sm:px-2">
+          <TestimonialCard testimonial={item} />
         </div>
+      ))}
+    </Slider>
+  </div>
       </section>
+
 
       {/* Our Partner */}
       <div className="text-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
