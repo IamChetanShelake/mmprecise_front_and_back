@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaClock, FaExclamation, FaPhone, FaPhoneVolume, FaUser } from "react-icons/fa";
 import { FaLocationDot } from 'react-icons/fa6';
 import { IoIosMailOpen, IoMdMail, IoMdPricetag } from 'react-icons/io';
@@ -6,8 +6,34 @@ import { IoChatbubbleSharp } from 'react-icons/io5';
 import { LiaCertificateSolid } from 'react-icons/lia';
 import { MdSecurity } from 'react-icons/md';
 import { getInTouchAPI, getOfficeTime } from '../api';
+import emailjs from '@emailjs/browser';
+import toast from 'react-hot-toast';
+
 
 export default function Contact() {
+
+    const formRef = useRef();
+
+    const sendEmail = async (e) => {
+  e.preventDefault();
+
+  try {
+    await emailjs.sendForm(
+      "service_ifio43q",   // Your EmailJS Service ID
+      "template_48jfbca",  // Your Template ID
+      formRef.current,     // Your Form Reference
+      "noAldpRF1HbtifYaQ"  // Your Public Key
+    );
+
+    toast.success("Message sent successfully!"); // Fixed typo
+    formRef.current.reset(); // Clear form on success
+
+  } catch (error) {
+    toast.error("Failed to send message. Try again later."); // Show error toast
+    console.error("EmailJS Error:", error);
+  }
+};
+
 
     const iconMap = {
         "CALL US DIRECTLY": <FaPhoneVolume />,
@@ -82,7 +108,7 @@ export default function Contact() {
     return (
         <div className="">
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-[#F37021] to-[#2C2C2C] text-white py-20 px-4 sm:px-6 lg:px-8">
+            <section className="bg-linear-to-br from-[#F37021] to-[#2C2C2C] text-white py-20 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">
                     <div className="flex flex-col lg:flex-row justify-between items-center gap-12 lg:gap-8">
                         {/* Left Content */}
@@ -106,7 +132,7 @@ export default function Contact() {
                                     </div>
                                     <div className="flex flex-col">
                                         <span className='uppercase font-semibold text-sm'>Call US</span>
-                                        <span className="truncate">+91 9096879903</span>
+                                        <span className="truncate">+91 94039 50404</span>
                                     </div>
                                 </div>
                                 <div className="flex items-center bg-white/10 backdrop-blur-sm p-4 rounded-lg">
@@ -115,7 +141,7 @@ export default function Contact() {
                                     </div>
                                     <div className="flex flex-col">
                                         <span className='uppercase font-semibold text-sm'>Email US</span>
-                                        <span className="truncate">info@mmptce.com</span>
+                                        <span className="truncate">mmprecise123@gmail.com</span>
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +149,10 @@ export default function Contact() {
 
                         {/* Right Form */}
                         <div className="w-full lg:w-1/2 max-w-lg">
-                            <form className="bg-white text-black shadow-xl rounded-2xl p-6 lg:p-8">
+                            <form
+                                ref={formRef}
+                                onSubmit={sendEmail}
+                                className="bg-white text-black shadow-xl rounded-2xl p-6 lg:p-8">
                                 {/* Name and Email in row on larger screens */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     {/* Full Name Field */}
@@ -134,7 +163,7 @@ export default function Contact() {
                                         </label>
                                         <input
                                             id="fullName"
-                                            name="fullName"
+                                            name="from_name"
                                             type="text"
                                             className="w-full border border-gray-300 focus:outline-orange-500 focus:border-orange-500 px-4 py-3 rounded-lg transition-colors duration-200"
                                             placeholder="Your full name"
@@ -150,7 +179,7 @@ export default function Contact() {
                                         </label>
                                         <input
                                             id="email"
-                                            name="email"
+                                            name="from_email"
                                             type="email"
                                             className="w-full border border-gray-300 focus:outline-orange-500 focus:border-orange-500 px-4 py-3 rounded-lg transition-colors duration-200"
                                             placeholder="Your email address"

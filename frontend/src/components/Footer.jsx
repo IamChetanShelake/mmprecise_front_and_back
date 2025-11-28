@@ -33,10 +33,18 @@ const Footer = () => {
             </p>
 
             <div className="flex justify-center md:justify-start gap-3">
-              <Link to="#"><FaLinkedin className="w-6 h-6" /></Link>
-              <Link to="#"><FaYoutube className="w-6 h-6" /></Link>
-              <Link to="#"><FaInstagram className="w-6 h-6" /></Link>
-              <Link to="#"><FaFacebook className="w-6 h-6" /></Link>
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
+                <FaLinkedin className="w-6 h-6" />
+              </a>
+              <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
+                <FaYoutube className="w-6 h-6" />
+              </a>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+                <FaInstagram className="w-6 h-6" />
+              </a>
+              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
+                <FaFacebook className="w-6 h-6" />
+              </a>
             </div>
           </div>
 
@@ -114,8 +122,8 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
             <div className="text-gray-300 text-xs md:text-sm">
               © {new Date().getFullYear()} MM Precise. All rights reserved. |
-              <Link to="/privacy-policy" className="text-primary mx-1">Privacy Policy</Link> |
-              <Link to="/terms" className="text-primary mx-1">Terms of Service</Link>
+              <Link to="#" className="text-primary mx-1">Privacy Policy</Link> |
+              <Link to="#" className="text-primary mx-1">Terms of Service</Link>
             </div>
             <div className="text-gray-400 flex items-center text-xs md:text-sm">
               Built with <FaHeart className="text-primary mx-1" /> for Engineering Excellence
