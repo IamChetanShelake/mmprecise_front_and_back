@@ -4,7 +4,7 @@ import { icons } from "../assets";
 import { API } from "../api";
 
 const ProjectDetails = () => {
-    const [activeTab, setActiveTab] = useState("Information");
+    const [activeTab, setActiveTab] = useState("");
     const [project, setProject] = useState(null);
 
     const location = useLocation();
@@ -20,7 +20,82 @@ const ProjectDetails = () => {
         return <p className="text-center py-10 text-gray-600">Loading project details...</p>;
     }
 
-    const tabs = ["Information", "Gallery", "Achievement", "Strength Result Test"];
+    const tabs = ["Features", "Gallery", "Achievements", "Strength Results"];
+
+    const renderRightContent = () => {
+        switch (activeTab) {
+            case "Features":
+                return (
+                    <div className="bg-white p-6 h-full">
+                        <h3 className="text-lg font-semibold mb-4">Features</h3>
+                        <ul className="space-y-2 text-sm text-gray-700">
+                            {project.features?.length ? (
+                                project.features.map((f) => (
+                                    <li key={f.id} className="flex items-start gap-3">
+                                        <span className="inline-block w-2 h-2 bg-orange-600 rounded-full mt-2"></span>
+                                        <span>{f.feature}</span>
+                                    </li>
+                                ))) : (
+                                <li className="text-gray-400">No features available</li>
+                            )}
+                        </ul>
+                    </div>
+                );
+            case "Gallery":
+                return (
+                    <div className="grid grid-cols-2 gap-2 p-4 bg-white">
+                        {project.galleries?.length ? (
+                            project.galleries.map((g) => (
+                                <div key={g.id} className="overflow-hidden rounded">
+                                    <img
+                                        src={`${API}/${g.image}`}
+                                        alt={`gallery-${g.id}`}
+                                        className="w-full h-40 object-cover"
+                                    />
+                                </div>
+                            ))
+                        ) : (
+                            <div className="col-span-2 p-4 text-gray-400">No gallery images available</div>
+                        )}
+                    </div>
+                );
+            case "Achievements":
+                return (
+                    <div className="p-4 bg-white">
+                        {project.achievements?.length ? (
+                            project.achievements.map((a) => (
+                                <div key={a.id} className="flex gap-4 items-start mb-4">
+                                    <img src={`${API}/${a.photo}`} alt={a.title} className="w-20 h-20 object-cover rounded" />
+                                    <div>
+                                        <h4 className="font-semibold">{a.title}</h4>
+                                        <p className="text-sm text-gray-600">{a.description}</p>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-gray-400">No achievements available</p>
+                        )}
+                    </div>
+                );
+            case "Strength Results":
+                return (
+                    <div className="p-4 bg-white">
+                        {project.strength_results?.length ? (
+                            project.strength_results.map((s) => (
+                                <div key={s.id} className="mb-4">
+                                    <h4 className="font-semibold">{s.title}</h4>
+                                    <p className="text-sm text-gray-600">{s.description}</p>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-gray-400">No strength results available</p>
+                        )}
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
 
     return (
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 py-12">
@@ -33,10 +108,9 @@ const ProjectDetails = () => {
                         key={tab}
                         onClick={() => setActiveTab(tab)}
                         className={`px-4 py-2 text-sm rounded-full transition border
-                            ${
-                                activeTab === tab
-                                    ? "bg-orange-600 text-white"
-                                    : "bg-white text-gray-600 hover:bg-gray-50 border-orange-600"
+                            ${activeTab === tab
+                                ? "bg-orange-600 text-white"
+                                : "bg-white text-gray-600 hover:bg-gray-50 border-orange-600"
                             }`}
                     >
                         {tab}
@@ -49,7 +123,7 @@ const ProjectDetails = () => {
                 <div>
                     <p className="text-gray-700 mb-6 leading-relaxed">{project.description}</p>
 
-                    <div className="text-[14px] space-y-2 mb-4 md:mb-0">
+                    <div className="text-[14px] space-y-4 mb-4 md:mb-0">
                         <div className="flex items-center">
                             <img src={icons.Span} className="w-4 h-4 mr-2" />
                             <strong className="text-sm mr-1">Span:</strong> {project.span}
@@ -73,26 +147,38 @@ const ProjectDetails = () => {
 
                     {/* Dynamic Tags */}
                     <div className="flex flex-wrap my-6">
-                        {project.tags?.map((tag, index) => (
-                            <div
-                                key={index}
-                                className={`flex items-center mr-2 mt-2 text-white text-xs py-1 px-3 rounded-full ${tag.color}`}
-                            >
-                                <img src={icons.layer} className="w-4 h-4 mr-1" />
-                                {tag.text}
-                            </div>
-                        ))}
+                        <div className="flex items-center mr-2 mt-2 text-white text-xs py-1 px-3 rounded-full bg-orange-600">
+                            <img src={icons.layer} alt="tag-icon" className="w-4 h-4 mr-1" />
+                            <span className="text-white text-sm">Post-Tensioning</span>
+                        </div>
+
+                        <div className="flex items-center mr-2 mt-2 text-white text-xs py-1 px-3 rounded-full bg-gray-900">
+                            <img src={icons.cube} alt="tag-icon" className="w-4 h-4 mr-1" />
+                            <span className="text-white text-sm">Fibre Concrete</span>
+                        </div>
+
+                        <div className="flex items-center mr-2 mt-2 text-white text-xs py-1 px-3 rounded-full bg-green-600">
+                            <img src={icons.leaf} alt="tag-icon" className="w-4 h-4 mr-1" />
+                            <span className="text-white text-sm">Green Building</span>
+                        </div>
                     </div>
                 </div>
 
                 {/* Right Section */}
-                <div className="overflow-hidden rounded-xl shadow-lg">
-                    <img
-                        src={`${API}/${project.main_image}`}
-                        alt="Project"
-                        className="w-full h-[350px] object-cover"
-                    />
+                <div className="overflow-hidden">
+                    {renderRightContent() ? (
+                        renderRightContent()
+                    ) : (
+                        <div className="overflow-hidden rounded-xl shadow-lg">
+                            <img
+                                src={`http://webadmin.mmprecise.com/${project.main_image}`}
+                                alt={project.title}
+                                className="h-56 w-full object-cover transition duration-300 group-hover:scale-105"
+                            />
+                        </div>
+                    )}
                 </div>
+
             </div>
         </div>
     );

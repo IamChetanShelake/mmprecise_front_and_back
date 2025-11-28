@@ -100,6 +100,7 @@ function Projects() {
                                         <Link
                                             to="/project-details"
                                             state={{ projectData: project }} // 👈 passing entire project object
+                                            onClick={() => window.scrollTo({ top: 0, left: 0, behavior: "smooth" })} // 👌 Smooth scroll on click
                                         >
                                             <img
                                                 src={icons.Plus}
@@ -131,14 +132,20 @@ function Projects() {
                                     </div>
 
                                     {/* Dynamic Tags (example: technology & area as tags) */}
-                                    <div className="flex flex-wrap my-4">
+                                    <div className="flex flex-wrap my-6">
                                         <div className="flex items-center mr-2 mt-2 text-white text-xs py-1 px-3 rounded-full bg-orange-600">
-                                            <img src={icons.layer} alt="tag" className="w-4 h-4 mr-1" />
-                                            {project.technology}
+                                            <img src={icons.layer} alt="tag-icon" className="w-4 h-4 mr-1" />
+                                            <span className="text-white text-sm">Post-Tensioning</span>
                                         </div>
+
                                         <div className="flex items-center mr-2 mt-2 text-white text-xs py-1 px-3 rounded-full bg-gray-900">
-                                            <img src={icons.cube} alt="tag" className="w-4 h-4 mr-1" />
-                                            {project.area}
+                                            <img src={icons.cube} alt="tag-icon" className="w-4 h-4 mr-1" />
+                                            <span className="text-white text-sm">Fibre Concrete</span>
+                                        </div>
+
+                                        <div className="flex items-center mr-2 mt-2 text-white text-xs py-1 px-3 rounded-full bg-green-600">
+                                            <img src={icons.leaf} alt="tag-icon" className="w-4 h-4 mr-1" />
+                                            <span className="text-white text-sm">Green Building</span>
                                         </div>
                                     </div>
                                 </div>
