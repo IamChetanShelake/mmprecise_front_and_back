@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
 import { Achievements } from '../components';
-import { getAchievements, latestNews } from "../api";
+import { API, getAchievements, latestNews } from "../api";
 import { useNavigate } from "react-router-dom";
 function NewsUpdates() {
   const [achievements, setAchievements] = useState([]);
@@ -33,8 +33,6 @@ function NewsUpdates() {
 
   // Sort achievements
   const allAchievements = achievements?.sort((a, b) => a.sort_order - b.sort_order);
-
-  const ImageSrc = "https://webadmin.mmprecise.com/";
 
   // Function to get plain text from HTML description
   const getPlainText = (htmlString) => {
@@ -77,7 +75,7 @@ function NewsUpdates() {
           {latestNewsData[0] && (
             <div className="rounded-xl overflow-hidden shadow-md flex flex-col">
               <img
-                src={`${ImageSrc}${latestNewsData[0].main_image}`}
+                src={`${API}/${latestNewsData[0].main_image}`}
                 alt={latestNewsData[0].main_title}
                 className="w-full h-[460px] object-cover"
               />
@@ -104,7 +102,7 @@ function NewsUpdates() {
             {latestNewsData.slice(1, 3).map((news) => (
               <div key={news.id} className="rounded-xl overflow-hidden shadow-md">
                 <img
-                  src={`${ImageSrc}${news.main_image}`}
+                  src={`${API}/${news.main_image}`}
                   alt={news.main_title}
                   className="w-full h-[170px] object-cover"
                 />

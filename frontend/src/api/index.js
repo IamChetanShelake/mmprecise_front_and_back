@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API = import.meta.env.VITE_BASE_URL || "http://webadmin.mmprecise.com"
+export const API = "https://webadmin.mmprecise.com"
 
 // ================ Achievements ================
 export const getAchievements = async () => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FiArrowRight } from 'react-icons/fi';
-import { News, latestNews } from '../api';
+import { API, News, latestNews } from '../api';
 
 export default function NewsUpdatesDetails() {
     const [newsDetails, setNewsDetails] = useState(null);
@@ -10,8 +10,6 @@ export default function NewsUpdatesDetails() {
     const location = useLocation();
     const navigate = useNavigate();
     const newsId = location.state?.id;
-
-    const ImageSrc = "https://webadmin.mmprecise.com/";
 
     // Function to get plain text from HTML description
     const getPlainText = (htmlString) => {
@@ -90,7 +88,7 @@ export default function NewsUpdatesDetails() {
                     {newsDetails ? (
                         <>
                             <img 
-                                src={`${ImageSrc}${newsDetails.main_image}`} 
+                                src={`${API}/${newsDetails.main_image}`} 
                                 alt={newsDetails.main_title} 
                                 className="w-full rounded-2xl shadow" 
                             />
@@ -137,7 +135,7 @@ export default function NewsUpdatesDetails() {
                     {sidebarNews.map((news) => (
                         <div key={news.id} className="rounded-2xl shadow p-4 border-0">
                             <img 
-                                src={`${ImageSrc}${news.main_image}`} 
+                                src={`${API}/${news.main_image}`} 
                                 alt={news.main_title} 
                                 className="w-full rounded-xl mb-2 h-40 object-cover"
                             />

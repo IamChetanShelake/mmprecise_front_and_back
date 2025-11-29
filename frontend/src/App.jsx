@@ -20,7 +20,7 @@ import { FaWhatsapp } from "react-icons/fa";
 
 function AppContent() {
   // Replace with your actual WhatsApp number 
-  const whatsappNumber = "94039 50404"; 
+  const whatsappNumber = "919403950404"; 
   
   // WhatsApp message (optional)
   const defaultMessage = "Hello! I would like to get more information.";
